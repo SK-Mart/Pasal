@@ -479,24 +479,53 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// --- Header Hide/Show on Scroll ---
+// --- UPDATED: Header Hide/Show on Scroll Logic ---
 let lastScrollY = 0;
 const header = document.querySelector('header');
-const scrollThreshold = 50; // Pixels to scroll down before header starts hiding
+let hideThreshold = 0; // This will be set based on the end of the product section
+
+// Set the hideThreshold once the DOM is loaded and elements are rendered
+document.addEventListener('DOMContentLoaded', () => {
+    // ... existing DOMContentLoaded code ...
+
+    // Determine the scroll threshold for hiding/showing the header
+    // We'll use the 'about-us-section' as the marker for when products typically end.
+    const aboutUsSection = document.querySelector('.about-us-section');
+    if (aboutUsSection) {
+        // Set threshold to the top of the About Us section, minus a little buffer
+        // This means the header will ONLY start hiding/showing once you've scrolled past the products
+        // and are approaching the 'About Us' section.
+        hideThreshold = aboutUsSection.offsetTop - window.innerHeight * 0.1; // 10% of viewport height buffer
+        if (hideThreshold < 0) hideThreshold = 0; // Ensure it's not negative
+    } else {
+        // Fallback for pages without an 'about-us-section' (e.g., checkout.html)
+        // or if the section isn't found. Header will behave as hide on scroll down
+        // after scrolling past the header itself.
+        hideThreshold = header.offsetHeight + 50; // Header height + a small buffer
+    }
+    console.log("Header Hide Threshold (calculated):", hideThreshold);
+});
 
 window.addEventListener('scroll', () => {
-    const currentScrollY = window.scrollY;
+    // Only apply header hide/show logic on the index.html where products are.
+    // On other pages (like checkout), header stays visible (or implement separate logic).
+    if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
+        const currentScrollY = window.scrollY;
 
-    // Scrolling down
-    if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
-        header.classList.add('header-hidden');
+        if (currentScrollY > hideThreshold) {
+            // We are past the product section, now apply hide/show based on scroll direction
+            if (currentScrollY > lastScrollY) { // Scrolling down
+                header.classList.add('header-hidden');
+            } else { // Scrolling up
+                header.classList.remove('header-hidden');
+            }
+        } else {
+            // We are still within or before the product section, header always visible
+            header.classList.remove('header-hidden');
+        }
+        lastScrollY = currentScrollY;
     }
-    // Scrolling up or at the very top
-    else if (currentScrollY < lastScrollY || currentScrollY < scrollThreshold) {
-        header.classList.remove('header-hidden');
-    }
-
-    lastScrollY = currentScrollY;
+    // For other pages, like checkout, the header will always be visible due to CSS `position: sticky` and no `header-hidden` class being applied.
 });
 
 

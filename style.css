@@ -57,13 +57,11 @@ header {
     position: sticky;
     top: 0;
     z-index: 1000;
-    /* NEW: For header hide/show animation */
-    transition: transform 0.3s ease-out;
+    transition: transform 0.3s ease-out; /* Smooth transition for hiding/showing */
 }
 
-/* NEW: Class to hide the header */
 header.header-hidden {
-    transform: translateY(-100%); /* Move header entirely out of view */
+    transform: translateY(-100%); /* Move the header fully up to hide it */
 }
 
 /* Header Categories Navigation (now at the top) */
@@ -769,6 +767,22 @@ footer {
     color: var(--accent-color);
 }
 
+.remove-item { /* Added for the trash icon button */
+    margin-left: 15px;
+    background: none;
+    border: none;
+    color: #dc3545;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.remove-item:hover {
+    color: #c82333;
+    transform: scale(1.1);
+}
+
+
 .cart-totals {
     border-top: 2px solid var(--primary-color);
     padding-top: 20px;
@@ -877,7 +891,7 @@ footer {
 /* Responsive Design */
 /* Large devices (desktops, 992px and up) - Default styles apply */
 
-/* Medium devices (tablets, 992px down to 768px) */
+/* Medium devices (tables, 992px down to 768px) */
 @media (max-width: 992px) {
     .header-top {
         flex-direction: column; /* Stack logo/about and icons row */
