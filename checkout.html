@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - SK Enterprises</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container header-top">
+            <div class="logo-and-about">
+                <div class="logo">
+                    <a href="index.html">SK Enterprises</a>
+                </div>
+                <div class="about-us-link">
+                    <a href="index.html#about-us-section">About Us</a>
+                </div>
+            </div>
+            <div class="header-icons-row">
+                 <div class="user-auth">
+                    <span id="user-display-name-checkout" style="margin-left: 10px;"></span>
+                 </div>
+            </div>
+        </div>
+        <nav class="container header-categories">
+            <ul>
+                <li><a href="index.html#fruits-vegetables">Shop Categories</a></li>
+                </ul>
+        </nav>
+    </header>
+
+    <main class="container checkout-page">
+        <h1>Your Cart & Checkout</h1>
+
+        <section class="cart-summary">
+            <h2>Items in your Cart</h2>
+            <div id="cart-items-container">
+                <p id="empty-cart-message">Your cart is empty.</p>
+            </div>
+            <div class="cart-totals">
+                <p>Subtotal: Rs. <span id="cart-subtotal">0</span></p>
+                <p>Delivery Fee: Rs. <span id="delivery-fee">50</span></p>
+                <h3>Total: Rs. <span id="cart-total">0</span></h3>
+            </div>
+        </section>
+
+        <section class="checkout-form">
+            <h2>Delivery Information</h2>
+            <form id="delivery-form" action="https://formspree.io/f/YOUR_FORMSPREE_ENDPOINT" method="POST">
+                <div class="form-group">
+                    <label for="full-name">Full Name:</label>
+                    <input type="text" id="full-name" name="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Delivery Address:</label>
+                    <input type="text" id="address" name="Delivery Address" placeholder="Street, City, District" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="Phone Number" placeholder="98XXXXXXXX" pattern="98\d{8}" required>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Delivery Notes (Optional):</label>
+                    <textarea id="notes" name="Delivery Notes" rows="3"></textarea>
+                </div>
+
+                <h2>Payment Method</h2>
+                <div class="form-group payment-options">
+                    <label>
+                        <input type="radio" name="Payment Method" value="Cash on Delivery (COD)" checked> Cash on Delivery (COD)
+                    </label>
+                    <label>
+                        <input type="radio" name="Payment Method" value="eSewa" disabled> eSewa (Coming Soon)
+                    </label>
+                    <label>
+                        <input type="radio" name="Payment Method" value="Khalti" disabled> Khalti (Coming Soon)
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <h3>Pay with eSewa</h3>
+                    <p>Scan the QR code below to pay with eSewa:</p>
+                    <div class="esewa-qr-code">
+                        <img src="https://via.placeholder.com/250x250?text=YOUR_ESEWA_QR" alt="eSewa QR Code" style="max-width: 250px;">
+                        <p class="coming-soon-text">(eSewa integration is coming soon. This is for visual representation.)</p>
+                    </div>
+                </div>
+
+                <input type="hidden" name="Cart Items" id="form-cart-items">
+                <input type="hidden" name="Order Subtotal" id="form-order-subtotal">
+                <input type="hidden" name="Order Delivery Fee" id="form-order-delivery-fee">
+                <input type="hidden" name="Order Total" id="form-order-total">
+                <input type="hidden" name="Order Date" id="form-order-date">
+
+
+                <button type="submit" id="place-order-btn">Place Order</button>
+            </form>
+        </section>
+
+        <section class="our-location checkout-location">
+            <h2>Our Delivery Area</h2>
+            <p>We are based in Hetauda, Bagmati Province, Nepal.</p>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14138.835974011406!2d85.03923414999999!3d27.42398405!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb2a1d2f704f7b%3A0xc3f6d71b3e5e54d8!2sHetauda!5e0!3m2!1sen!2snp!4v1701968853612!5m2!1sen!2snp"
+                        width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2025 SK Enterprises. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

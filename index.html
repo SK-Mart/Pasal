@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SK Enterprises - Your Online Grocery Store</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <header>
+        <div class="container header-top">
+            <div class="logo-and-about">
+                <div class="logo">
+                    <a href="index.html">SK Enterprises</a>
+                </div>
+                <div class="about-us-link">
+                    <a href="#about-us-section">About Us</a>
+                </div>
+            </div>
+            <div class="header-icons-row">
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Search products...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="cart-icon">
+                    <a href="checkout.html">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cart-count">0</span>
+                    </a>
+                </div>
+                <div class="user-auth">
+                    <div id="g_id_onload"
+                         data-client_id="YOUR_GOOGLE_CLIENT_ID" data-context="signin"
+                         data-ux_mode="popup"
+                         data-callback="handleCredentialResponse"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="rectangular"
+                         data-theme="outline"
+                         data-text="signin_with"
+                         data-size="large"
+                         data-width="180">
+                    </div>
+                    <button id="sign-out-btn" style="display: none;">Sign Out</button>
+                    <span id="user-display-name" style="margin-left: 10px;"></span>
+                </div>
+            </div>
+        </div>
+        <nav class="container header-categories">
+            <ul>
+                <li><a href="#fruits-vegetables">Fruits & Vegetables</a></li>
+                <li><a href="#dairy-bakery">Dairy & Bakery</a></li>
+                <li><a href="#groceries-pantry">Groceries & Pantry</a></li>
+                <li><a href="#beverages">Beverages</a></li>
+                <li><a href="#snacks-sweets">Snacks & Sweets</a></li>
+                <li><a href="#household-others">Household & Others</a></li>
+                <li><a href="#">Offers</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1542838104-e35492983272?q=80&w=2000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+            <h1>Fresh Groceries, Delivered to Your Doorstep</h1>
+            <p>Shop from a wide range of products with ease and convenience.</p>
+            <button class="shop-now-btn animated-btn">Shop Now</button>
+        </section>
+
+        <section class="product-category" id="fruits-vegetables">
+            <h2>Fruits & Vegetables</h2>
+            <div class="product-grid">
+                <div class="product-card" data-product-id="1" data-product-name="Allu (Potatoes)" data-product-price="70" data-category="Fruits & Vegetables">
+                    <img src="https://via.placeholder.com/200x180?text=Potatoes" alt="Allu (Potatoes)">
+                    <h3>Allu (Potatoes - 1kg)</h3>
+                    <p class="price">Rs. <span class="current-price">70</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="1">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="2" data-product-name="Piyaz (Onions)" data-product-price="80" data-category="Fruits & Vegetables">
+                    <img src="https://via.placeholder.com/200x180?text=Onions" alt="Piyaz (Onions)">
+                    <h3>Piyaz (Onions - 1kg)</h3>
+                    <p class="price">Rs. <span class="current-price">80</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="2">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="3" data-product-name="Fresh Apples" data-product-price="150" data-category="Fruits & Vegetables">
+                    <img src="https://via.placeholder.com/200x180?text=Apples" alt="Fresh Apples">
+                    <h3>Fresh Apples (1kg)</h3>
+                    <p class="price">Rs. <span class="current-price">150</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="3">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="4" data-product-name="Organic Bananas" data-product-price="80" data-category="Fruits & Vegetables">
+                    <img src="https://via.placeholder.com/200x180?text=Bananas" alt="Organic Bananas">
+                    <h3>Organic Bananas (1 Dozen)</h3>
+                    <p class="price">Rs. <span class="current-price">80</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="4">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="product-category" id="dairy-bakery">
+            <h2>Dairy & Bakery</h2>
+            <div class="product-grid">
+                <div class="product-card" data-product-id="5" data-product-name="Fresh Milk" data-product-price="120" data-category="Dairy & Bakery">
+                    <img src="milkpouch.jpg" alt="Fresh Milk">
+                    <h3>Fresh Milk (1 Liter)</h3>
+                    <p class="price">Rs. <span class="current-price">120</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="5">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="6" data-product-name="Brown Bread" data-product-price="70" data-category="Dairy & Bakery">
+                    <img src="Bread Package Mockup - Free Download Images High Quality PNG, JPG - 110865.jfif"Brown Bread">
+                    <h3>Brown Bread (500g)</h3>
+                    <p class="price">Rs. <span class="current-price">70</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="6">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="7" data-product-name="Cheese Block" data-product-price="350" data-category="Dairy & Bakery">
+                    <img src="https://via.placeholder.com/200x180?text=Cheese" alt="Cheese Block">
+                    <h3>Cheese Block (200g)</h3>
+                    <p class="price">Rs. <span class="current-price">350</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="7">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="8" data-product-name="Yogurt" data-product-price="90" data-category="Dairy & Bakery">
+                    <img src="curd.jpg" alt="Yogurt">
+                    <h3>Yogurt (500g)</h3>
+                    <p class="price">Rs. <span class="current-price">90</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="8">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="product-category" id="groceries-pantry">
+            <h2>Groceries & Pantry</h2>
+            <div class="product-grid">
+                <div class="product-card" data-product-id="9" data-product-name="Jeramasina Oil" data-product-base-price="425" data-category="Groceries & Pantry">
+                    <img src="https://via.placeholder.com/200x180?text=Jeramasina+Oil" alt="Jeramasina Oil">
+                    <h3>Jeramasina Oil</h3>
+                    <div class="quantity-selector">
+                        <label for="oil-qty-9">Size:</label>
+                        <select id="oil-qty-9" class="product-quantity-selector">
+                            <option value="1" data-unit-name="500ml">500ml</option>
+                            <option value="2" data-unit-name="1L" selected>1 Liter</option>
+                        </select>
+                    </div>
+                    <p class="price">Rs. <span class="current-price">850</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="9">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="10" data-product-name="Daal" data-product-base-price="90" data-category="Groceries & Pantry">
+                    <img src="https://via.placeholder.com/200x180?text=Daal" alt="Daal (Lentils)">
+                    <h3>Daal (Lentils)</h3>
+                    <div class="quantity-selector">
+                        <label for="daal-qty-10">Weight:</label>
+                        <select id="daal-qty-10" class="product-quantity-selector">
+                            <option value="1" data-unit-name="250g">250g</option>
+                            <option value="2" data-unit-name="500g" selected>500g</option>
+                            <option value="4" data-unit-name="1kg">1kg</option>
+                        </select>
+                    </div>
+                    <p class="price">Rs. <span class="current-price">180</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="10">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="11" data-product-name="Noodles (Instant)" data-product-price="30" data-category="Groceries & Pantry">
+                    <img src="waiwai.jfif" alt="Noodles">
+                    <h3>Noodles (Instant - 1 packet)</h3>
+                    <p class="price">Rs. <span class="current-price">30</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="11">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="12" data-product-name="Nuts" data-product-base-price="400" data-category="Groceries & Pantry">
+                    <img src="https://via.placeholder.com/200x180?text=Nuts" alt="Nuts">
+                    <h3>Nuts (Mixed)</h3>
+                    <div class="quantity-selector">
+                        <label for="nuts-qty-12">Weight:</label>
+                        <select id="nuts-qty-12" class="product-quantity-selector">
+                            <option value="1" data-unit-name="250g" selected>250g</option>
+                            <option value="2" data-unit-name="500g">500g</option>
+                        </select>
+                    </div>
+                    <p class="price">Rs. <span class="current-price">400</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="12">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="13" data-product-name="Jams" data-product-base-price="125" data-category="Groceries & Pantry">
+                    <img src="https://via.placeholder.com/200x180?text=Jams" alt="Jams">
+                    <h3>Jams</h3>
+                    <div class="quantity-selector">
+                        <label for="jams-qty-13">Weight:</label>
+                        <select id="jams-qty-13" class="product-quantity-selector">
+                            <option value="1" data-unit-name="250g">250g</option>
+                            <option value="2" data-unit-name="500g" selected>500g</option>
+                        </select>
+                    </div>
+                    <p class="price">Rs. <span class="current-price">250</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="13">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="14" data-product-name="Hulas Atta" data-product-base-price="60" data-category="Groceries & Pantry">
+                    <img src="https://via.placeholder.com/200x180?text=Hulas+Atta" alt="Hulas Atta">
+                    <h3>Hulas Atta</h3>
+                    <div class="quantity-selector">
+                        <label for="atta-qty-14">Weight:</label>
+                        <select id="atta-qty-14" class="product-quantity-selector">
+                            <option value="1" data-unit-name="500g">500g</option>
+                            <option value="2" data-unit-name="1kg" selected>1kg</option>
+                        </select>
+                    </div>
+                    <p class="price">Rs. <span class="current-price">120</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="14">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="15" data-product-name="Maida (All-Purpose Flour)" data-product-base-price="50" data-category="Groceries & Pantry">
+                    <img src="https://via.placeholder.com/200x180?text=Maida" alt="Maida">
+                    <h3>Maida (All-Purpose Flour)</h3>
+                    <div class="quantity-selector">
+                        <label for="maida-qty-15">Weight:</label>
+                        <select id="maida-qty-15" class="product-quantity-selector">
+                            <option value="1" data-unit-name="500g">500g</option>
+                            <option value="2" data-unit-name="1kg" selected>1kg</option>
+                        </select>
+                    </div>
+                    <p class="price">Rs. <span class="current-price">100</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="15">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="16" data-product-name="Kerau (Dried Peas)" data-product-base-price="65" data-category="Groceries & Pantry">
+                    <img src="https://via.placeholder.com/200x180?text=Kerau" alt="Kerau (Dried Peas)">
+                    <h3>Kerau (Dried Peas)</h3>
+                    <div class="quantity-selector">
+                        <label for="kerau-qty-16">Weight:</label>
+                        <select id="kerau-qty-16" class="product-quantity-selector">
+                            <option value="1" data-unit-name="250g">250g</option>
+                            <option value="2" data-unit-name="500g" selected>500g</option>
+                        </select>
+                    </div>
+                    <p class="price">Rs. <span class="current-price">130</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="16">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="17" data-product-name="Suhi (Vermicelli)" data-product-base-price="90" data-category="Groceries & Pantry">
+                    <img src="https://via.placeholder.com/200x180?text=Suhi" alt="Suhi (Vermicelli)">
+                    <h3>Suhi (Vermicelli)</h3>
+                    <div class="quantity-selector">
+                        <label for="suhi-qty-17">Weight:</label>
+                        <select id="suhi-qty-17" class="product-quantity-selector">
+                            <option value="1" data-unit-name="250g" selected>250g</option>
+                            <option value="2" data-unit-name="500g">500g</option>
+                        </select>
+                    </div>
+                    <p class="price">Rs. <span class="current-price">90</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="17">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="18" data-product-name="Nun (Salt)" data-product-base-price="17.5" data-category="Groceries & Pantry">
+                    <img src="https://via.placeholder.com/200x180?text=Nun" alt="Nun (Salt)">
+                    <h3>Nun (Salt)</h3>
+                    <div class="quantity-selector">
+                        <label for="nun-qty-18">Weight:</label>
+                        <select id="nun-qty-18" class="product-quantity-selector">
+                            <option value="1" data-unit-name="500g">500g</option>
+                            <option value="2" data-unit-name="1kg" selected>1kg</option>
+                        </select>
+                    </div>
+                    <p class="price">Rs. <span class="current-price">35</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="18">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="19" data-product-name="Prawn (Frozen)" data-product-price="600" data-category="Groceries & Pantry">
+                    <img src="https://via.placeholder.com/200x180?text=Prawn" alt="Prawn (Frozen)">
+                    <h3>Prawn (Frozen - 250g)</h3>
+                    <p class="price">Rs. <span class="current-price">600</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="19">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="20" data-product-name="Masala" data-product-base-price="47.5" data-category="Groceries & Pantry">
+                    <img src="https://via.placeholder.com/200x180?text=Masala" alt="Masala (Mixed Spices)">
+                    <h3>Masala (Mixed Spices)</h3>
+                    <div class="quantity-selector">
+                        <label for="masala-qty-20">Weight:</label>
+                        <select id="masala-qty-20" class="product-quantity-selector">
+                            <option value="1" data-unit-name="50g">50g</option>
+                            <option value="2" data-unit-name="100g" selected>100g</option>
+                        </select>
+                    </div>
+                    <p class="price">Rs. <span class="current-price">95</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="20">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="21" data-product-name="Gheu" data-product-base-price="800" data-category="Groceries & Pantry">
+                    <img src="https://via.placeholder.com/200x180?text=Gheu" alt="Gheu (Ghee)">
+                    <h3>Gheu (Ghee)</h3>
+                    <div class="quantity-selector">
+                        <label for="gheu-qty-21">Size:</label>
+                        <select id="gheu-qty-21" class="product-quantity-selector">
+                            <option value="1" data-unit-name="500ml" selected>500ml</option>
+                            <option value="2" data-unit-name="1L">1 Liter</option>
+                        </select>
+                    </div>
+                    <p class="price">Rs. <span class="current-price">800</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="21">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="product-category" id="beverages">
+            <h2>Beverages</h2>
+            <div class="product-grid">
+                <div class="product-card" data-product-id="22" data-product-name="Horlicks" data-product-base-price="450" data-category="Beverages">
+                    <img src="https://via.placeholder.com/200x180?text=Horlicks" alt="Horlicks">
+                    <h3>Horlicks</h3>
+                    <div class="quantity-selector">
+                        <label for="horlicks-qty-22">Weight:</label>
+                        <select id="horlicks-qty-22" class="product-quantity-selector">
+                            <option value="1" data-unit-name="200g" selected>200g</option>
+                            <option value="2" data-unit-name="400g">400g</option>
+                        </select>
+                    </div>
+                    <p class="price">Rs. <span class="current-price">450</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="22">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="23" data-product-name="Coffee" data-product-base-price="150" data-category="Beverages">
+                    <img src="https://via.placeholder.com/200x180?text=Coffee" alt="Coffee">
+                    <h3>Coffee</h3>
+                    <div class="quantity-selector">
+                        <label for="coffee-qty-23">Weight:</label>
+                        <select id="coffee-qty-23" class="product-quantity-selector">
+                            <option value="1" data-unit-name="50g">50g</option>
+                            <option value="2" data-unit-name="100g" selected>100g</option>
+                        </select>
+                    </div>
+                    <p class="price">Rs. <span class="current-price">300</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="23">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="24" data-product-name="Gulcose Powder" data-product-base-price="110" data-category="Beverages">
+                    <img src="https://via.placeholder.com/200x180?text=Gulcose" alt="Gulcose Powder">
+                    <h3>Gulcose Powder</h3>
+                    <div class="quantity-selector">
+                        <label for="gulcose-qty-24">Weight:</label>
+                        <select id="gulcose-qty-24" class="product-quantity-selector">
+                            <option value="1" data-unit-name="250g">250g</option>
+                            <option value="2" data-unit-name="500g" selected>500g</option>
+                        </select>
+                    </div>
+                    <p class="price">Rs. <span class="current-price">220</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="24">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="product-category" id="snacks-sweets">
+            <h2>Snacks & Sweets</h2>
+            <div class="product-grid">
+                <div class="product-card" data-product-id="25" data-product-name="Lays Potato Chips" data-product-price="70" data-category="Snacks & Sweets">
+                    <img src="https://via.placeholder.com/200x180?text=Lays+Chips" alt="Lays Potato Chips">
+                    <h3>Lays Potato Chips (Large)</h3>
+                    <p class="price">Rs. <span class="current-price">70</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="25">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="26" data-product-name="Panipuri Kit" data-product-price="150" data-category="Snacks & Sweets">
+                    <img src="https://via.placeholder.com/200x180?text=Panipuri" alt="Panipuri Kit">
+                    <h3>Panipuri Kit</h3>
+                    <p class="price">Rs. <span class="current-price">150</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="26">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="27" data-product-name="Papad" data-product-price="80" data-category="Snacks & Sweets">
+                    <img src="https://via.placeholder.com/200x180?text=Papad" alt="Papad">
+                    <h3>Papad (1 pack)</h3>
+                    <p class="price">Rs. <span class="current-price">80</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="27">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="product-category" id="household-others">
+            <h2>Household & Others</h2>
+            <div class="product-grid">
+                <div class="product-card" data-product-id="28" data-product-name="Detergent Powder" data-product-price="380" data-category="Household & Others">
+                    <img src="https://via.placeholder.com/200x180?text=Detergent" alt="Detergent Powder">
+                    <h3>Detergent Powder (1kg)</h3>
+                    <p class="price">Rs. <span class="current-price">380</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="28">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="29" data-product-name="Sampoo (Shampoo)" data-product-price="250" data-category="Household & Others">
+                    <img src="https://via.placeholder.com/200x180?text=Shampoo" alt="Sampoo (Shampoo)">
+                    <h3>Sampoo (Shampoo - 200ml)</h3>
+                    <p class="price">Rs. <span class="current-price">250</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="29">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="30" data-product-name="Goodnight Mosquito Repellent" data-product-price="120" data-category="Household & Others">
+                    <img src="https://via.placeholder.com/200x180?text=Goodnight" alt="Goodnight Mosquito Repellent">
+                    <h3>Goodnight Mosquito Repellent</h3>
+                    <p class="price">Rs. <span class="current-price">120</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="30">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="31" data-product-name="Agarbati (Incense Sticks)" data-product-price="60" data-category="Household & Others">
+                    <img src="https://via.placeholder.com/200x180?text=Agarbati" alt="Agarbati (Incense Sticks)">
+                    <h3>Agarbati (Incense Sticks)</h3>
+                    <p class="price">Rs. <span class="current-price">60</span></p>
+                    <div class="product-quantity-controls">
+                        <button class="quantity-btn decrease-product-quantity">-</button>
+                        <span class="product-quantity-display">1</span>
+                        <button class="quantity-btn increase-product-quantity">+</button>
+                    </div>
+                    <button class="add-to-cart-btn animated-btn" data-product-id="31">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="our-location" id="our-location">
+            <h2>Our Location in Hetauda</h2>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14138.835974011406!2d85.03923414999999!3d27.42398405!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb2a1d2f704f7b%3A0xc3f6d71b3e5e54d8!2sHetauda!5e0!3m2!1sen!2snp!4v1701968853612!5m2!1sen!2snp"
+                        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </section>
+
+        <section class="about-us-section" id="about-us-section">
+            <h2>About SK Enterprises</h2>
+            <div class="about-content">
+                <p>Welcome to **SK Enterprises**, your premier destination for fresh and high-quality groceries delivered right to your doorstep in Nepal. We are committed to making your daily shopping experience effortless, convenient, and enjoyable.</p>
+                <p>Founded in 2025, SK Enterprises was established with a simple goal: to connect local communities with the freshest produce, pantry staples, and household essentials, all from the comfort of their homes. We believe in providing value, reliability, and exceptional customer service.</p>
+                <p>Our carefully curated selection ensures that you receive only the best. From farm-fresh fruits and vegetables to dairy, bakery items, and a wide range of groceries, we've got your needs covered. We partner with trusted suppliers to guarantee the quality and freshness of every item.</p>
+                <p>At SK Enterprises, your satisfaction is our priority. We continuously strive to improve our services and expand our product offerings to serve you better. Thank you for choosing us as your trusted grocery partner!</p>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Wide Selection of Fresh Products</li>
+                    <li><i class="fas fa-check-circle"></i> Convenient Doorstep Delivery</li>
+                    <li><i class="fas fa-check-circle"></i> Quality Guaranteed</li>
+                    <li><i class="fas fa-check-circle"></i> Excellent Customer Support</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-columns">
+                <div class="footer-col">
+                    <h3>SK Enterprises</h3>
+                    <p>Your one-stop shop for all your grocery needs.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#about-us-section">About Us</a></li>
+                        <li><a href="#contact-us-section">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="#fruits-vegetables">Fruits & Vegetables</a></li>
+                        <li><a href="#dairy-bakery">Dairy & Bakery</a></li>
+                        <li><a href="#groceries-pantry">Groceries & Pantry</a></li>
+                        <li><a href="#beverages">Beverages</a></li>
+                        <li><a href="#snacks-sweets">Snacks & Sweets</a></li>
+                        <li><a href="#household-others">Household & Others</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col" id="contact-us-section">
+                    <h3>Contact Us</h3>
+                    <p>Hetauda, Bagmati Province, Nepal</p>
+                    <p>Phone: <a href="tel:+97798XXXXXXXX">+977-98XXXXXXXX</a></p>
+                    <div class="social-icons">
+                        <a href="https://facebook.com/YourFacebookPage"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://twitter.com/YourTwitterHandle"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com/YourInstagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 SK Enterprises. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
