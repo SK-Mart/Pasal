@@ -57,9 +57,16 @@ header {
     position: sticky;
     top: 0;
     z-index: 1000;
+    /* NEW: For header hide/show animation */
+    transition: transform 0.3s ease-out;
 }
 
-/* NEW: Header Categories Navigation (now at the top) */
+/* NEW: Class to hide the header */
+header.header-hidden {
+    transform: translateY(-100%); /* Move header entirely out of view */
+}
+
+/* Header Categories Navigation (now at the top) */
 .header-categories {
     padding: 10px 0; /* Adjusted padding */
     border-bottom: 1px solid var(--border-color); /* Separator line below categories */
@@ -368,6 +375,13 @@ header {
     text-align: center;
     box-shadow: 0 4px 8px rgba(0,0,0,0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    /* NEW: Added for search functionality */
+    display: flex; /* Changed to flex to use flex properties for visibility */
+    flex-direction: column;
+}
+
+.product-card.hidden {
+    display: none; /* Hide via class for search */
 }
 
 .product-card:hover {
@@ -394,6 +408,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-grow: 1; /* Allow product name to grow and take space */
 }
 
 /* Quantity Selector Styling (for dropdown) */

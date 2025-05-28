@@ -80,8 +80,10 @@ const DELIVERY_FEE = 50; // Fixed delivery fee
 function saveCart() {
     localStorage.setItem('cart', JSON.stringify(cart));
     updateCartCount();
-    updateCartDisplay(); // Call this to refresh cart on checkout page
-    updateCartTotals();  // Call this to refresh totals
+    if (document.body.classList.contains('checkout-page')) { // Only update detailed cart/totals if on checkout page
+        updateCartDisplay();
+        updateCartTotals();
+    }
 }
 
 function updateCartCount() {
@@ -283,9 +285,13 @@ document.addEventListener('click', function(event) {
 
             // Get base price for calculation based on unit or fixed item
             if (item.unit) { // It's a mass product with a unit
+                // To get original base price for mass products, need to divide current price by quantity
+                // This assumes `item.price` is total for `item.quantity`
                 basePricePerUnit = item.price / item.quantity;
             } else { // It's a fixed item
-                basePricePerUnit = parseFloat(document.querySelector(`.product-card[data-product-id="${productId}"]`).dataset.productPrice);
+                // For fixed items, price is directly on the product card data
+                const productCard = document.querySelector(`.product-card[data-product-id="${productId}"]`);
+                basePricePerUnit = productCard ? parseFloat(productCard.dataset.productPrice) : undefined;
             }
 
             if (basePricePerUnit !== undefined) {
@@ -308,7 +314,8 @@ document.addEventListener('click', function(event) {
                 if (item.unit) {
                     basePricePerUnit = item.price / item.quantity; // Price of one unit
                 } else {
-                    basePricePerUnit = parseFloat(document.querySelector(`.product-card[data-product-id="${productId}"]`).dataset.productPrice);
+                    const productCard = document.querySelector(`.product-card[data-product-id="${productId}"]`);
+                    basePricePerUnit = productCard ? parseFloat(productCard.dataset.productPrice) : undefined;
                 }
 
                 if (basePricePerUnit !== undefined) {
@@ -379,21 +386,37 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // --- Category Filtering Logic ---
+let activeCategory = '#all-products'; // Keep track of the currently active category
+
 function filterProductsByCategory(categoryId) {
     const allProductCategories = document.querySelectorAll('.product-category');
     const heroBanner = document.querySelector('.hero-banner');
     const locationSection = document.querySelector('.our-location');
     const aboutUsSection = document.querySelector('.about-us-section');
 
+    // Update active category tracker
+    activeCategory = categoryId;
+
+    // Remove active class from all category links in header
+    document.querySelectorAll('.header-categories a').forEach(a => a.classList.remove('active'));
+    // Add active class to the corresponding header category link
+    document.querySelector(`.header-categories a[href="${categoryId}"]`).classList.add('active');
+
+
     // Hide all product categories initially
     allProductCategories.forEach(category => {
         category.classList.remove('active');
     });
 
+    // Hide all product cards in case some were shown by search
+    document.querySelectorAll('.product-card').forEach(card => card.classList.add('hidden'));
+
+
     // Handle visibility of hero banner and other sections
     if (categoryId === '#all-products') {
         allProductCategories.forEach(category => {
             category.classList.add('active'); // Show all categories
+            category.querySelectorAll('.product-card').forEach(card => card.classList.remove('hidden')); // Show all cards within them
         });
         if (heroBanner) heroBanner.style.display = 'block';
         if (locationSection) locationSection.style.display = 'block';
@@ -402,6 +425,7 @@ function filterProductsByCategory(categoryId) {
         const targetCategory = document.querySelector(categoryId);
         if (targetCategory) {
             targetCategory.classList.add('active'); // Show only the selected category
+            targetCategory.querySelectorAll('.product-card').forEach(card => card.classList.remove('hidden')); // Show all cards within it
         }
         // Hide hero banner and other sections when a specific category is selected
         if (heroBanner) heroBanner.style.display = 'none';
@@ -411,7 +435,72 @@ function filterProductsByCategory(categoryId) {
 }
 
 
-// Event listener for category navigation links
+// --- Search Functionality ---
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('search-input');
+    const productCards = document.querySelectorAll('.product-card');
+    const allProductCategories = document.querySelectorAll('.product-category');
+    const heroBanner = document.querySelector('.hero-banner');
+    const locationSection = document.querySelector('.our-location');
+    const aboutUsSection = document.querySelector('.about-us-section');
+
+    searchInput.addEventListener('keyup', function() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+
+        if (searchTerm.length > 0) {
+            // Temporarily show all product categories for search results
+            allProductCategories.forEach(category => {
+                category.classList.add('active');
+            });
+            // Hide hero banner and other sections during search
+            if (heroBanner) heroBanner.style.display = 'none';
+            if (locationSection) locationSection.style.display = 'none';
+            if (aboutUsSection) aboutUsSection.style.display = 'none';
+
+            productCards.forEach(card => {
+                const productName = card.dataset.productName ? card.dataset.productName.toLowerCase() : '';
+                const productCategory = card.dataset.category ? card.dataset.category.toLowerCase() : '';
+
+                if (productName.includes(searchTerm) || productCategory.includes(searchTerm)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // Remove active class from category links in header during search
+            document.querySelectorAll('.header-categories a').forEach(a => a.classList.remove('active'));
+
+        } else {
+            // If search bar is empty, revert to active category display
+            filterProductsByCategory(activeCategory); // Use the stored active category
+        }
+    });
+});
+
+
+// --- Header Hide/Show on Scroll ---
+let lastScrollY = 0;
+const header = document.querySelector('header');
+const scrollThreshold = 50; // Pixels to scroll down before header starts hiding
+
+window.addEventListener('scroll', () => {
+    const currentScrollY = window.scrollY;
+
+    // Scrolling down
+    if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+        header.classList.add('header-hidden');
+    }
+    // Scrolling up or at the very top
+    else if (currentScrollY < lastScrollY || currentScrollY < scrollThreshold) {
+        header.classList.remove('header-hidden');
+    }
+
+    lastScrollY = currentScrollY;
+});
+
+
+// --- Initial Load Logic ---
 document.addEventListener('DOMContentLoaded', () => {
     const categoryLinks = document.querySelectorAll('.header-categories a, .footer-category-link'); // Select all category links including footer
 
@@ -421,15 +510,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
                 event.preventDefault();
 
-                // Remove active class from all header category links
-                document.querySelectorAll('.header-categories a').forEach(a => a.classList.remove('active'));
-
-                // Add active class to the clicked link
-                event.target.classList.add('active');
-
                 // Get the target category ID from the href
                 const categoryId = event.target.getAttribute('href');
                 filterProductsByCategory(categoryId);
+
+                // Clear search input if a category is clicked
+                document.getElementById('search-input').value = '';
+
             }
             // For links not on the current page, allow default navigation
         });
@@ -438,25 +525,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial load: display all products or the specific category if linked directly
     if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
         const initialCategory = window.location.hash || '#all-products';
-        filterProductsByCategory(initialCategory);
-        // Set active class for the initial category
-        document.querySelectorAll('.header-categories a').forEach(a => {
-            if (a.getAttribute('href') === initialCategory) {
-                a.classList.add('active');
-            } else {
-                a.classList.remove('active');
-            }
-        });
+        filterProductsByCategory(initialCategory); // This also sets the active class
     }
 
     updateCartCount(); // Update cart count on all pages
-    if (document.body.classList.contains('checkout-page')) {
-        updateCartDisplay(); // Only update detailed cart on checkout page
-        updateCartTotals();  // Only update totals on checkout page
-    }
     // Add 'checkout-page' class to body if it's the checkout.html
     if (window.location.pathname.includes('checkout.html')) {
         document.body.classList.add('checkout-page');
+        updateCartDisplay(); // Only update detailed cart on checkout page
+        updateCartTotals();  // Only update totals on checkout page
     }
 });
 
