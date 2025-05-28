@@ -1,455 +1,480 @@
-// Function to decode JWT (for Google ID Token)
-function decodeJwtResponse(token) {
-    let base64Url = token.split('.')[1];
-    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-    return JSON.parse(jsonPayload);
+// --- Google Sign-In and User Management ---
+let userProfile = null; // Stores Google user profile information
+
+function handleCredentialResponse(response) {
+    // Decode the ID token to get user information
+    const responsePayload = jwt_decode(response.credential);
+    console.log("ID: " + responsePayload.sub);
+    console.log('Full Name: ' + responsePayload.name);
+    console.log('Email: ' + responsePayload.email);
+    console.log('Image URL: ' + responsePayload.picture);
+
+    userProfile = {
+        id: responsePayload.sub,
+        name: responsePayload.name,
+        email: responsePayload.email,
+        picture: responsePayload.picture
+    };
+
+    updateUserDisplay();
+    saveUserProfile(); // Save to local storage
 }
 
-// Google Sign-In Callback function (global scope for Google's API)
-window.handleCredentialResponse = (response) => {
-    if (response.credential) {
-        const decodedToken = decodeJwtResponse(response.credential);
-        console.log("Decoded Google Token:", decodedToken);
-
-        // Store user info in localStorage (for client-side persistence)
-        const user = {
-            fullName: decodedToken.name,
-            email: decodedToken.email,
-            // You can add more info like picture if needed: decodedToken.picture
-        };
-        localStorage.setItem('skEnterprisesGoogleUser', JSON.stringify(user));
-        localStorage.setItem('skEnterprisesGoogleUserEmail', user.email); // Store email for revoke
-        updateGoogleSignInUI(user);
-
-        // Pre-fill checkout form if on checkout page
-        if (document.querySelector('.checkout-page')) {
-            document.getElementById('full-name').value = user.fullName || '';
-            // If you added an email field to checkout form, uncomment:
-            // document.getElementById('email').value = user.email || '';
-        }
-    }
-};
-
-function updateGoogleSignInUI(user) {
-    const googleSignInButton = document.querySelector('.g_id_signin');
+function updateUserDisplay() {
+    const signInButton = document.querySelector('.g_id_signin');
     const signOutButton = document.getElementById('sign-out-btn');
-    const userDisplayNameIndex = document.getElementById('user-display-name');
+    const userDisplayName = document.getElementById('user-display-name');
     const userDisplayNameCheckout = document.getElementById('user-display-name-checkout'); // For checkout page
 
-    if (user) {
-        if (googleSignInButton) googleSignInButton.style.display = 'none';
+    if (userProfile) {
+        if (signInButton) signInButton.style.display = 'none';
         if (signOutButton) signOutButton.style.display = 'inline-block';
-        if (userDisplayNameIndex) userDisplayNameIndex.textContent = `Welcome, ${user.fullName.split(' ')[0]}!`;
-        if (userDisplayNameCheckout) userDisplayNameCheckout.textContent = `Welcome, ${user.fullName.split(' ')[0]}!`;
+        if (userDisplayName) userDisplayName.textContent = `Hello, ${userProfile.name.split(' ')[0]}!`;
+        if (userDisplayNameCheckout) userDisplayNameCheckout.textContent = `Logged in as: ${userProfile.name}`;
     } else {
-        if (googleSignInButton) googleSignInButton.style.display = 'block';
+        if (signInButton) signInButton.style.display = 'block';
         if (signOutButton) signOutButton.style.display = 'none';
-        if (userDisplayNameIndex) userDisplayNameIndex.textContent = '';
-        if (userDisplayNameCheckout) userDisplayNameCheckout.textContent = '';
+        if (userDisplayName) userDisplayName.textContent = '';
+        if (userDisplayNameCheckout) userDisplayNameCheckout.textContent = 'Not logged in';
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Check for existing Google user on page load
-    const storedGoogleUser = JSON.parse(localStorage.getItem('skEnterprisesGoogleUser'));
-    updateGoogleSignInUI(storedGoogleUser);
+function signOut() {
+    google.accounts.id.disableAutoSelect(); // Prevent automatic re-login
+    userProfile = null; // Clear user profile
+    localStorage.removeItem('userProfile'); // Remove from local storage
+    updateUserDisplay();
+    // Optional: Redirect or refresh the page after sign out
+    if (window.location.pathname.includes('checkout.html')) {
+        window.location.href = 'index.html'; // Go back to homepage if on checkout
+    }
+}
 
-    // Sign out functionality
+function saveUserProfile() {
+    if (userProfile) {
+        localStorage.setItem('userProfile', JSON.stringify(userProfile));
+    }
+}
+
+function loadUserProfile() {
+    const storedProfile = localStorage.getItem('userProfile');
+    if (storedProfile) {
+        userProfile = JSON.parse(storedProfile);
+        updateUserDisplay();
+    }
+}
+
+// Attach sign out listener
+document.addEventListener('DOMContentLoaded', () => {
     const signOutButton = document.getElementById('sign-out-btn');
     if (signOutButton) {
-        signOutButton.addEventListener('click', () => {
-            // Google's client-side sign-out
-            if (google.accounts.id) {
-                google.accounts.id.disableAutoSelect(); // Prevent automatic re-login
-                const userEmailToRevoke = localStorage.getItem('skEnterprisesGoogleUserEmail');
-                if (userEmailToRevoke) {
-                    google.accounts.id.revoke(userEmailToRevoke, (done) => {
-                        console.log('Google account revoked:', done);
-                        localStorage.removeItem('skEnterprisesGoogleUser');
-                        localStorage.removeItem('skEnterprisesGoogleUserEmail');
-                        updateGoogleSignInUI(null);
-                        // Optionally, clear form fields if on checkout
-                        if (document.querySelector('.checkout-page')) {
-                            document.getElementById('full-name').value = '';
-                            // document.getElementById('email').value = ''; // If you have an email field
-                        }
-                    });
-                } else {
-                    console.warn('No Google user email found for revoke.');
-                    localStorage.removeItem('skEnterprisesGoogleUser');
-                    localStorage.removeItem('skEnterprisesGoogleUserEmail');
-                    updateGoogleSignInUI(null);
-                     if (document.querySelector('.checkout-page')) {
-                        document.getElementById('full-name').value = '';
-                        // document.getElementById('email').value = '';
-                    }
-                }
-            } else {
-                // Fallback if Google API not fully loaded or not applicable
-                localStorage.removeItem('skEnterprisesGoogleUser');
-                localStorage.removeItem('skEnterprisesGoogleUserEmail');
-                updateGoogleSignInUI(null);
-                 if (document.querySelector('.checkout-page')) {
-                    document.getElementById('full-name').value = '';
-                    // document.getElementById('email').value = '';
-                }
-            }
-        });
+        signOutButton.addEventListener('click', signOut);
     }
+    loadUserProfile(); // Load user profile on page load
+});
 
-    // --- Global Cart Logic (Simulated with localStorage) ---
-    let cart = JSON.parse(localStorage.getItem('skEnterprisesCart')) || [];
-    const cartCountSpan = document.getElementById('cart-count');
+// --- Cart Management ---
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+const DELIVERY_FEE = 50; // Fixed delivery fee
 
-    function updateCartCount() {
+function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    updateCartDisplay(); // Call this to refresh cart on checkout page
+    updateCartTotals();  // Call this to refresh totals
+}
+
+function updateCartCount() {
+    const cartCountElement = document.getElementById('cart-count');
+    if (cartCountElement) {
         const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        if (cartCountSpan) {
-            cartCountSpan.textContent = totalItems;
-            // Add a little animation when cart count updates (already in CSS bounceIn)
+        cartCountElement.textContent = totalItems;
+        // Add a bounce effect when count changes
+        cartCountElement.classList.remove('bounce-animation'); // Reset animation
+        void cartCountElement.offsetWidth; // Trigger reflow
+        cartCountElement.classList.add('bounce-animation');
+    }
+}
+
+// Product Quantity Logic (for main page product cards)
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('increase-product-quantity')) {
+        const productCard = event.target.closest('.product-card');
+        const quantityDisplay = productCard.querySelector('.product-quantity-display');
+        let currentQuantity = parseInt(quantityDisplay.textContent);
+        quantityDisplay.textContent = currentQuantity + 1;
+    } else if (event.target.classList.contains('decrease-product-quantity')) {
+        const productCard = event.target.closest('.product-card');
+        const quantityDisplay = productCard.querySelector('.product-quantity-display');
+        let currentQuantity = parseInt(quantityDisplay.textContent);
+        if (currentQuantity > 1) {
+            quantityDisplay.textContent = currentQuantity - 1;
         }
     }
+});
 
-    function saveCart() {
-        localStorage.setItem('skEnterprisesCart', JSON.stringify(cart));
-        updateCartCount();
-    }
 
-    // Updated addProductToCart to accept quantity directly
-    function addProductToCart(productId, productName, productPrice, quantityToAdd, unitName = null, cartItemId = null) {
-        const productCard = document.querySelector(`.product-card[data-product-id="${productId}"]`);
-        let imageUrl = 'https://via.placeholder.com/80x80?text=Product';
-        if (productCard) {
-            const imgElement = productCard.querySelector('img');
-            if (imgElement) {
-                imageUrl = imgElement.src;
-            }
+// Add to Cart Functionality
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('add-to-cart-btn')) {
+        const button = event.target;
+        const productCard = button.closest('.product-card');
+        const productId = productCard.dataset.productId;
+        const productName = productCard.dataset.productName;
+        const productImage = productCard.querySelector('img').src;
+        const category = productCard.dataset.category;
+
+        let quantity = 1; // Default quantity
+
+        // Check if it's a fixed price product or one with a dropdown
+        const quantitySelector = productCard.querySelector('.product-quantity-selector');
+        const quantityDisplay = productCard.querySelector('.product-quantity-display'); // For +/- buttons
+
+        let basePrice;
+        let selectedUnit = ''; // To store '1kg', '500ml' etc.
+
+        if (quantitySelector) {
+            // For products with dropdown (e.g., oil, daal)
+            quantity = parseInt(quantitySelector.value); // This is the multiplier
+            basePrice = parseFloat(productCard.dataset.productBasePrice); // Price per 'unit' of multiplier
+            selectedUnit = quantitySelector.options[quantitySelector.selectedIndex].dataset.unitName;
+        } else if (quantityDisplay) {
+            // For products with +/- buttons (fixed price per item)
+            quantity = parseInt(quantityDisplay.textContent);
+            basePrice = parseFloat(productCard.dataset.productPrice); // Use productPrice for fixed items
+        } else {
+            // Fallback for simple fixed price items if no specific controls are found (shouldn't happen with current HTML)
+            basePrice = parseFloat(productCard.dataset.productPrice);
         }
 
-        const finalCartItemId = cartItemId || productId;
+        const price = basePrice * quantity; // Calculate total price for the item/unit chosen
 
-        const existingItemIndex = cart.findIndex(item => item.cartItemId === finalCartItemId);
+
+        const existingItemIndex = cart.findIndex(item => item.id === productId && item.unit === selectedUnit);
 
         if (existingItemIndex > -1) {
-            cart[existingItemIndex].quantity += quantityToAdd;
+            cart[existingItemIndex].quantity += quantity;
+            cart[existingItemIndex].price += price; // Add to existing total price
         } else {
             cart.push({
                 id: productId,
-                cartItemId: finalCartItemId,
-                name: unitName ? `${productName} (${unitName})` : productName,
-                price: productPrice,
-                quantity: quantityToAdd, // Use quantityToAdd here
-                image: imageUrl
+                name: productName,
+                price: price, // This is the price for the initial quantity/unit added
+                quantity: quantity, // This is the initial quantity added
+                image: productImage,
+                category: category,
+                unit: selectedUnit // Store the selected unit
             });
         }
         saveCart();
-        const cartIcon = document.querySelector('.cart-icon a');
-        if (cartIcon) {
-            cartIcon.classList.add('flash');
-            setTimeout(() => {
-                cartIcon.classList.remove('flash');
-            }, 300);
-        }
-        alert(`${quantityToAdd} x ${unitName ? `${productName} (${unitName})` : productName} added to cart!`);
+
+        // Visual feedback
+        button.textContent = 'Added!';
+        button.style.backgroundColor = 'var(--accent-color)';
+        setTimeout(() => {
+            button.textContent = 'Add to Cart';
+            button.style.backgroundColor = 'var(--accent-color)'; // Reset to original color
+        }, 1000);
+    }
+});
+
+// Update price based on dropdown selection (for mass products)
+document.addEventListener('change', function(event) {
+    if (event.target.classList.contains('product-quantity-selector')) {
+        const selectElement = event.target;
+        const productCard = selectElement.closest('.product-card');
+        const basePrice = parseFloat(productCard.dataset.productBasePrice);
+        const selectedValue = parseInt(selectElement.value);
+        const newPrice = basePrice * selectedValue;
+
+        productCard.querySelector('.current-price').textContent = newPrice;
+    }
+});
+
+
+// --- Checkout Page Logic ---
+function updateCartDisplay() {
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const emptyCartMessage = document.getElementById('empty-cart-message');
+
+    if (!cartItemsContainer) return; // Exit if not on checkout page
+
+    cartItemsContainer.innerHTML = ''; // Clear previous items
+
+    if (cart.length === 0) {
+        emptyCartMessage.style.display = 'block';
+    } else {
+        emptyCartMessage.style.display = 'none';
+        cart.forEach(item => {
+            const cartItemDiv = document.createElement('div');
+            cartItemDiv.classList.add('cart-item');
+            cartItemDiv.dataset.productId = item.id;
+            cartItemDiv.dataset.productUnit = item.unit; // Store unit for uniqueness
+
+            const unitDisplay = item.unit ? ` (${item.unit})` : '';
+
+            cartItemDiv.innerHTML = `
+                <div class="cart-item-details">
+                    <img src="${item.image}" alt="${item.name}">
+                    <h4>${item.name}${unitDisplay}</h4>
+                </div>
+                <div class="cart-item-controls">
+                    <button class="decrease-quantity" data-id="${item.id}" data-unit="${item.unit}">-</button>
+                    <span>${item.quantity}</span>
+                    <button class="increase-quantity" data-id="${item.id}" data-unit="${item.unit}">+</button>
+                </div>
+                <div class="cart-item-price">Rs. ${item.price}</div>
+                <button class="remove-item" data-id="${item.id}" data-unit="${item.unit}"><i class="fas fa-trash-alt"></i></button>
+            `;
+            cartItemsContainer.appendChild(cartItemDiv);
+        });
+    }
+}
+
+function updateCartTotals() {
+    const cartSubtotalElement = document.getElementById('cart-subtotal');
+    const deliveryFeeElement = document.getElementById('delivery-fee');
+    const cartTotalElement = document.getElementById('cart-total');
+    const placeOrderBtn = document.getElementById('place-order-btn');
+
+    if (!cartSubtotalElement) return; // Exit if not on checkout page
+
+    let subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+    let total = subtotal + DELIVERY_FEE;
+
+    cartSubtotalElement.textContent = subtotal;
+    deliveryFeeElement.textContent = DELIVERY_FEE;
+    cartTotalElement.textContent = total;
+
+    // Update hidden form fields for Formspree
+    if (document.getElementById('form-cart-items')) {
+        document.getElementById('form-cart-items').value = JSON.stringify(cart.map(item => ({
+            name: item.name + (item.unit ? ` (${item.unit})` : ''),
+            quantity: item.quantity,
+            price: item.price
+        })));
+        document.getElementById('form-order-subtotal').value = subtotal;
+        document.getElementById('form-order-delivery-fee').value = DELIVERY_FEE;
+        document.getElementById('form-order-total').value = total;
+        document.getElementById('form-order-date').value = new Date().toLocaleString();
     }
 
-    // --- Index Page Logic ---
-    if (document.querySelector('.hero-banner')) { // A way to detect if we are on index.html
-        updateCartCount();
-
-        // Function to update displayed price on product card based on selector
-        function updateProductCardPrice(selectElement) {
-            const productCard = selectElement.closest('.product-card');
-            const basePrice = parseFloat(productCard.dataset.productBasePrice);
-            const selectedOption = selectElement.options[selectElement.selectedIndex];
-            const multiplier = parseFloat(selectedOption.value);
-            const currentPriceSpan = productCard.querySelector('.current-price');
-            currentPriceSpan.textContent = (basePrice * multiplier).toFixed(2);
+    // Enable/disable place order button
+    if (placeOrderBtn) {
+        placeOrderBtn.disabled = cart.length === 0;
+        if (cart.length === 0) {
+            placeOrderBtn.textContent = 'Cart is Empty';
+        } else {
+            placeOrderBtn.textContent = 'Place Order';
         }
+    }
+}
 
-        // Initialize prices and add change listeners for quantity selectors (dropdowns)
-        document.querySelectorAll('.product-quantity-selector').forEach(select => {
-            updateProductCardPrice(select); // Set initial price
-            select.addEventListener('change', (event) => {
-                updateProductCardPrice(event.target);
-                // Reset product quantity display to 1 when dropdown changes
-                const productCard = event.target.closest('.product-card');
-                const quantityDisplay = productCard.querySelector('.product-quantity-display');
-                if (quantityDisplay) {
-                    quantityDisplay.textContent = '1';
-                }
-            });
-        });
+// Event delegation for cart item controls on checkout page
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('increase-quantity')) {
+        const productId = event.target.dataset.id;
+        const productUnit = event.target.dataset.unit || '';
+        const itemIndex = cart.findIndex(item => item.id === productId && (item.unit || '') === productUnit);
 
-        // Add event listeners for +/- buttons on product cards
-        document.querySelectorAll('.product-card').forEach(productCard => {
-            const increaseBtn = productCard.querySelector('.increase-product-quantity');
-            const decreaseBtn = productCard.querySelector('.decrease-product-quantity');
-            const quantityDisplay = productCard.querySelector('.product-quantity-display');
+        if (itemIndex > -1) {
+            const item = cart[itemIndex];
+            let basePricePerUnit;
 
-            if (increaseBtn && decreaseBtn && quantityDisplay) {
-                increaseBtn.addEventListener('click', () => {
-                    let currentQuantity = parseInt(quantityDisplay.textContent);
-                    quantityDisplay.textContent = currentQuantity + 1;
-                });
-
-                decreaseBtn.addEventListener('click', () => {
-                    let currentQuantity = parseInt(quantityDisplay.textContent);
-                    if (currentQuantity > 1) {
-                        quantityDisplay.textContent = currentQuantity - 1;
-                    }
-                });
+            // Get base price for calculation based on unit or fixed item
+            if (item.unit) { // It's a mass product with a unit
+                basePricePerUnit = item.price / item.quantity;
+            } else { // It's a fixed item
+                basePricePerUnit = parseFloat(document.querySelector(`.product-card[data-product-id="${productId}"]`).dataset.productPrice);
             }
-        });
 
-
-        const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
-        addToCartButtons.forEach(button => {
-            button.addEventListener('click', (event) => {
-                const productCard = event.target.closest('.product-card');
-                const productId = productCard.dataset.productId;
-                const productName = productCard.dataset.productName;
-                const imgElement = productCard.querySelector('img');
-                const imageUrl = imgElement ? imgElement.src : 'https://via.placeholder.com/80x80?text=Product';
-
-                // Get quantity from the new +/- controls
-                const desiredQuantityToAdd = parseInt(productCard.querySelector('.product-quantity-display').textContent);
-
-
-                const quantitySelector = productCard.querySelector('.product-quantity-selector');
-                let finalPrice;
-                let unitName = null;
-                let cartItemId = productId; // Default cart item ID for fixed products
-
-                if (quantitySelector) {
-                    // Product has a quantity scaler (dropdown)
-                    const basePrice = parseFloat(productCard.dataset.productBasePrice);
-                    const selectedOption = quantitySelector.options[quantitySelector.selectedIndex];
-                    const multiplier = parseFloat(selectedOption.value);
-                    unitName = selectedOption.dataset.unitName;
-                    finalPrice = basePrice * multiplier;
-                    cartItemId = `${productId}_${unitName}`; // Unique ID for scaled product
-                } else {
-                    // Product is a fixed unit, price is directly on the card
-                    finalPrice = parseFloat(productCard.dataset.productPrice);
-                    // For fixed products, the name is just the productName
-                    // and cartItemId is just the productId
-                }
-
-                addProductToCart(productId, productName, finalPrice, desiredQuantityToAdd, unitName, cartItemId);
-
-                // Reset the quantity display on the product card back to 1 after adding to cart
-                const quantityDisplay = productCard.querySelector('.product-quantity-display');
-                if (quantityDisplay) {
-                    quantityDisplay.textContent = '1';
-                }
-            });
-        });
-
-        const shopNowBtn = document.querySelector('.shop-now-btn');
-        if (shopNowBtn) {
-            shopNowBtn.addEventListener('click', () => {
-                const firstCategory = document.querySelector('.product-category');
-                if (firstCategory) {
-                    firstCategory.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        }
-
-        // --- Search Functionality ---
-        const searchInput = document.getElementById('search-input');
-        const productCards = document.querySelectorAll('.product-card');
-
-        if (searchInput) {
-            searchInput.addEventListener('keyup', (event) => {
-                const searchTerm = event.target.value.toLowerCase();
-
-                productCards.forEach(card => {
-                    const productName = card.querySelector('h3').textContent.toLowerCase();
-                    const productCategory = card.dataset.category.toLowerCase();
-
-                    if (productName.includes(searchTerm) || productCategory.includes(searchTerm)) {
-                        card.style.display = 'block'; // Show card
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    } else {
-                        card.style.display = 'none'; // Hide card
-                        card.style.opacity = '0';
-                        card.style.transform = 'translateY(20px)';
-                    }
-                });
-
-                // Optionally, hide empty categories if all products are hidden
-                document.querySelectorAll('.product-category').forEach(categorySection => {
-                    const visibleProducts = categorySection.querySelectorAll('.product-card[style*="display: block"]');
-                    if (visibleProducts.length === 0 && searchTerm !== '') {
-                        categorySection.style.display = 'none';
-                    } else {
-                        categorySection.style.display = 'block';
-                    }
-                });
-            });
-        }
-    }
-
-
-    // --- Checkout Page Logic ---
-    if (document.querySelector('.checkout-page')) { // A way to detect if we are on checkout.html
-        const cartItemsContainer = document.getElementById('cart-items-container');
-        const emptyCartMessage = document.getElementById('empty-cart-message');
-        const cartSubtotalSpan = document.getElementById('cart-subtotal');
-        const deliveryFeeSpan = document.getElementById('delivery-fee');
-        const cartTotalSpan = document.getElementById('cart-total');
-        const placeOrderBtn = document.getElementById('place-order-btn');
-        const deliveryForm = document.getElementById('delivery-form');
-
-        const DELIVERY_FEE = 50; // Example delivery fee
-
-        function calculateTotals() {
-            let subtotal = 0;
-            cart.forEach(item => {
-                subtotal += item.price * item.quantity;
-            });
-            const total = subtotal + DELIVERY_FEE;
-
-            cartSubtotalSpan.textContent = subtotal.toFixed(2);
-            deliveryFeeSpan.textContent = DELIVERY_FEE.toFixed(2);
-            cartTotalSpan.textContent = total.toFixed(2);
-
-            return { subtotal, total, deliveryFee: DELIVERY_FEE };
-        }
-
-        function renderCartItems() {
-            cartItemsContainer.innerHTML = ''; // Clear previous items
-
-            if (cart.length === 0) {
-                emptyCartMessage.style.display = 'block';
-                placeOrderBtn.disabled = true; // Disable order button if cart is empty
+            if (basePricePerUnit !== undefined) {
+                cart[itemIndex].quantity++;
+                cart[itemIndex].price += basePricePerUnit;
+                saveCart();
             } else {
-                emptyCartMessage.style.display = 'none';
-                placeOrderBtn.disabled = false;
-
-                cart.forEach(item => {
-                    const itemElement = document.createElement('div');
-                    itemElement.classList.add('cart-item');
-                    itemElement.innerHTML = `
-                        <div class="cart-item-details">
-                            <img src="${item.image}" alt="${item.name}">
-                            <h4>${item.name}</h4>
-                        </div>
-                        <div class="cart-item-controls">
-                            <button class="decrease-quantity" data-cart-item-id="${item.cartItemId}">-</button>
-                            <span>${item.quantity}</span>
-                            <button class="increase-quantity" data-cart-item-id="${item.cartItemId}">+</button>
-                        </div>
-                        <div class="cart-item-price">Rs. ${(item.price * item.quantity).toFixed(2)}</div>
-                    `;
-                    cartItemsContainer.appendChild(itemElement);
-                });
+                console.warn(`Could not find base price for product ${productId} with unit ${productUnit}`);
             }
-
-            calculateTotals();
-
-            // Add event listeners for quantity buttons after rendering
-            document.querySelectorAll('.increase-quantity').forEach(button => {
-                button.addEventListener('click', (event) => {
-                    const cartItemId = event.target.dataset.cartItemId;
-                    const itemIndex = cart.findIndex(item => item.cartItemId === cartItemId);
-                    if (itemIndex > -1) {
-                        cart[itemIndex].quantity++;
-                        saveCart();
-                        renderCartItems();
-                    }
-                });
-            });
-
-            document.querySelectorAll('.decrease-quantity').forEach(button => {
-                button.addEventListener('click', (event) => {
-                    const cartItemId = event.target.dataset.cartItemId;
-                    const itemIndex = cart.findIndex(item => item.cartItemId === cartItemId);
-                    if (itemIndex > -1) {
-                        if (cart[itemIndex].quantity > 1) {
-                            cart[itemIndex].quantity--;
-                        } else {
-                            cart.splice(itemIndex, 1); // Remove item if quantity is 1
-                        }
-                        saveCart();
-                        renderCartItems();
-                    }
-                });
-            });
         }
+    } else if (event.target.classList.contains('decrease-quantity')) {
+        const productId = event.target.dataset.id;
+        const productUnit = event.target.dataset.unit || '';
+        const itemIndex = cart.findIndex(item => item.id === productId && (item.unit || '') === productUnit);
 
-        renderCartItems(); // Initial render of cart items
+        if (itemIndex > -1) {
+            const item = cart[itemIndex];
+            if (item.quantity > 1) {
+                let basePricePerUnit;
+                if (item.unit) {
+                    basePricePerUnit = item.price / item.quantity; // Price of one unit
+                } else {
+                    basePricePerUnit = parseFloat(document.querySelector(`.product-card[data-product-id="${productId}"]`).dataset.productPrice);
+                }
 
-        // Pre-fill form if Google user exists
-        const user = JSON.parse(localStorage.getItem('skEnterprisesGoogleUser'));
-        if (user) {
-            document.getElementById('full-name').value = user.fullName || '';
-            // If you added an email field to checkout form:
-            // const emailField = document.getElementById('email');
-            // if (emailField) emailField.value = user.email || '';
+                if (basePricePerUnit !== undefined) {
+                    cart[itemIndex].quantity--;
+                    cart[itemIndex].price -= basePricePerUnit;
+                    saveCart();
+                }
+            } else {
+                // If quantity is 1, remove item from cart
+                cart.splice(itemIndex, 1);
+                saveCart();
+            }
         }
+    } else if (event.target.classList.contains('remove-item') || event.target.closest('.remove-item')) {
+        const button = event.target.closest('.remove-item');
+        const productId = button.dataset.id;
+        const productUnit = button.dataset.unit || '';
+        const itemIndex = cart.findIndex(item => item.id === productId && (item.unit || '') === productUnit);
+
+        if (itemIndex > -1) {
+            cart.splice(itemIndex, 1);
+            saveCart();
+        }
+    }
+});
 
 
-        // --- Formspree Integration ---
-        deliveryForm.addEventListener('submit', async (event) => {
-            event.preventDefault(); // Prevent default browser submission
+// --- Form Submission (Formspree) ---
+document.addEventListener('DOMContentLoaded', function() {
+    const deliveryForm = document.getElementById('delivery-form');
+    if (deliveryForm) {
+        deliveryForm.addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
 
             if (cart.length === 0) {
                 alert('Your cart is empty. Please add items before placing an order.');
                 return;
             }
 
+            const placeOrderBtn = document.getElementById('place-order-btn');
             placeOrderBtn.disabled = true; // Disable button to prevent multiple submissions
             placeOrderBtn.textContent = 'Placing Order...';
 
-            const totals = calculateTotals();
-            const orderItemsString = cart.map(item => `${item.name} (Qty: ${item.quantity}, Price: Rs. ${item.price})`).join('\n');
-
-            // Set hidden input values for Formspree
-            document.getElementById('form-cart-items').value = orderItemsString;
-            document.getElementById('form-order-subtotal').value = totals.subtotal.toFixed(2);
-            document.getElementById('form-order-delivery-fee').value = totals.deliveryFee.toFixed(2);
-            document.getElementById('form-order-total').value = totals.total.toFixed(2);
-            document.getElementById('form-order-date').value = new Date().toLocaleString();
-
-            // Manually construct FormData for Formspree
             const formData = new FormData(deliveryForm);
-
-            try {
-                const response = await fetch(deliveryForm.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    alert('Order Placed Successfully! We will contact you soon.');
-                    // Optionally clear the cart after successful order placement
-                    cart = [];
-                    saveCart();
-                    renderCartItems(); // Update cart display
-                    deliveryForm.reset(); // Clear form fields
-                } else {
-                    const data = await response.json();
-                    if (Object.hasOwnProperty.call(data, 'errors')) {
-                        alert(`Error: ${data["errors"].map(error => error["message"]).join(", ")}`);
-                    } else {
-                        alert('Oops! There was a problem placing your order.');
-                    }
+            const response = await fetch(deliveryForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
                 }
-            } catch (error) {
-                console.error('Network or submission error:', error);
-                alert('Oops! There was a network error. Please try again.');
-            } finally {
-                placeOrderBtn.disabled = false;
+            });
+
+            if (response.ok) {
+                alert('Order placed successfully! Thank you for shopping with SK Enterprises.');
+                cart = []; // Clear cart after successful order
+                saveCart(); // Update local storage and UI
+                deliveryForm.reset(); // Clear form fields
+                // Optional: Redirect to a confirmation page
+                // window.location.href = 'order-confirmation.html';
+            } else {
+                alert('There was an error placing your order. Please try again.');
+                placeOrderBtn.disabled = false; // Re-enable button
                 placeOrderBtn.textContent = 'Place Order';
             }
         });
     }
 });
+
+
+// --- Category Filtering Logic ---
+function filterProductsByCategory(categoryId) {
+    const allProductCategories = document.querySelectorAll('.product-category');
+    const heroBanner = document.querySelector('.hero-banner');
+    const locationSection = document.querySelector('.our-location');
+    const aboutUsSection = document.querySelector('.about-us-section');
+
+    // Hide all product categories initially
+    allProductCategories.forEach(category => {
+        category.classList.remove('active');
+    });
+
+    // Handle visibility of hero banner and other sections
+    if (categoryId === '#all-products') {
+        allProductCategories.forEach(category => {
+            category.classList.add('active'); // Show all categories
+        });
+        if (heroBanner) heroBanner.style.display = 'block';
+        if (locationSection) locationSection.style.display = 'block';
+        if (aboutUsSection) aboutUsSection.style.display = 'block';
+    } else if (categoryId) {
+        const targetCategory = document.querySelector(categoryId);
+        if (targetCategory) {
+            targetCategory.classList.add('active'); // Show only the selected category
+        }
+        // Hide hero banner and other sections when a specific category is selected
+        if (heroBanner) heroBanner.style.display = 'none';
+        if (locationSection) locationSection.style.display = 'none';
+        if (aboutUsSection) aboutUsSection.style.display = 'none';
+    }
+}
+
+
+// Event listener for category navigation links
+document.addEventListener('DOMContentLoaded', () => {
+    const categoryLinks = document.querySelectorAll('.header-categories a, .footer-category-link'); // Select all category links including footer
+
+    categoryLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+            // Prevent default anchor link behavior IF on the index page
+            if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
+                event.preventDefault();
+
+                // Remove active class from all header category links
+                document.querySelectorAll('.header-categories a').forEach(a => a.classList.remove('active'));
+
+                // Add active class to the clicked link
+                event.target.classList.add('active');
+
+                // Get the target category ID from the href
+                const categoryId = event.target.getAttribute('href');
+                filterProductsByCategory(categoryId);
+            }
+            // For links not on the current page, allow default navigation
+        });
+    });
+
+    // Initial load: display all products or the specific category if linked directly
+    if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
+        const initialCategory = window.location.hash || '#all-products';
+        filterProductsByCategory(initialCategory);
+        // Set active class for the initial category
+        document.querySelectorAll('.header-categories a').forEach(a => {
+            if (a.getAttribute('href') === initialCategory) {
+                a.classList.add('active');
+            } else {
+                a.classList.remove('active');
+            }
+        });
+    }
+
+    updateCartCount(); // Update cart count on all pages
+    if (document.body.classList.contains('checkout-page')) {
+        updateCartDisplay(); // Only update detailed cart on checkout page
+        updateCartTotals();  // Only update totals on checkout page
+    }
+    // Add 'checkout-page' class to body if it's the checkout.html
+    if (window.location.pathname.includes('checkout.html')) {
+        document.body.classList.add('checkout-page');
+    }
+});
+
+
+// --- JWT Decode Library (required for Google Sign-In) ---
+// This is a minimal implementation of jwt-decode.
+// In a real project, you would include the full library from a CDN or npm.
+// For demonstration, here's a simple version.
+function jwt_decode(token) {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonPayload);
+    } catch (e) {
+        console.error("Error decoding JWT:", e);
+        return {};
+    }
+}

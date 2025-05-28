@@ -59,13 +59,67 @@ header {
     z-index: 1000;
 }
 
+/* NEW: Header Categories Navigation (now at the top) */
+.header-categories {
+    padding: 10px 0; /* Adjusted padding */
+    border-bottom: 1px solid var(--border-color); /* Separator line below categories */
+    display: flex;
+    justify-content: center;
+}
+.header-categories ul {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping by default, enable scroll for mobile */
+    justify-content: center;
+    width: 100%;
+    overflow-x: auto; /* Enable horizontal scrolling for categories */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    padding-bottom: 5px; /* Space for potential scrollbar */
+}
+
+/* Hide scrollbar for categories on some browsers */
+.header-categories ul::-webkit-scrollbar {
+    display: none;
+}
+.header-categories ul {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.header-categories ul li {
+    flex-shrink: 0; /* Prevent items from shrinking */
+    margin: 0 15px; /* Adjust spacing between category links */
+}
+
+.header-categories ul li a {
+    color: var(--text-color);
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 8px 15px;
+    border-radius: 20px;
+    white-space: nowrap; /* Keep text on one line */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.header-categories ul li a:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+/* Active Category Link Styling */
+.header-categories ul li a.active {
+    background-color: var(--primary-color);
+    color: var(--white);
+    box-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
+}
+
+
 /* Header Top Row (Logo, Search, Cart, User, About Us) */
 .header-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap; /* Allow items to wrap on smaller screens */
-    margin-bottom: 10px; /* Space between top row and categories nav */
+    margin-top: 10px; /* Space between categories nav and top row */
 }
 
 .logo-and-about {
@@ -169,6 +223,9 @@ header {
     min-width: 18px;
     text-align: center;
     transform-origin: center;
+}
+/* Bounce Animation for Cart Count */
+#cart-count.bounce-animation {
     animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 @keyframes bounceIn {
@@ -197,54 +254,6 @@ header {
     color: var(--text-color);
     font-size: 0.95rem;
     padding-left: 5px;
-}
-
-/* Header Categories Navigation (new position and styling) */
-.header-categories {
-    padding-top: 10px;
-    border-top: 1px solid var(--border-color); /* Separator line */
-    display: flex; /* Ensure it takes full width */
-    justify-content: center; /* Center categories */
-}
-.header-categories ul {
-    display: flex;
-    flex-wrap: nowrap; /* Prevent wrapping by default, enable scroll for mobile */
-    justify-content: center;
-    width: 100%; /* Ensure ul takes full width of its container */
-    overflow-x: auto; /* Enable horizontal scrolling for categories */
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-    padding-bottom: 5px; /* Space for potential scrollbar */
-}
-
-/* Hide scrollbar for categories on some browsers */
-.header-categories ul::-webkit-scrollbar {
-    display: none;
-}
-.header-categories ul {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
-
-
-.header-categories ul li {
-    flex-shrink: 0; /* Prevent items from shrinking */
-    margin: 0 15px; /* Adjust spacing between category links */
-}
-
-.header-categories ul li a {
-    color: var(--text-color);
-    font-weight: 700; /* Make text bolder */
-    font-size: 1.1rem; /* Make text bigger */
-    padding: 8px 15px; /* Add more padding for a larger clickable area */
-    border-radius: 20px;
-    white-space: nowrap; /* Keep text on one line */
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-}
-
-.header-categories ul li a:hover {
-    background-color: var(--primary-color);
-    color: var(--white);
-    transform: translateY(-2px);
 }
 
 
@@ -316,6 +325,14 @@ header {
 /* Product Categories */
 .product-category {
     margin: 40px 0;
+    /* NEW: Hidden by default, shown by JS */
+    display: none;
+    opacity: 0; /* Start with opacity 0 for fade-in effect */
+    transition: opacity 0.5s ease-out; /* Smooth fade in */
+}
+.product-category.active {
+    display: block;
+    opacity: 1; /* Fade in when active */
 }
 
 .product-category h2 {
@@ -324,11 +341,7 @@ header {
     text-align: center;
     color: var(--text-color);
     position: relative;
-    animation: slideInLeft 0.8s ease-out;
-}
-@keyframes slideInLeft {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
+    /* Removed animation here as visibility is now controlled by JS display property */
 }
 
 .product-category h2::after {
@@ -855,6 +868,7 @@ footer {
         flex-direction: column; /* Stack logo/about and icons row */
         align-items: center;
         text-align: center;
+        margin-top: 15px; /* Adjust spacing from categories */
     }
     .logo-and-about {
         margin-right: 0;
@@ -885,7 +899,7 @@ footer {
     }
     .header-categories {
         padding-top: 10px;
-        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
         justify-content: center;
     }
     .header-categories ul {
