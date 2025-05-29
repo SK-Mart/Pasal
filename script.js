@@ -158,8 +158,6 @@ function addToCart(product) {
     );
     if (existingItem) {
         existingItem.quantity += product.quantity;
-        // The price_per_unit is already stored, so no need to adjust it here.
-        // Total price for the item will be calculated dynamically.
     } else {
         cart.push(product);
     }
@@ -207,14 +205,11 @@ function updateCartDisplay() {
     if (emptyCartMessage) emptyCartMessage.style.display = 'none';
 
     cart.forEach(item => {
-        // Ensure price_per_unit and quantity are numbers
         const pricePerUnit = parseFloat(item.price_per_unit) || 0;
         const quantity = parseInt(item.quantity) || 0;
-
         const totalItemPrice = pricePerUnit * quantity;
         const unitDisplay = item.unitName ? ` (${item.unitName})` : '';
 
-        // FIXED: Create the cart item element properly
         const cartItem = document.createElement('div');
         cartItem.className = 'cart-item';
 
@@ -233,7 +228,7 @@ function updateCartDisplay() {
         `;
         cartItemsContainer.appendChild(cartItem);
 
-        // Attach event listeners using delegation or direct attachment
+        // Attach event listeners
         const increaseBtn = cartItem.querySelector('.increase-cart-quantity');
         const decreaseBtn = cartItem.querySelector('.decrease-cart-quantity');
         const removeBtn = cartItem.querySelector('.remove-item');
@@ -288,7 +283,6 @@ function updateCartTotals() {
     if (totalElement) totalElement.textContent = total.toFixed(2);
 
     if (placeOrderButton) {
-        // Disable button if cart is empty OR user is not logged in
         placeOrderButton.disabled = cart.length === 0 || !userProfile;
         if (cart.length === 0) {
             placeOrderButton.textContent = 'Cart is Empty';
@@ -352,7 +346,6 @@ function setupCategoryNavigation() {
                 }
             });
 
-            // Hide/show product cards within visible categories
             document.querySelectorAll('.product-card').forEach(card => {
                 const cardCategory = card.closest('.product-category');
                 if (cardCategory && cardCategory.classList.contains('active')) {
@@ -367,7 +360,7 @@ function setupCategoryNavigation() {
                 if (targetElement) {
                     const headerOffset = document.querySelector('header')?.offsetHeight || 0;
                     window.scrollTo({
-                        top: targetElement.offsetTop - headerOffset - 20, // Add some padding
+                        top: targetElement.offsetTop - headerOffset - 20,
                         behavior: 'smooth'
                     });
                 }
@@ -379,7 +372,6 @@ function setupCategoryNavigation() {
         });
     });
 
-    // Event listeners for logo and "Shop Now" button to show all products
     const logoLink = document.querySelector('.logo a');
     const shopNowButton = document.querySelector('.shop-now-btn');
     if (logoLink) {
@@ -406,22 +398,19 @@ function setupSearch() {
         return;
     }
 
-    // Toggle search input visibility
     searchIcon.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent click from triggering document click
+        e.stopPropagation();
         const isActive = searchInput.classList.toggle('active');
         searchIcon.classList.toggle('active');
         if (isActive) {
             searchInput.focus();
         } else {
-            // If search input is closed and empty, show all products
             if (!searchInput.value) {
                 showAllProducts();
             }
         }
     });
 
-    // Close search input when clicking outside
     document.addEventListener('click', (e) => {
         if (!searchContainer.contains(e.target)) {
             searchInput.classList.remove('active');
@@ -432,7 +421,6 @@ function setupSearch() {
         }
     });
 
-    // Prevent closing when clicking input itself
     searchInput.addEventListener('click', (e) => {
         e.stopPropagation();
     });
@@ -443,10 +431,7 @@ function setupSearch() {
         const productCategories = document.querySelectorAll('.product-category');
         const navLinks = document.querySelectorAll('.header-categories ul li a');
 
-        // Remove active class from category links during search
         navLinks.forEach(link => link.classList.remove('active'));
-
-        // Reset all categories and cards visibility initially for search
         productCategories.forEach(category => {
             category.classList.remove('active');
         });
@@ -454,7 +439,6 @@ function setupSearch() {
             card.classList.add('hidden');
         });
 
-        // Show matching products and their categories
         if (query) {
             let foundMatch = false;
             productCards.forEach(card => {
@@ -463,22 +447,16 @@ function setupSearch() {
                     card.classList.remove('hidden');
                     const category = card.closest('.product-category');
                     if (category) {
-                        category.classList.add('active'); // Show category if it contains a matching product
+                        category.classList.add('active');
                     }
                     foundMatch = true;
                 }
             });
-            // If no match, might want to show a message or keep all products hidden
-            if (!foundMatch && productCards.length > 0) {
-                // Optionally display a "No results found" message
-                // For now, it just hides all products
-            }
         } else {
-            // If search query is empty, show all products
             showAllProducts();
         }
 
-        setupProductCardAnimations(); // Re-apply animations to visible cards
+        setupProductCardAnimations();
     });
 }
 
@@ -487,51 +465,45 @@ function setupProductControls() {
     const productCards = document.querySelectorAll('.product-card');
 
     productCards.forEach(card => {
-        // Use || 0 to default to 0 if parseFloat results in NaN
         const basePrice = parseFloat(card.dataset.productPrice) || 0;
         const basePricePerUnit = parseFloat(card.dataset.productBasePrice) || 0;
 
         const priceDisplay = card.querySelector('.current-price');
-        const quantitySelector = card.querySelector('.product-quantity-selector'); // For dropdowns
-        const quantityDisplay = card.querySelector('.product-quantity-display'); // For +/- buttons
+        const quantitySelector = card.querySelector('.product-quantity-selector');
+        const quantityDisplay = card.querySelector('.product-quantity-display');
 
         if (!priceDisplay) {
             console.warn('Price display element not found for product card');
             return;
         }
 
-        // Initial price setup
         if (quantitySelector) {
-            // For products with dropdown (e.g., oil, daal)
-            const multiplier = parseFloat(quantitySelector.value) || 1; // Default to 1 if NaN
+            const multiplier = parseFloat(quantitySelector.value) || 1;
             const initialPrice = basePricePerUnit * multiplier;
             priceDisplay.textContent = initialPrice.toFixed(2);
         } else if (quantityDisplay) {
-            // For products with +/- buttons (fixed price per item)
             priceDisplay.textContent = basePrice.toFixed(2);
         } else {
-             // Fallback for simple fixed price items if no specific controls are found
             priceDisplay.textContent = basePrice.toFixed(2);
         }
 
-        // Add a check to warn if price is NaN after initial setup
         if (isNaN(parseFloat(priceDisplay.textContent))) {
             console.warn(`Initial price for product "${card.dataset.productName || card.querySelector('h3')?.textContent}" is NaN. Check data-product-price or data-product-base-price.`);
         }
     });
 
-    // Event delegation for quantity changes (plus/minus buttons)
+    // Event delegation for quantity changes
     document.addEventListener('click', (event) => {
         if (event.target.classList.contains('increase-product-quantity')) {
             const quantityDisplay = event.target.closest('.product-card')?.querySelector('.product-quantity-display');
             if (quantityDisplay) {
-                let currentQuantity = parseInt(quantityDisplay.textContent) || 0; // Default to 0 if NaN
+                let currentQuantity = parseInt(quantityDisplay.textContent) || 0;
                 quantityDisplay.textContent = currentQuantity + 1;
             }
         } else if (event.target.classList.contains('decrease-product-quantity')) {
             const quantityDisplay = event.target.closest('.product-card')?.querySelector('.product-quantity-display');
             if (quantityDisplay) {
-                let currentQuantity = parseInt(quantityDisplay.textContent) || 0; // Default to 0 if NaN
+                let currentQuantity = parseInt(quantityDisplay.textContent) || 0;
                 if (currentQuantity > 1) {
                     quantityDisplay.textContent = currentQuantity - 1;
                 }
@@ -539,15 +511,17 @@ function setupProductControls() {
         }
     });
 
-    // Event delegation for unit selector changes (dropdowns)
+    // FIXED: Prevent scrolling to top when changing quantity selector
     document.addEventListener('change', (event) => {
         if (event.target.classList.contains('product-quantity-selector')) {
+            // DO NOT use event.preventDefault() here - this was causing the scroll to top issue
+            
             const selectElement = event.target;
             const productCard = selectElement.closest('.product-card');
             if (!productCard) return;
 
-            const basePricePerUnit = parseFloat(productCard.dataset.productBasePrice) || 0; // Default to 0 if NaN
-            const selectedMultiplier = parseFloat(selectElement.value) || 1; // Default to 1 if NaN
+            const basePricePerUnit = parseFloat(productCard.dataset.productBasePrice) || 0;
+            const selectedMultiplier = parseFloat(selectElement.value) || 1;
             const newPrice = basePricePerUnit * selectedMultiplier;
             const priceDisplay = productCard.querySelector('.current-price');
             if (priceDisplay) {
@@ -557,6 +531,9 @@ function setupProductControls() {
             if (isNaN(newPrice)) {
                 console.warn(`Price calculation for product "${productCard.dataset.productName || productCard.querySelector('h3')?.textContent}" resulted in NaN. Check data-product-base-price or selector values.`);
             }
+            
+            // Stop event propagation to prevent any parent handlers from interfering
+            event.stopPropagation();
         }
     });
 
@@ -574,31 +551,27 @@ function setupProductControls() {
             const category = productCard.dataset.category || '';
 
             let quantity = 1;
-            let pricePerUnit; // This will be the price for a single "item" or selected "unit"
+            let pricePerUnit;
             let unitName = '';
 
             const quantitySelector = productCard.querySelector('.product-quantity-selector');
             const quantityDisplay = productCard.querySelector('.product-quantity-display');
 
             if (quantitySelector) {
-                // For products with a dropdown (e.g., oil, daal)
-                quantity = 1; // Always add 1 of the selected unit from dropdown
-                // Ensure basePricePerUnit and selectedMultiplier are numbers, defaulting to 0 or 1
+                quantity = 1;
                 const basePriceForCalc = parseFloat(productCard.dataset.productBasePrice) || 0;
                 const selectedMultiplier = parseFloat(quantitySelector.value) || 1;
-                pricePerUnit = basePriceForCalc * selectedMultiplier; // Price for the *selected unit* (e.g., price of 1kg oil)
+                pricePerUnit = basePriceForCalc * selectedMultiplier;
                 const selectedOption = quantitySelector.options[quantitySelector.selectedIndex];
                 unitName = selectedOption?.dataset.unitName || '';
             } else if (quantityDisplay) {
-                // For products with +/- buttons (fixed price per item)
-                quantity = parseInt(quantityDisplay.textContent) || 1; // Default to 1 if NaN
-                pricePerUnit = parseFloat(productCard.dataset.productPrice) || 0; // Price of one fixed item, default to 0 if NaN
+                quantity = parseInt(quantityDisplay.textContent) || 1;
+                pricePerUnit = parseFloat(productCard.dataset.productPrice) || 0;
                 const h3Element = productCard.querySelector('h3');
-                unitName = h3Element ? (h3Element.textContent.match(/\((.*?)\)/)?.[1] || '') : ''; // Try to extract unit from name
+                unitName = h3Element ? (h3Element.textContent.match(/\((.*?)\)/)?.[1] || '') : '';
             } else {
-                // Fallback for simple fixed price items (default to 1 quantity)
                 quantity = 1;
-                pricePerUnit = parseFloat(productCard.dataset.productPrice) || 0; // Default to 0 if NaN
+                pricePerUnit = parseFloat(productCard.dataset.productPrice) || 0;
                 const h3Element = productCard.querySelector('h3');
                 unitName = h3Element ? (h3Element.textContent.match(/\((.*?)\)/)?.[1] || '') : '';
             }
@@ -606,13 +579,13 @@ function setupProductControls() {
             if (isNaN(pricePerUnit) || isNaN(quantity)) {
                 console.error(`Error adding product to cart: Price or quantity is NaN for product ID: ${productId}, Name: ${productName}. Price: ${pricePerUnit}, Quantity: ${quantity}.`);
                 alert('Could not add product to cart due to invalid price/quantity data.');
-                return; // Prevent adding invalid item to cart
+                return;
             }
 
             const product = {
                 id: productId,
                 name: productName,
-                price_per_unit: pricePerUnit, // Store the price for *one* of the selected unit/item
+                price_per_unit: pricePerUnit,
                 quantity: quantity,
                 unitName: unitName,
                 image: productImage,
@@ -620,30 +593,27 @@ function setupProductControls() {
             };
             addToCart(product);
 
-            // Reset quantity display for +/- buttons
             if (quantityDisplay) {
                 quantityDisplay.textContent = '1';
             }
 
-            // Visual feedback
             button.textContent = 'Added!';
-            button.style.backgroundColor = 'var(--added-to-cart-color, #4CAF50)'; // Use CSS variable or default
+            button.style.backgroundColor = 'var(--added-to-cart-color, #4CAF50)';
             setTimeout(() => {
                 button.textContent = 'Add to Cart';
-                button.style.backgroundColor = ''; // Reset to original via CSS
+                button.style.backgroundColor = '';
             }, 1000);
         }
     });
 }
 
 // --- Product Card Animation Setup ---
-// Applies a slide-in animation to visible product cards
 function setupProductCardAnimations() {
     const productCards = document.querySelectorAll('.product-card:not(.hidden)');
     productCards.forEach((card, index) => {
-        card.style.setProperty('--animation-order', index); // Stagger animation
-        card.style.animation = 'none'; // Reset animation
-        void card.offsetWidth; // Trigger reflow to restart animation
+        card.style.setProperty('--animation-order', index);
+        card.style.animation = 'none';
+        void card.offsetWidth;
         card.style.animation = 'slideIn 0.5s ease-out forwards';
     });
 }
@@ -675,23 +645,21 @@ function setupCheckoutForm() {
         const deliveryFee = cart.length > 0 ? DELIVERY_FEE : 0;
         const total = subtotal + deliveryFee;
 
-        // Populate hidden form fields
         if (cartItemsInput) {
             cartItemsInput.value = JSON.stringify(cart.map(item => ({
                 name: item.name,
                 unit: item.unitName,
                 quantity: item.quantity,
-                price_per_unit: (parseFloat(item.price_per_unit) || 0).toFixed(2), // Ensure string representation
+                price_per_unit: (parseFloat(item.price_per_unit) || 0).toFixed(2),
                 total_item_price: ( (parseFloat(item.price_per_unit) || 0) * (parseInt(item.quantity) || 0) ).toFixed(2)
             })));
         }
         if (subtotalInput) subtotalInput.value = subtotal.toFixed(2);
         if (deliveryFeeInput) deliveryFeeInput.value = deliveryFee.toFixed(2);
         if (totalInput) totalInput.value = total.toFixed(2);
-        if (orderDateInput) orderDateInput.value = new Date().toISOString(); // ISO string for precise date/time
+        if (orderDateInput) orderDateInput.value = new Date().toISOString();
 
         const formData = new FormData(checkoutForm);
-        // Using fetch for form submission to Formspree or similar service
         fetch(checkoutForm.action, {
             method: 'POST',
             body: formData,
@@ -702,9 +670,9 @@ function setupCheckoutForm() {
         .then(response => {
             if (response.ok) {
                 alert('Order placed successfully! Thank you for shopping with SK Enterprises.');
-                cart = []; // Clear cart after successful order
-                saveCart(); // Save empty cart to local storage
-                window.location.href = 'index.html'; // Redirect to home page
+                cart = [];
+                saveCart();
+                window.location.href = 'index.html';
             } else {
                 alert('There was an error placing your order. Please try again.');
             }
@@ -715,16 +683,14 @@ function setupCheckoutForm() {
         });
     });
 
-    // Toggle eSewa QR code visibility based on payment method selection
     const paymentOptions = document.querySelectorAll('input[name="Payment Method"]');
-    const esewaQrCode = document.querySelector('.esewa-qr-code'); // Assuming this is an image or container for it
+    const esewaQrCode = document.querySelector('.esewa-qr-code');
     if (esewaQrCode) {
         paymentOptions.forEach(option => {
             option.addEventListener('change', () => {
                 esewaQrCode.style.display = option.value === 'eSewa' ? 'block' : 'none';
             });
         });
-        // Set initial state
         const initialSelectedPayment = document.querySelector('input[name="Payment Method"]:checked');
         if (initialSelectedPayment) {
             esewaQrCode.style.display = initialSelectedPayment.value === 'eSewa' ? 'block' : 'none';
@@ -732,28 +698,40 @@ function setupCheckoutForm() {
     }
 }
 
+// Prevent any empty anchor links from scrolling to top
+document.addEventListener('click', (event) => {
+    // Prevent any empty anchor links from scrolling to top
+    if (event.target.tagName === 'A' && 
+        (event.target.getAttribute('href') === '#' || 
+         event.target.getAttribute('href') === '' || 
+         event.target.getAttribute('href') === null)) {
+        event.preventDefault();
+    }
+    
+    // Also check for parent elements that might be anchor links
+    const parentAnchor = event.target.closest('a[href="#"], a[href=""], a:not([href])');
+    if (parentAnchor) {
+        event.preventDefault();
+    }
+});
+
 // --- Initialize Page ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize cart first
     initializeCart();
-    
-    loadUserProfile(); // Load user profile on page load
-    updateCartCount(); // Update cart count in header
+    loadUserProfile();
+    updateCartCount();
 
-    // Check if on checkout page using a class on the body element
     if (document.body.classList.contains('checkout-page')) {
-        updateCartDisplay(); // Populate cart items
-        updateCartTotals(); // Calculate and display totals
-        setupCheckoutForm(); // Setup form submission logic
+        updateCartDisplay();
+        updateCartTotals();
+        setupCheckoutForm();
     } else {
-        // Assume main product display page
-        setupCategoryNavigation(); // Setup category filters
-        setupSearch(); // Setup search functionality
-        setupProductControls(); // Setup product quantity and add to cart buttons
-        showAllProducts(); // Ensure all products are shown initially on home page
+        setupCategoryNavigation();
+        setupSearch();
+        setupProductControls();
+        showAllProducts();
     }
 
-    // Attach sign out listener
     const signOutButton = document.getElementById('sign-out-btn');
     if (signOutButton) {
         signOutButton.addEventListener('click', signOut);

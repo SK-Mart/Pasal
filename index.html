@@ -10,53 +10,38 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
-   <header>
-    <div class="logo">🛒 SK Enterprises</div>
-  <nav>
-    <ul class="menu">
-      <li><a href="#all-products" onclick="showSection('all-products')">All Products</a></li>
-      <li><a href="#groceries" onclick="showSection('groceries')">Groceries</a></li>
-      <li><a href="#dairy" onclick="showSection('dairy')">Dairy</a></li>
-      <li><a href="#bakery" onclick="showSection('bakery')">Bakery</a></li>
-      <li><a href="#vegetables" onclick="showSection('vegetables')">Vegetables</a></li>
-    </ul>
-  </nav>
-</header>
-
-<main>
-  <h1>Welcome to SK Enterprises</h1>
-  <p>Select a category from the menu to explore 
-    <div class="container header-top">
-        <div class="logo-and-about">
-            <div class="logo">
-                <a href="index.html">SK Enterprises</a>
-            </div>
-            <div class="about-us-link">
-                <a href="#about-us-section">About Us</a>
-            </div>
-        </div>
-        <div class="header-icons-row">
-            <div class="search-container">
-                <button class="search-icon"><i class="fas fa-search"></i></button>
-                <input type="text" id="search-input" placeholder="Search products...">
-            </div>
-            <div class="cart-icon">
-                <a href="checkout.html"><i class="fas fa-shopping-cart"></i><span id="cart-count">0</span></a>
-            </div>
-            <div class="user-auth">
-                <div class="g_id_signin" 
-                     data-type="standard" 
-                     data-client_id="YOUR_GOOGLE_CLIENT_ID"
-                     data-callback="handleCredentialResponse"
-                     data-auto_prompt="false">
+    <header>
+        <div class="container header-top">
+            <div class="logo-and-about">
+                <div class="logo">
+                    <a href="index.html">S.K Enterprises</a>
                 </div>
-                <button id="sign-out-btn" style="display: none;">Sign Out</button>
-                <span id="user-display-name"></span>
+                <div class="about-us-link">
+                    <a href="#about-us-section">About Us</a>
+                </div>
+            </div>
+            
+                <div class="search-container">
+                    <button class="search-icon"><i class="fas fa-search"></i></button>
+                    <input type="text" id="search-input" placeholder="Search products...">
+                </div>
+                <div class="cart-icon">
+                    <a href="checkout.html"><i class="fas fa-shopping-cart"></i><span id="cart-count">0</span></a>
+                </div>
+                <div class="user-auth">
+                    <div class="g_id_signin" 
+                         data-type="standard" 
+                         data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                         data-callback="handleCredentialResponse"
+                         data-auto_prompt="false">
+                    </div>
+                    <button id="sign-out-btn" style="display: none;">Sign Out</button>
+                    <span id="user-display-name"></span>
+                </div>
             </div>
         </div>
-    </div>
-</header>
-
+    </header>
+    
     <main class="container">
         <section class="hero-banner" style="background-image: url('IMG_3543.jpeg');">
             <h1>Fresh Groceries, Delivered to Your Doorstep</h1>
