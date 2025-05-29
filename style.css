@@ -54,9 +54,13 @@ header {
     background-color: var(--white);
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     position: fixed;
-    top: 0;
+    top: -10px; /* Move header slightly upward */
+    height: 80px; /* Reduced height */
     width: 100%;
     z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 /* Header Top Row (Logo, Search, Cart, User, About Us) */
@@ -64,7 +68,8 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
+    padding: 5px 0; /* Further reduced padding to move content up */
+    margin-top: 2px; 
 }
 
 .logo-and-about {
@@ -74,16 +79,18 @@ header {
 }
 
 .logo a {
-    font-size: 1.6rem;
-    font-weight: 700;
+    font-size: 1.7rem; /* Slightly smaller logo font size */
+    font-weight: 800;
+    text-align: left;
     color: var(--primary-color);
+    padding: 1px 0 ;
+    height: 10%;
 }
-
 .about-us-link a {
-    font-size: 0.95rem;
+    font-size: 0.9rem; /* Slightly smaller font size */
     font-weight: 500;
     color: var(--text-color);
-    padding: 5px 10px;
+    padding: 4px 8px; /* Reduced padding */
     border-radius: 5px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -104,7 +111,7 @@ header {
 /* Search Container */
 .search-container {
     position: relative;
-    margin-right: 15px;
+    margin-right: 12px; /* Slightly reduced margin */
     display: flex;
     align-items: center;
 }
@@ -113,8 +120,8 @@ header {
     background: none;
     border: none;
     color: var(--text-color);
-    font-size: 1.2rem;
-    padding: 6px;
+    font-size: 1.1rem; /* Slightly smaller icon */
+    padding: 5px; /* Reduced padding */
     border-radius: 50%;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
@@ -133,11 +140,11 @@ header {
     position: absolute;
     top: 100%;
     right: 0;
-    width: 200px;
-    padding: 8px 12px;
+    width: 180px; /* Slightly smaller input width */
+    padding: 6px 10px; /* Reduced padding */
     border: 1px solid var(--border-color);
     border-radius: 20px;
-    font-size: 0.9rem;
+    font-size: 0.85rem; /* Smaller font size */
     background-color: var(--white);
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     z-index: 100;
@@ -164,27 +171,28 @@ header {
     align-items: center;
 }
 
+
+.cart-icon, .user-auth {
+    margin-left: 12px; /* Slightly reduced margin */
+}
+
 .cart-icon a {
     color: var(--text-color);
-    font-size: 1.3rem;
+    font-size: 1.2rem; /* Slightly smaller icon */
     transition: color 0.3s ease, transform 0.2s ease;
 }
 
-.cart-icon a:hover {
-    color: var(--primary-color);
-    transform: scale(1.1);
-}
 
 #cart-count {
     background-color: var(--accent-color);
     color: var(--white);
-    font-size: 0.7rem;
+    font-size: 0.65rem; /* Slightly smaller font */
     border-radius: 50%;
-    padding: 3px 6px;
+    padding: 2px 5px; /* Reduced padding */
     position: absolute;
-    top: -8px;
-    right: -8px;
-    min-width: 16px;
+    top: -6px; /* Adjusted for smaller header */
+    right: -6px;
+    min-width: 14px;
     text-align: center;
 }
 
@@ -205,8 +213,8 @@ header {
 #sign-out-btn {
     background-color: #dc3545;
     color: var(--white);
-    padding: 6px 10px;
-    font-size: 0.85rem;
+    padding: 5px 8px; /* Reduced padding */
+    font-size: 0.8rem; /* Smaller font size */
     border-radius: 5px;
 }
 
@@ -217,12 +225,12 @@ header {
 #user-display-name {
     font-weight: 500;
     color: var(--text-color);
-    font-size: 0.9rem;
+    font-size: 0.85rem; /* Smaller font size */
 }
 
 /* Header Categories Navigation */
 .header-categories {
-    padding: 8px 0;
+    padding: 5px 0; /* Reduced padding */
     border-top: 1px solid var(--border-color);
     display: flex;
     justify-content: center;
@@ -255,8 +263,8 @@ header {
 .header-categories ul li a {
     color: var(--text-color);
     font-weight: 600;
-    font-size: 1rem;
-    padding: 6px 12px;
+    font-size: 0.9rem;
+    padding: 4px 10px;
     border-radius: 15px;
     white-space: nowrap;
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
@@ -276,7 +284,7 @@ header {
 
 /* Main content wrapper */
 .main-content-wrapper {
-    margin-top: var(--header-total-height);
+    margin-top: 80px;
 }
 
 /* Hero Banner */
