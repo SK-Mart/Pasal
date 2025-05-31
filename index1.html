@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SK Enterprises - Online Grocery Shopping</title>
+  <link rel="stylesheet" href="style1.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <h1><a href="index.html" onclick="resetView()">SK Enterprises</a></h1>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#about-contact">About & Contact</a>
+        <div class="search-container">
+          <span class="search-icon" onclick="toggleSearch()">🔍</span>
+          <input type="text" id="search-input" class="search-input hidden" placeholder="Search products..." oninput="searchProducts()">
+        </div>
+        <div class="cart-container">
+          <span class="cart-icon" onclick="toggleCart()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            (<span id="cart-count">0</span>)
+          </span>
+          <div id="cart-dropdown" class="cart-dropdown hidden">
+            <div id="cart-items"></div>
+            <p><strong>Total: Rs. <span id="cart-total">0</span></strong></p>
+            <button id="checkout-btn">Proceed to Checkout</button>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      
+      <h2>Shop Fresh Groceries Online</h2>
+      <p>Quality Products, Fast Delivery!</p>
+      
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Category Filter -->
+    <div class="filter">
+      <label for="category">Filter by Category:</label>
+      <select id="category">
+        <option value="All">All</option>
+        <option value="Grains & Pulses">Grains & Pulses</option>
+        <option value="Pantry">Pantry</option>
+        <option value="Snacks">Snacks</option>
+        <option value="Beverages & Health Drinks">Beverages & Health Drinks</option>
+        <option value="Household & Personal Care">Household & Personal Care</option>
+        <option value="Seafood">Seafood</option>
+        <option value="Vegetables">Vegetables</option>
+      </select>
+    </div>
+
+    <!-- Product Sections -->
+    <section id="grains-pulses" class="product-section">
+      <h2>Grains & Pulses</h2>
+      <div class="product-grid"></div>
+    </section>
+    <section id="pantry" class="product-section">
+      <h2>Pantry</h2>
+      <div class="product-grid"></div>
+    </section>
+    <section id="snacks" class="product-section">
+      <h2>Snacks</h2>
+      <div class="product-grid"></div>
+    </section>
+    <section id="beverages-health-drinks" class="product-section">
+      <h2>Beverages & Health Drinks</h2>
+      <div class="product-grid"></div>
+    </section>
+    <section id="household-personal-care" class="product-section">
+      <h2>Household & Personal Care</h2>
+      <div class="product-grid"></div>
+    </section>
+    <section id="seafood" class="product-section">
+      <h2>Seafood</h2>
+      <div class="product-grid"></div>
+    </section>
+    <section id="vegetables" class="product-section">
+      <h2>Vegetables</h2>
+      <div class="product-grid"></div>
+    </section>
+  </div>
+
+  <!-- App Promotion Section -->
+  <section id="app-promo">
+    <div class="container">
+      <h2>Get the SK Enterprises App</h2>
+      <p>Shop groceries on the go with our iOS and Android apps!</p>
+      <div class="app-buttons">
+        <a href="#" class="app-button">Download on App Store</a>
+        <a href="#" class="app-button">Get it on Google Play</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Us and Contact Section -->
+  <section id="about-contact">
+    <div class="container">
+      <div class="about-contact-content">
+        <div class="about-contact-section">
+          <h3>About Us</h3>
+          <p>SK Enterprises is your trusted local grocery store in Bharatpur, offering fresh, quality products with fast delivery. We source from local farmers and trusted brands to bring you the best of Nepal.</p>
+        </div>
+        <div class="about-contact-section">
+          <h3>Contact Info</h3>
+          <p>Phone: 9845138033<br>Email: support@skenterprises.com<br>Address: Chandraman Chowk, Lanku, Bharatpur, Nepal</p>
+          <div class="social-links">
+            <a href="https://facebook.com" target="_blank">Facebook</a> |
+            <a href="https://instagram.com" target="_blank">Instagram</a> |
+            <a href="https://twitter.com" target="_blank">Twitter</a>
+          </div>
+        </div>
+        <div class="about-contact-section">
+          <h3>Our Location</h3>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.3307479247924!2d84.39636807425278!3d27.67617062686805!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3994fb0012679f3d%3A0x319aba4bd345b44f!2sS.K%20Enterprises!5e0!3m2!1sen!2snp!4v1748494604157!5m2!1sen!2snp" width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+        <div class="about-contact-section">
+          <h3>Customer Reviews</h3>
+          <div class="review">
+            <p>"Amazing variety and super fast delivery!" - Anil S.</p>
+            <p>"Best grocery store in Bharatpur!" - Sunita K.</p>
+            <p>"Fresh vegetables every time!" - Rajesh P.</p>
+          </div>
+        </div>
+      </div>
+      <p class="footer-bottom">© 2025 SK Enterprises. All rights reserved.</p>
+    </div>
+  </section>
+
+  <script src="script1.js"></script>
+</body>
+</html>

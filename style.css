@@ -62,7 +62,7 @@
         }
 
         .logo a:hover {
-            color: #f39c12;
+            color: #3bf312;
             transform: scale(1.05);
         }
 
@@ -145,7 +145,7 @@
             position: absolute;
             top: -5px;
             right: -5px;
-            background: #e74c3c;
+            background: #ee0404;
             color: white;
             font-size: 0.9rem;
             padding: 4px 8px;
