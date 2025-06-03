@@ -5,119 +5,816 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SK Enterprises - Your Online Grocery Store</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <header>
-        <div class="container header-top">
-            <div class="logo-and-about">
-                <div class="logo">
-                    <a href="index.html">S.K Enterprises</a>
-                </div>
-                <div class="about-us-link">
-                    <a href="#about-us-section">About Us</a>
-                </div>
-            </div>
-            
-                <div class="search-container">
-                    <button class="search-icon"><i class="fas fa-search"></i></button>
-                    <input type="text" id="search-input" placeholder="Search products...">
+        <div class="container header-content">
+            <h1 class="site-title"><a href="index.html">SK Enterprises</a></h1>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#featured-products-section">Featured</a></li>
+                    <li><a href="#grains-staples">Grains & Staples</a></li>
+                    <li><a href="#snacks-beverages">Snacks & Beverages</a></li>
+                    <li><a href="#household-personal-care">Household</a></li>
+                    <li><a href="#fresh-produce-dairy">Produce & Dairy</a></li>
+                    <li><a href="#spices-condiments">Spices</a></li>
+                    <li><a href="#bakery-desserts">Bakery</a></li>
+                </ul>
+            </nav>
+            <div class="header-right">
+                <div class="search-bar">
+                    <input type="text" id="product-search" placeholder="Search products...">
+                    <button><i class="fas fa-search"></i></button>
                 </div>
                 <div class="cart-icon">
-                    <a href="checkout.html"><i class="fas fa-shopping-cart"></i><span id="cart-count">0</span></a>
-                </div>
-                <div class="user-auth">
-                    <div class="g_id_signin" 
-                         data-type="standard" 
-                         data-client_id="YOUR_GOOGLE_CLIENT_ID"
-                         data-callback="handleCredentialResponse"
-                         data-auto_prompt="false">
-                    </div>
-                    <button id="sign-out-btn" style="display: none;">Sign Out</button>
-                    <span id="user-display-name"></span>
+                    <a href="checkout.html">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cart-count">0</span>
+                    </a>
                 </div>
             </div>
         </div>
     </header>
-    
-    <main class="container">
-        <section class="hero-banner" style="background-image: url('IMG_3543.jpeg');">
-            <h1>Fresh Groceries, Delivered to Your Doorstep</h1>
-            <p>Shop from a wide range of products with ease and convenience.</p>
-            <a href="index1.html"><button class="shop-now-btn animated-btn">Shop Now</button></a>
-        </section>
 
-        <!-- Product sections remain unchanged -->
-
-
-        <section class="our-location" id="our-location">
-            <h2>Our Location in Chitwan</h2>
-            <div class="map-container">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.3307479247924!2d84.39636807425278!3d27.67617062686805!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3994fb0012679f3d%3A0x319aba4bd345b44f!2sS.K%20Enterprises!5e0!3m2!1sen!2snp!4v1748494604157!5m2!1sen!2snp"
-                        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <main>
+        <section id="hero-ad-banner" class="hero-ad-banner">
+            <div class="container hero-content">
+                <div class="hero-text">
+                    <h2>Fresh Groceries, Delivered Fast!</h2>
+                    <p>Experience the convenience of online shopping with SK Enterprises. Quality products, unbeatable prices, and doorstep delivery.</p>
+                    <a href="#grains-staples" class="shop-now-btn">Shop Now <i class="fas fa-arrow-right"></i></a>
+                </div>
             </div>
         </section>
 
-        <section class="about-us-section" id="about-us-section">
+        <section id="featured-products-section" class="product-category-section featured-products-highlight">
+            <div class="container">
+                <h2 class="category-heading">✨ Our Bestsellers & Featured Products ✨</h2>
+                <div class="product-scroll-wrapper">
+                    <div class="product-grid horizontal-scroll-grid">
+                        <div class="product-card featured-card" data-id="feat-oil" data-name="Cooking Oil" data-category="grains-staples">
+                            <img src="sunflower.jpg" alt="Cooking Oil">
+                            <h3>Cooking Oil (5L)</h3>
+                            <p class="price">Rs. <span class="product-price">1250</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="feat-oil-quantity">Volume:</label>
+                                <select id="feat-oil-quantity" class="product-unit-selector" data-base-price="250">
+                                    <option value="1">1 Liter</option>
+                                    <option value="2">2 Liter</option>
+                                    <option value="5">5 Liter</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="feat-oil">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card featured-card" data-id="feat-noodles" data-name="Wai Wai Noodles" data-category="snacks-beverages">
+                            <img src="waiwai.jfif" alt="Wai Wai Noodles">
+                            <h3>Wai Wai Noodles (Doz.)</h3>
+                            <p class="price">Rs. <span class="product-price">360</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="feat-noodles-quantity">Quantity:</label>
+                                <input type="number" id="feat-noodles-quantity" value="1" min="1" class="product-quantity-input">
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="feat-noodles">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card featured-card" data-id="feat-dettol" data-name="Dettol Soap" data-category="household-personal-care">
+                            <img src="detol.jfif" alt="Dettol Soap">
+                            <h3>Dettol Soap (Multipack)</h3>
+                            <p class="price">Rs. <span class="product-price">400</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="feat-dettol-quantity">Packs:</label>
+                                <select id="feat-dettol-quantity" class="product-unit-selector" data-base-price="200">
+                                    <option value="1">2-Pack</option>
+                                    <option value="2">4-Pack</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="feat-dettol">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card featured-card" data-id="feat-rice" data-name="Basmati Rice" data-category="grains-staples">
+                            <img src="doodhmalai.jfif" alt="Basmati Rice">
+                            <h3>DoonMalai Rice (5Kg)</h3>
+                            <p class="price">Rs. <span class="product-price">1100</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="feat-rice-quantity">Weight:</label>
+                                <select id="feat-rice-quantity" class="product-unit-selector" data-base-price="220">
+                                    <option value="1">1 Kg</option>
+                                    <option value="5">5 Kg</option>
+                                   
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="feat-rice">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card featured-card" data-id="feat-sugar" data-name="Refined Sugar" data-category="spices-condiments">
+                            <img src="sugar.jpg" alt="Refined Sugar">
+                            <h3>Refined Sugar (1Kg)</h3>
+                            <p class="price">Rs. <span class="product-price">120</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="feat-sugar-quantity">Weight:</label>
+                                <select id="feat-sugar-quantity" class="product-unit-selector" data-base-price="120">
+                                    <option value="1">1 Kg</option>
+                                    <option value="2">2 Kg</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="feat-sugar">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card featured-card" data-id="feat-milk" data-name="Milk (Dudh)" data-category="fresh-produce-dairy">
+                            <img src="milkpouch.jpg" alt="Milk">
+                            <h3>Dudh (Milk) (1L)</h3>
+                            <p class="price">Rs. <span class="product-price">80</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="feat-milk-quantity">Volume:</label>
+                                <select id="feat-milk-quantity" class="product-unit-selector" data-base-price="80">
+                                    <option value="0.5">500ml</option>
+                                    <option value="1">1 Liter</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="feat-milk">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="grains-staples" class="product-category-section">
+            <div class="container">
+                <h2 class="category-heading">🍚 Grains & Staples</h2>
+                <div class="product-scroll-wrapper">
+                    <div class="product-grid horizontal-scroll-grid">
+                        <div class="product-card" data-id="oil" data-name="Cooking Oil" data-category="grains-staples">
+                            <img src="sunflower.jpg" alt="Cooking Oil">
+                            <h3>Cooking Oil</h3>
+                            <p class="price">Rs. <span class="product-price">250</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="oil-quantity">Weight/Volume:</label>
+                                <select id="oil-quantity" class="product-unit-selector" data-base-price="250">
+                                    <option value="1">1 Liter</option>
+                                    <option value="2">2 Liter</option>
+                                    <option value="5">5 Liter</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="oil">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card" data-id="daal" data-name="Daal" data-category="grains-staples">
+                            <img src="moong.jfif"Daal">
+                            <h3>Daal (Moong)</h3>
+                            <p class="price">Rs. <span class="product-price">120</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="daal-quantity">Weight:</label>
+                                <select id="daal-quantity" class="product-unit-selector" data-base-price="120">
+                                    <option value="0.5">500g</option>
+                                    <option value="1">1 Kg</option>
+                                    <option value="2">2 Kg</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="daal">Add to Cart</button>
+                        </div>
+                        
+                        <div class="product-card" data-id="daal" data-name="Daal" data-category="grains-staples">
+                            <img src="lentil.jpg">
+                            <h3>Daal (KaloDal)</h3>
+                            <p class="price">Rs. <span class="product-price">120</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="daal-quantity">Weight:</label>
+                                <select id="daal-quantity" class="product-unit-selector" data-base-price="120">
+                                    <option value="0.5">500g</option>
+                                    <option value="1">1 Kg</option>
+                                    <option value="2">2 Kg</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="daal">Add to Cart</button>
+                        </div>
+                        
+                        <div class="product-card" data-id="daal" data-name="Daal" data-category="grains-staples">
+                            <img src="mansordal.jpg"Daal">
+                            <h3>Daal (mansordal)</h3>
+                            <p class="price">Rs. <span class="product-price">120</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="daal-quantity">Weight:</label>
+                                <select id="daal-quantity" class="product-unit-selector" data-base-price="120">
+                                    <option value="0.5">500g</option>
+                                    <option value="1">1 Kg</option>
+                                    <option value="2">2 Kg</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="daal">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card" data-id="hulas-atta" data-name="Hulas Atta" data-category="grains-staples">
+                            <img src="hulaS.jpg" alt="Hulas Atta">
+                            <h3>Hulas Atta (Wheat Flour)</h3>
+                            <p class="price">Rs. <span class="product-price">180</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="hulas-atta-quantity">Weight:</label>
+                                <select id="hulas-atta-quantity" class="product-unit-selector" data-base-price="180">
+                                    <option value="1">1 Kg</option>
+                                    <option value="2">2 Kg</option>
+                                    <option value="5">5 Kg</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="hulas-atta">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card" data-id="maida" data-name="Maida" data-category="grains-staples">
+                            <img src="maida.jfif" alt="Maida Flour">
+                            <h3>Maida (All-Purpose Flour)</h3>
+                            <p class="price">Rs. <span class="product-price">150</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="maida-quantity">Weight:</label>
+                                <select id="maida-quantity" class="product-unit-selector" data-base-price="150">
+                                    <option value="0.5">500g</option>
+                                    <option value="1">1 Kg</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="maida">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card" data-id="suji" data-name="Suji" data-category="grains-staples">
+                            <img src="suji.jfif" alt="Suji">
+                            <h3>Suhi (Suji)</h3>
+                            <p class="price">Rs. <span class="product-price">90</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="suhi-quantity">Weight:</label>
+                                <select id="suhi-quantity" class="product-unit-selector" data-base-price="90">
+                                    <option value="0.5">500g</option>
+                                    <option value="1">1 Kg</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="suhi">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card" data-id="gheu" data-name="Gheu" data-category="grains-staples">
+                            <img src="ghee.jfif" alt="Ghee">
+                            <h3>Gheu (Gheeu)</h3>
+                            <p class="price">Rs. <span class="product-price">900</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="gheu-quantity">Weight/Volume:</label>
+                                <select id="gheu-quantity" class="product-unit-selector" data-base-price="900">
+                                    <option value="0.5">500g</option>
+                                    <option value="1">1 Kg / Liter</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="gheu">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card" data-id="Newari-rice" data-name="Newari Rice" data-category="grains-staples">
+                            <img src="newaRice.jfif" alt="Newari Rice">
+                            <h3>Newari Pulau Rice</h3>
+                            <p class="price">Rs. <span class="product-price">220</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="basmati-rice-quantity">Weight:</label>
+                                <select id="basmati-rice-quantity" class="product-unit-selector" data-base-price="220">
+                                    <option value="1">1 Kg</option>
+                                    <option value="5">5 Kg</option>
+                                    <option value="10">10 Kg</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="basmati-rice">Add to Cart</button>
+                        </div>
+                        <div class="product-card" data-id="poha" data-name="Poha" data-category="grains-staples">
+                            <img src="Nepali-Bhuja.webp" alt="Poha">
+                            <h3>Bhuja (Puffed Rice)</h3>
+                            <p class="price">Rs. <span class="product-price">80</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="poha-quantity">Weight:</label>
+                                <select id="poha-quantity" class="product-unit-selector" data-base-price="80">
+                                    <option value="0.5">500g</option>
+                                    <option value="1">1 Kg</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="poha">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="snacks-beverages" class="product-category-section">
+            <div class="container">
+                <h2 class="category-heading">🥨 Snacks & Beverages</h2>
+                <div class="product-scroll-wrapper">
+                    <div class="product-grid horizontal-scroll-grid">
+                        <div class="product-card" data-id="lays" data-name="Lays" data-category="snacks-beverages">
+                            <img src="lays.jpg" alt="Lays Chips">
+                            <h3>Lays Chips</h3>
+                            <p class="price">Rs. <span class="product-price">50</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="lays-quantity">Quantity:</label>
+                                <input type="number" id="lays-quantity" value="1" min="1" class="product-quantity-input">
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="lays">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card" data-id="noodles" data-name="Noodles" data-category="snacks-beverages">
+                            <img src="current.png" alt="Noodles">
+                            <h3>Current Noodles</h3>
+                            <p class="price">Rs. <span class="product-price">30</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="noodles-quantity">Quantity:</label>
+                                <input type="number" id="noodles-quantity" value="1" min="1" class="product-quantity-input">
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="noodles">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card" data-id="nuts" data-name="Nuts" data-category="snacks-beverages">
+                            <img src="nuts.avif" alt="Nuts">
+                            <h3>Nuts</h3>
+                            <p class="price">Rs. <span class="product-price">300</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="nuts-quantity">Weight:</label>
+                                <select id="nuts-quantity" class="product-unit-selector" data-base-price="300">
+                                    <option value="0.25">250g</option>
+                                    <option value="0.5">500g</option>
+                                    <option value="1">1 Kg</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="nuts">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card" data-id="panipuri" data-name="Panipuri" data-category="snacks-beverages">
+                            <img src="panipuri.png" alt="Panipuri Kit">
+                            <h3>Panipuri Kit</h3>
+                            <p class="price">Rs. <span class="product-price">150</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="panipuri-quantity">Quantity:</label>
+                                <input type="number" id="panipuri-quantity" value="1" min="1" class="product-quantity-input">
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="panipuri">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card" data-id="horlicks" data-name="Horlicks" data-category="snacks-beverages">
+                            <img src="horlicks.jfif" alt="Horlicks">
+                            <h3>Horlicks</h3>
+                            <p class="price">Rs. <span class="product-price">500</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="horlicks-quantity">Weight:</label>
+                                <select id="horlicks-quantity" class="product-unit-selector" data-base-price="500">
+                                    <option value="0.5">500g</option>
+                                    <option value="1">1 Kg</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="horlicks">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card" data-id="jams" data-name="Jams" data-category="snacks-beverages">
+                            <img src="mixed juics.jpg" alt="Mixed Fruit+Jam">
+                            <h3>Jams</h3>
+                            <p class="price">Rs. <span class="product-price">200</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="jams-quantity">Weight:</label>
+                                <select id="jams-quantity" class="product-unit-selector" data-base-price="200">
+                                    <option value="0.25">250g</option>
+                                    <option value="0.5">500g</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="jams">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card" data-id="coffee" data-name="Coffee" data-category="snacks-beverages">
+                            <img src="coffee.jfif" alt="Instant Coffee">
+                            <h3>Coffee</h3>
+                            <p class="price">Rs. <span class="product-price">350</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="coffee-quantity">Weight:</label>
+                                <select id="coffee-quantity" class="product-unit-selector" data-base-price="350">
+                                    <option value="0.05">50g</option>
+                                    <option value="0.1">100g</option>
+                                    <option value="0.2">200g</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="coffee">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card" data-id="gulcose" data-name="Gulcose" data-category="snacks-beverages">
+                            <img src="glucose.jpg" alt="Glucose Powder">
+                            <h3>Gulcose (Glucose Powder)</h3>
+                            <p class="price">Rs. <span class="product-price">220</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="gulcose-quantity">Weight:</label>
+                                <select id="gulcose-quantity" class="product-unit-selector" data-base-price="220">
+                                    <option value="0.25">250g</option>
+                                    <option value="0.5">500g</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="gulcose">Add to Cart</button>
+                        </div>
+                        <div class="product-card" data-id="biscuits" data-name="Biscuits" data-category="snacks-beverages">
+                            <img src="oreo.jpg" alt="Biscuits">
+                            <h3>Biscuits (oreo)</h3>
+                            <p class="price">Rs. <span class="product-price">100</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="biscuits-quantity">Packs:</label>
+                                <input type="number" id="biscuits-quantity" value="1" min="1" class="product-quantity-input">
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="biscuits">Add to Cart</button>
+                        </div>
+                        <div class="product-card" data-id="tea-bags" data-name="Tea Bags" data-category="snacks-beverages">
+                            <img src="sarbada.jpg" alt="Tea Bags">
+                            <h3>Tea Bags (Sarbada)</h3>
+                            <p class="price">Rs. <span class="product-price">180</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="tea-bags-quantity">Count:</label>
+                                <select id="tea-bags-quantity" class="product-unit-selector" data-base-price="180">
+                                    <option value="1">25 Bags</option>
+                                    <option value="2">50 Bags</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="tea-bags">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="household-personal-care" class="product-category-section">
+            <div class="container">
+                <h2 class="category-heading">🧼 Household & Personal Care</h2>
+                <div class="product-scroll-wrapper">
+                    <div class="product-grid horizontal-scroll-grid">
+                        <div class="product-card" data-id="detergent" data-name="Detergent" data-category="household-personal-care">
+                            <img src="detergent.png" alt="Washing Powder">
+                            <h3>Detergent (patanjali)</h3>
+                            <p class="price">Rs. <span class="product-price">400</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="detergent-quantity">Weight:</label>
+                                <select id="detergent-quantity" class="product-unit-selector" data-base-price="400">
+                                    <option value="1">1 Kg</option>
+                                    <option value="2">2 Kg</option>
+                                    <option value="5">5 Kg</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="detergent">Add to Cart</button>
+                        </div>
+  <div class="product-grid horizontal-scroll-grid">
+                        <div class="product-card" data-id="detergent" data-name="Detergent" data-category="household-personal-care">
+                            <img src="tide.jfif" alt="Washing Powder">
+                            <h3>Detergent (Tide)</h3>
+                            <p class="price">Rs. <span class="product-price">400</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="detergent-quantity">Weight:</label>
+                                <select id="detergent-quantity" class="product-unit-selector" data-base-price="400">
+                                    <option value="1">1 Kg</option>
+                                    <option value="2">2 Kg</option>
+                                    <option value="5">5 Kg</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="detergent">Add to Cart</button>
+                        </div>
+  <div class="product-grid horizontal-scroll-grid">
+                        <div class="product-card" data-id="detergent" data-name="Detergent" data-category="household-personal-care">
+                            <img src="arial.jpg" alt="Washing Powder">
+                            <h3>Detergent (Ariel)</h3>
+                            <p class="price">Rs. <span class="product-price">400</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="detergent-quantity">Weight:</label>
+                                <select id="detergent-quantity" class="product-unit-selector" data-base-price="400">
+                                    <option value="1">1 Kg</option>
+                                    <option value="2">2 Kg</option>
+                                    <option value="5">5 Kg</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="detergent">Add to Cart</button>
+                        </div>
+
+
+
+                        <div class="product-card" data-id="sampoo" data-name="Sampoo" data-category="household-personal-care">
+                            <img src="head and shoulder.jpg" alt="Shampoo">
+                            <h3>Sampoo (Head & Shoulder)</h3>
+                            <p class="price">Rs. <span class="product-price">280</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="sampoo-quantity">Volume:</label>
+                                <select id="sampoo-quantity" class="product-unit-selector" data-base-price="280">
+                                    <option value="0.2">200ml</option>
+                                    <option value="0.4">400ml</option>
+                                    <option value="0.7">700ml</option>
+                                </select>
+                            </div>
+
+                            <button class="add-to-cart-btn" data-product-id="sampoo">Add to Cart</button>
+                        </div>
+                         <div class="product-card" data-id="sampoo" data-name="Sampoo" data-category="household-personal-care">
+                            <img src="sunslik.webp" alt="Shampoo">
+                            <h3>Sampoo (Sunsilk)</h3>
+                            <p class="price">Rs. <span class="product-price">280</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="sampoo-quantity">Volume:</label>
+                                <select id="sampoo-quantity" class="product-unit-selector" data-base-price="280">
+                                    <option value="0.2">200ml</option>
+                                    <option value="0.4">400ml</option>
+                                    <option value="0.7">700ml</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="sampoo">Add to Cart</button>
+                        </div>
+
+                         <div class="product-card" data-id="sampoo" data-name="Sampoo" data-category="household-personal-care">
+                            <img src="dove.jfif" alt="Shampoo">
+
+                            <h3>Sampoo (Dove)</h3>
+                            <p class="price">Rs. <span class="product-price">280</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="sampoo-quantity">Volume:</label>
+                                <select id="sampoo-quantity" class="product-unit-selector" data-base-price="280">
+                                    <option value="0.2">200ml</option>
+                                    <option value="0.4">400ml</option>
+                                    <option value="0.7">700ml</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="sampoo">Add to Cart</button>
+                        </div>
+
+
+                        <div class="product-card" data-id="goodnight" data-name="Goodnight" data-category="household-personal-care">
+                            <img src="goodnight.png" alt="Goodnight Liquid">
+                            <h3>Goodnight (Mosquito Repellent)</h3>
+                            <p class="price">Rs. <span class="product-price">160</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="goodnight-quantity">Quantity:</label>
+                                <input type="number" id="goodnight-quantity" value="1" min="1" class="product-quantity-input">
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="goodnight">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card" data-id="agarbati" data-name="Agarbati" data-category="household-personal-care">
+                            <img src="agarbatti.jfif" alt="Incense Sticks">
+                            <h3>Agarbati (Incense Sticks)</h3>
+                            <p class="price">Rs. <span class="product-price">80</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="agarbati-quantity">Quantity:</label>
+                                <input type="number" id="agarbati-quantity" value="1" min="1" class="product-quantity-input">
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="agarbati">Add to Cart</button>
+                        </div>
+                        <div class="product-card" data-id="dishwash" data-name="Toothpaste" data-category="household-personal-care">
+                            <img src="colgate.jpg" alt="Toothpaste">
+                            <h3>Toothpaste (Colgate) </h3>
+                            <p class="price">Rs. <span class="product-price">200</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="dishwash-quantity">Volume:</label>
+                                <select id="dishwash-quantity" class="product-unit-selector" data-base-price="200">
+                                    <option value="0.5">Big</option>
+                                    <option value="1">Small</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="dishwash">Add to Cart</button>
+                        </div>
+                        <div class="product-card" data-id="toothpaste" data-name="Toothpaste" data-category="household-personal-care">
+                            <img src="sensodyne.jpg" alt="Toothpaste">
+                            <h3>Toothpaste (Sensodyne)</h3>
+                            <p class="price">Rs. <span class="product-price">150</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="toothpaste-quantity">Weight:</label>
+                                <select id="toothpaste-quantity" class="product-unit-selector" data-base-price="150">
+                                    <option value="0.1">Big</option>
+                                    <option value="0.2">Small</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="toothpaste">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="fresh-produce-dairy" class="product-category-section">
+            <div class="container">
+                <h2 class="category-heading">🥦 Fresh Produce & Dairy</h2>
+                <div class="product-scroll-wrapper">
+                    <div class="product-grid horizontal-scroll-grid">
+                        <div class="product-card" data-id="allu" data-name="Allu" data-category="fresh-produce-dairy">
+                            <img src="IMG_3540.jpg" alt="Potatoes">
+                            <h3>Allu (Potatoes)</h3>
+                            <p class="price">Rs. <span class="product-price">80</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="allu-quantity">Weight:</label>
+                                <select id="allu-quantity" class="product-unit-selector" data-base-price="80">
+                                    <option value="1">1 Kg</option>
+                                    <option value="2">2 Kg</option>
+                                    <option value="5">5 Kg</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="allu">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card" data-id="piyaz" data-name="Piyaz" data-category="fresh-produce-dairy">
+                            <img src="IMG_3546.jpg" alt="Onions">
+                            <h3>Piyaz (Onions)</h3>
+                            <p class="price">Rs. <span class="product-price">100</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="piyaz-quantity">Weight:</label>
+                                <select id="piyaz-quantity" class="product-unit-selector" data-base-price="100">
+                                    <option value="0.5">500g</option>
+                                    <option value="1">1 Kg</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="piyaz">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card" data-id="kerau" data-name="Kerau" data-category="fresh-produce-dairy">
+                            <img src="kerauG.jfif" alt="Peas">
+                            <h3>Kerau (Green Peas)</h3>
+                            <p class="price">Rs. <span class="product-price">130</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="kerau-quantity">Weight:</label>
+                                <select id="kerau-quantity" class="product-unit-selector" data-base-price="130">
+                                    <option value="0.25">250g</option>
+                                    <option value="0.5">500g</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="kerau">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card" data-id="dudh" data-name="Dudh" data-category="fresh-produce-dairy">
+                            <img src="milkpouch.jpg" alt="Milk">
+                            <h3>Dudh (Milk)</h3>
+                            <p class="price">Rs. <span class="product-price">80</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="dudh-quantity">Volume:</label>
+                                <select id="dudh-quantity" class="product-unit-selector" data-base-price="80">
+                                    <option value="0.5">500ml</option>
+                                    <option value="1">1 Liter</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="dudh">Add to Cart</button>
+                        </div>
+                        <div class="product-card" data-id="dahi" data-name="Dahi" data-category="fresh-produce-dairy">
+                            <img src="curd.jpg" alt="Curd">
+                            <h3>Dahi (Curd/Yogurt)</h3>
+                            <p class="price">Rs. <span class="product-price">120</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="dahi-quantity">Weight:</label>
+                                <select id="dahi-quantity" class="product-unit-selector" data-base-price="120">
+                                    <option value="0.5">500g</option>
+                                    <option value="1">1 Kg</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="dahi">Add to Cart</button>
+                        </div>
+                        <div class="product-card" data-id="paneer" data-name="Paneer" data-category="fresh-produce-dairy">
+                            <img src="chees.jpg" alt="Paneer">
+
+                            <h3>Paneer (Cottage Cheese)</h3>
+                            <p class="price">Rs. <span class="product-price">250</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="paneer-quantity">Weight:</label>
+                                <select id="paneer-quantity" class="product-unit-selector" data-base-price="250">
+                                    <option value="0.25">250g</option>
+                                    <option value="0.5">500g</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="paneer">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="spices-condiments" class="product-category-section">
+            <div class="container">
+                <h2 class="category-heading">🌶️ Spices & Condiments</h2>
+                <div class="product-scroll-wrapper">
+                    <div class="product-grid horizontal-scroll-grid">
+                        <div class="product-card" data-id="nun" data-name="Nun" data-category="spices-condiments">
+                            <img src="salt.jpg" alt="Salt">
+                            <h3>Nun (Salt)</h3>
+                            <p class="price">Rs. <span class="product-price">30</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="nun-quantity">Weight:</label>
+                                <select id="nun-quantity" class="product-unit-selector" data-base-price="30">
+                                    <option value="0.5">500g</option>
+                                    <option value="1">1 Kg</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="nun">Add to Cart</button>
+                        </div>
+
+                        <div class="product-card" data-id="masala" data-name="Masala" data-category="spices-condiments">
+                            <img src="mixed masala.jpg" alt="Mixed Spices">
+                            <h3>Masala (Spices)</h3>
+                            <p class="price">Rs. <span class="product-price">100</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="masala-quantity">Weight:</label>
+                                <select id="masala-quantity" class="product-unit-selector" data-base-price="100">
+                                    <option value="0.05">50g</option>
+                                    <option value="0.1">100g</option>
+                                    <option value="0.25">250g</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="masala">Add to Cart</button>
+                        </div>
+                        <div class="product-card" data-id="turmeric" data-name="Turmeric Powder" data-category="spices-condiments">
+                            <img src="M masala.jfif" alt="Turmeric Powder">
+                            <h3>MO:MO Masala</h3>
+                            <p class="price">Rs. <span class="product-price">90</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="turmeric-quantity">Weight:</label>
+                                <select id="turmeric-quantity" class="product-unit-selector" data-base-price="90">
+                                    <option value="0.1">100g</option>
+                                    <option value="0.25">250g</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="turmeric">Add to Cart</button>
+                        </div>
+                        <div class="product-card" data-id="chili" data-name="Chili Powder" data-category="spices-condiments">
+                            <img src="chilli.png" alt="Chili Powder">
+                            <h3>Chili Powder</h3>
+                            <p class="price">Rs. <span class="product-price">110</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="chili-quantity">Weight:</label>
+                                <select id="chili-quantity" class="product-unit-selector" data-base-price="110">
+                                    <option value="0.1">100g</option>
+                                    <option value="0.25">250g</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="chili">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="bakery-desserts" class="product-category-section">
+            <div class="container">
+                <h2 class="category-heading">🍰 Bakery & Desserts</h2>
+                <div class="product-scroll-wrapper">
+                    <div class="product-grid horizontal-scroll-grid">
+                        <div class="product-card" data-id="papad" data-name="Papad" data-category="bakery-desserts">
+                            <img src="papad.jpg" alt="Papad">
+                            <h3>Papad</h3>
+                            <p class="price">Rs. <span class="product-price">70</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="papad-quantity">Quantity:</label>
+                                <input type="number" id="papad-quantity" value="1" min="1" class="product-quantity-input">
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="papad">Add to Cart</button>
+                        </div>
+                         <div class="product-grid horizontal-scroll-grid">
+                        <div class="product-card" data-id="papad" data-name="Papad" data-category="bakery-desserts">
+                            <img src="prawn.jpg" alt="Papad">
+                            <h3>Prawn</h3>
+                            <p class="price">Rs. <span class="product-price">70</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="papad-quantity">Quantity:</label>
+                                <input type="number" id="papad-quantity" value="1" min="1" class="product-quantity-input">
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="papad">Add to Cart</button>
+                        </div>
+                         <div class="product-card" data-id="bread" data-name="Bread" data-category="bakery-desserts">
+                            <img src="Bread Package Mockup - Free Download Images High Quality PNG, JPG - 110865.jfif" alt="Bread">
+                            <h3>Bread (Loaf)</h3>
+                            <p class="price">Rs. <span class="product-price">70</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="bread-quantity">Quantity:</label>
+                                <input type="number" id="bread-quantity" value="1" min="1" class="product-quantity-input">
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="bread">Add to Cart</button>
+                        </div>
+                        <div class="product-card" data-id="pie" data-name="Pie" data-category="bakery-desserts">
+                            <img src="Chocopie.jpg" alt="pie">
+                            <h3>Choco Pie</h3>
+                            <p class="price">Rs. <span class="product-price">300</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="cake-quantity">Quantity:</label>
+                                <input type="number" id="cake-quantity" value="1" min="1" class="product-quantity-input">
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="cake">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="about-us" class="about-us-section container">
             <h2>About SK Enterprises</h2>
-            <div class="about-content">
-                <p>Welcome to <strong>SK Enterprises</strong>,Your premier destination for fresh and high-quality groceries delivered right to your doorstep in Nepal. We are committed to making your daily shopping experience effortless, convenient, and enjoyable.</p>
-                <p>Founded in 2023, SK Enterprises was established with a simple goal: to connect local communities with the freshest produce, pantry staples, and household essentials, all from the comfort of their homes. We believe in providing value, reliability, and exceptional customer service.</p>
-                <p>Our carefully curated selection ensures that you receive only the best. From farm-fresh fruits and vegetables to dairy, bakery items, and a wide range of groceries, we've got your needs covered. We partner with trusted suppliers to guarantee the quality and freshness of every item.</p>
-                <p>At SK Enterprises, your satisfaction is our priority. We continuously strive to improve our services and expand our product offerings to serve you better. Thank you for choosing us as your trusted grocery partner!</p>
-                <ul>
-                    <li><i class="fas fa-check-circle"></i> Wide Selection of Fresh Products</li>
-                    <li><i class="fas fa-check-circle"></i> Convenient Doorstep Delivery</li>
-                    <li><i class="fas fa-check-circle"></i> Quality Guaranteed</li>
-                    <li><i class="fas fa-check-circle"></i> Excellent Customer Support</li>
-                </ul>
+            <p>Welcome to SK Enterprises, your trusted online grocery store in Nepal! We are committed to providing you with the freshest and highest quality groceries right to your doorstep. Our mission is to make your daily shopping convenient, affordable, and enjoyable.</p>
+            <p>From essential pantry staples like oil and daal to your favorite snacks and household items, we've got you covered. We source our products carefully to ensure you get the best value for your money.</p>
+
+            <div class="social-media">
+                <h3>Connect With Us:</h3>
+                <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://twitter.com/" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                
+              
+            </div>
+
+            <div class="location-map">
+                <h3>Our Location</h3>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14132.397482284827!2d84.40676005!3d27.683323449999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3994fb0012679f3d%3A0x319aba4bd345b44f!2sS.K%20Enterprises!5e0!3m2!1sen!2snp!4v1748938829469!5m2!1sen!2snp"width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
         </section>
     </main>
 
     <footer>
         <div class="container">
-            <div class="footer-columns">
-                <div class="footer-col">
-                    <h3>SK Enterprises</h3>
-                    <p>Your one-stop shop for all your grocery needs.</p>
-                </div>
-                <div class="footer-col">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#about-us-section">About Us</a></li>
-                        <li><a href="#contact-us-section">Contact Us</a></li>
-                        <li><a href="info.html">Privacy Policy</a></li>
-                        <li><a href="info.html">Terms of Service</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Categories</h3>
-                    <ul>
-                        <li><a href="#fruits-vegetables" class="footer-category-link">Fruits & Vegetables</a></li>
-                        <li><a href="#dairy-bakery" class="footer-category-link">Dairy & Bakery</a></li>
-                        <li><a href="#groceries-pantry" class="footer-category-link">Groceries & Pantry</a></li>
-                        <li><a href="#beverages" class="footer-category-link">Beverages</a></li>
-                        <li><a href="#snacks-sweets" class="footer-category-link">Snacks & Sweets</a></li>
-                        <li><a href="#household-others" class="footer-category-link">Household & Others</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col" id="contact-us-section">
-                    <h3>Contact Us</h3>
-                    <p>Chitwan, Bagmati Province, Nepal</p>
-                    <p>Phone: <a href="tel:+9779845138033">+977-9845138033</a></p>
-                    <div class="social-icons">
-                        <a href="https://facebook.com"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://twitter.com"><i class="fab fa-twitter"></i></a>
-                        <a href="https://instagram.com"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>© 2025 SK Enterprises. All rights reserved.</p>
-            </div>
+            <p>© 2025 SK Enterprises. All rights reserved.</p>
         </div>
     </footer>
 

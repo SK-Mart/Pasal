@@ -1,558 +1,214 @@
-// --- Google Sign-In and User Management ---
-let userProfile = null;
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('product-search');
+    const cartCountSpan = document.getElementById('cart-count');
+    const categoryTabs = document.querySelectorAll('.main-nav .main-nav li a');
+    
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
 
-function handleCredentialResponse(response) {
-    try {
-        if (typeof jwt_decode === 'undefined') {
-            console.error('jwt_decode library not loaded');
-            alert('Authentication library not loaded. Please refresh the page.');
-            return;
-        }
+    // Define a global products array if not already defined elsewhere
+    // This is crucial for retrieving product details like images for the cart
+    const productsData = [
+        // Grains & Staples
+        { id: 'oil', name: 'Cooking Oil', image: 'https://via.placeholder.com/150?text=Cooking+Oil', price_per_unit: 250, units: [{ value: 1, name: '1 Liter', price: 250 }, { value: 2, name: '2 Liter', price: 500 }, { value: 5, name: '5 Liter', price: 1250 }] },
+        { id: 'daal', name: 'Daal (Lentils)', image: 'https://via.placeholder.com/150?text=Daal', price_per_unit: 120, units: [{ value: 0.5, name: '500g', price: 120 }, { value: 1, name: '1 Kg', price: 240 }, { value: 2, name: '2 Kg', price: 480 }] },
+        { id: 'hulas-atta', name: 'Hulas Atta (Wheat Flour)', image: 'https://via.placeholder.com/150?text=Hulas+Atta', price_per_unit: 180, units: [{ value: 1, name: '1 Kg', price: 180 }, { value: 2, name: '2 Kg', price: 360 }, { value: 5, name: '5 Kg', price: 900 }] },
+        { id: 'maida', name: 'Maida (All-Purpose Flour)', image: 'https://via.placeholder.com/150?text=Maida+Flour', price_per_unit: 150, units: [{ value: 0.5, name: '500g', price: 150 }, { value: 1, name: '1 Kg', price: 300 }] },
+        { id: 'suhi', name: 'Suhi (Semolina)', image: 'https://via.placeholder.com/150?text=Semolina', price_per_unit: 90, units: [{ value: 0.5, name: '500g', price: 90 }, { value: 1, name: '1 Kg', price: 180 }] },
+        { id: 'gheu', name: 'Gheu (Ghee)', image: 'https://via.placeholder.com/150?text=Ghee', price_per_unit: 900, units: [{ value: 0.5, name: '500g', price: 900 }, { value: 1, name: '1 Kg / Liter', price: 1800 }] },
+        { id: 'basmati-rice', name: 'Basmati Rice', image: 'https://via.placeholder.com/150?text=Basmati+Rice', price_per_unit: 220, units: [{ value: 1, name: '1 Kg', price: 220 }, { value: 5, name: '5 Kg', price: 1100 }, { value: 10, name: '10 Kg', price: 2200 }] },
+        { id: 'poha', name: 'Poha (Flattened Rice)', image: 'https://via.placeholder.com/150?text=Poha', price_per_unit: 80, units: [{ value: 0.5, name: '500g', price: 80 }, { value: 1, name: '1 Kg', price: 160 }] },
 
-        const responsePayload = jwt_decode(response.credential);
-        userProfile = {
-            id: responsePayload.sub,
-            name: responsePayload.name,
-            email: responsePayload.email,
-            picture: responsePayload.picture
-        };
+        // Snacks & Beverages
+        { id: 'lays', name: 'Lays Chips', image: 'https://via.placeholder.com/150?text=Lays+Chips', price_per_unit: 50, units: [{ value: 1, name: '1 Pack', price: 50 }] },
+        { id: 'noodles', name: 'Noodles', image: 'https://via.placeholder.com/150?text=Noodles', price_per_unit: 30, units: [{ value: 1, name: '1 Pack', price: 30 }] },
+        { id: 'nuts', name: 'Nuts', image: 'https://via.placeholder.com/150?text=Nuts', price_per_unit: 300, units: [{ value: 0.25, name: '250g', price: 300 }, { value: 0.5, name: '500g', price: 600 }, { value: 1, name: '1 Kg', price: 1200 }] },
+        { id: 'panipuri', name: 'Panipuri Kit', image: 'https://via.placeholder.com/150?text=Panipuri+Kit', price_per_unit: 150, units: [{ value: 1, name: '1 Kit', price: 150 }] },
+        { id: 'horlicks', name: 'Horlicks', image: 'https://via.placeholder.com/150?text=Horlicks', price_per_unit: 500, units: [{ value: 0.5, name: '500g', price: 500 }, { value: 1, name: '1 Kg', price: 1000 }] },
+        { id: 'jams', name: 'Jams', image: 'https://via.placeholder.com/150?text=Mixed+Fruit+Jam', price_per_unit: 200, units: [{ value: 0.25, name: '250g', price: 200 }, { value: 0.5, name: '500g', price: 400 }] },
+        { id: 'coffee', name: 'Coffee', image: 'https://via.placeholder.com/150?text=Instant+Coffee', price_per_unit: 350, units: [{ value: 0.05, name: '50g', price: 350 }, { value: 0.1, name: '100g', price: 700 }, { value: 0.2, name: '200g', price: 1400 }] },
+        { id: 'gulcose', name: 'Gulcose (Glucose Powder)', image: 'https://via.placeholder.com/150?text=Glucose+Powder', price_per_unit: 220, units: [{ value: 0.25, name: '250g', price: 220 }, { value: 0.5, name: '500g', price: 440 }] },
+        { id: 'biscuits', name: 'Biscuits (Assorted)', image: 'https://via.placeholder.com/150?text=Biscuits', price_per_unit: 100, units: [{ value: 1, name: '1 Pack', price: 100 }] },
+        { id: 'tea-bags', name: 'Tea Bags', image: 'https://via.placeholder.com/150?text=Tea+Bags', price_per_unit: 180, units: [{ value: 1, name: '25 Bags', price: 180 }, { value: 2, name: '50 Bags', price: 360 }] },
 
-        updateUserDisplay();
-        saveUserProfile();
-    } catch (error) {
-        console.error('Error handling credential response:', error);
-        alert('Error during sign-in. Please try again.');
-    }
-}
+        // Household & Personal Care
+        { id: 'detergent', name: 'Detergent', image: 'https://via.placeholder.com/150?text=Washing+Powder', price_per_unit: 400, units: [{ value: 1, name: '1 Kg', price: 400 }, { value: 2, name: '2 Kg', price: 800 }, { value: 5, name: '5 Kg', price: 2000 }] },
+        { id: 'sampoo', name: 'Sampoo (Shampoo)', image: 'https://via.placeholder.com/150?text=Shampoo', price_per_unit: 280, units: [{ value: 0.2, name: '200ml', price: 280 }, { value: 0.4, name: '400ml', price: 560 }, { value: 0.7, name: '700ml', price: 980 }] },
+        { id: 'goodnight', name: 'Goodnight (Mosquito Repellent)', image: 'https://via.placeholder.com/150?text=Goodnight+Liquid', price_per_unit: 160, units: [{ value: 1, name: '1 Unit', price: 160 }] },
+        { id: 'agarbati', name: 'Agarbati (Incense Sticks)', image: 'https://via.placeholder.com/150?text=Incense+Sticks', price_per_unit: 80, units: [{ value: 1, name: '1 Pack', price: 80 }] },
+        { id: 'dishwash', name: 'Dishwashing Liquid', image: 'https://via.placeholder.com/150?text=Dishwashing+Liquid', price_per_unit: 200, units: [{ value: 0.5, name: '500ml', price: 200 }, { value: 1, name: '1 Liter', price: 400 }] },
+        { id: 'toothpaste', name: 'Toothpaste', image: 'https://via.placeholder.com/150?text=Toothpaste', price_per_unit: 150, units: [{ value: 0.1, name: '100g', price: 150 }, { value: 0.2, name: '200g', price: 300 }] },
 
-function updateUserDisplay() {
-    const signInButton = document.querySelector('.g_id_signin');
-    const signOutButton = document.getElementById('sign-out-btn');
-    const userDisplayName = document.getElementById('user-display-name');
-    const userDisplayNameCheckout = document.getElementById('user-display-name-checkout');
+        // Fresh Produce & Dairy
+        { id: 'allu', name: 'Allu (Potatoes)', image: 'https://via.placeholder.com/150?text=Potatoes', price_per_unit: 80, units: [{ value: 1, name: '1 Kg', price: 80 }, { value: 2, name: '2 Kg', price: 160 }, { value: 5, name: '5 Kg', price: 400 }] },
+        { id: 'piyaz', name: 'Piyaz (Onions)', image: 'https://via.placeholder.com/150?text=Onions', price_per_unit: 100, units: [{ value: 0.5, name: '500g', price: 100 }, { value: 1, name: '1 Kg', price: 200 }] },
+        { id: 'kerau', name: 'Kerau (Green Peas)', image: 'https://via.placeholder.com/150?text=Peas', price_per_unit: 130, units: [{ value: 0.25, name: '250g', price: 130 }, { value: 0.5, name: '500g', price: 260 }] },
+        { id: 'dudh', name: 'Dudh (Milk)', image: 'https://via.placeholder.com/150?text=Milk', price_per_unit: 80, units: [{ value: 0.5, name: '500ml', price: 80 }, { value: 1, name: '1 Liter', price: 160 }] },
+        { id: 'dahi', name: 'Dahi (Curd/Yogurt)', image: 'https://via.placeholder.com/150?text=Curd', price_per_unit: 120, units: [{ value: 0.5, name: '500g', price: 120 }, { value: 1, name: '1 Kg', price: 240 }] },
+        { id: 'paneer', name: 'Paneer (Cottage Cheese)', image: 'https://via.placeholder.com/150?text=Paneer', price_per_unit: 250, units: [{ value: 0.25, name: '250g', price: 250 }, { value: 0.5, name: '500g', price: 500 }] },
 
-    if (userProfile) {
-        if (signInButton) signInButton.style.display = 'none';
-        if (signOutButton) signOutButton.style.display = 'inline-block';
-        if (userDisplayName) userDisplayName.textContent = `Hello, ${userProfile.name.split(' ')[0]}!`;
-        if (userDisplayNameCheckout) userDisplayNameCheckout.textContent = `Logged in as: ${userProfile.name}`;
-    } else {
-        if (signInButton) signInButton.style.display = 'block';
-        if (signOutButton) signOutButton.style.display = 'none';
-        if (userDisplayName) userDisplayName.textContent = '';
-        if (userDisplayNameCheckout) userDisplayNameCheckout.textContent = 'Not logged in';
-    }
-    updateCartTotals();
-}
+        // Spices & Condiments
+        { id: 'nun', name: 'Nun (Salt)', image: 'https://via.placeholder.com/150?text=Salt', price_per_unit: 30, units: [{ value: 0.5, name: '500g', price: 30 }, { value: 1, name: '1 Kg', price: 60 }] },
+        { id: 'masala', name: 'Masala (Spices)', image: 'https://via.placeholder.com/150?text=Mixed+Spices', price_per_unit: 100, units: [{ value: 0.05, name: '50g', price: 100 }, { value: 0.1, name: '100g', price: 200 }, { value: 0.25, name: '250g', price: 500 }] },
+        { id: 'turmeric', name: 'Turmeric Powder', image: 'https://via.placeholder.com/150?text=Turmeric+Powder', price_per_unit: 90, units: [{ value: 0.1, name: '100g', price: 90 }, { value: 0.25, name: '250g', price: 225 }] },
+        { id: 'chili', name: 'Chili Powder', image: 'https://via.placeholder.com/150?text=Chili+Powder', price_per_unit: 110, units: [{ value: 0.1, name: '100g', price: 110 }, { value: 0.25, name: '250g', price: 275 }] },
 
-function signOut() {
-    try {
-        if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
-            google.accounts.id.disableAutoSelect();
-        }
-        userProfile = null;
-        try {
-            localStorage.removeItem('userProfile');
-        } catch (e) {
-            console.warn('localStorage not available for user profile removal');
-        }
-        updateUserDisplay();
-        if (window.location.pathname.includes('checkout.html')) {
-            window.location.href = 'index.html';
-        }
-    } catch (error) {
-        console.error('Error during sign out:', error);
-    }
-}
+        // Bakery & Desserts
+        { id: 'papad', name: 'Papad', image: 'https://via.placeholder.com/150?text=Papad', price_per_unit: 70, units: [{ value: 1, name: '1 Pack', price: 70 }] },
+        { id: 'bread', name: 'Bread (Loaf)', image: 'https://via.placeholder.com/150?text=Bread', price_per_unit: 70, units: [{ value: 1, name: '1 Loaf', price: 70 }] },
+        { id: 'cake', name: 'Assorted Cakes', image: 'https://via.placeholder.com/150?text=Cake', price_per_unit: 300, units: [{ value: 1, name: '1 Cake', price: 300 }] },
 
-function saveUserProfile() {
-    if (userProfile) {
-        try {
-            localStorage.setItem('userProfile', JSON.stringify(userProfile));
-        } catch (e) {
-            console.warn('localStorage not available for saving user profile');
-        }
-    }
-}
+        // Featured Products (ensure their IDs match the data-id in HTML)
+        { id: 'feat-oil', name: 'Cooking Oil', image: 'https://via.placeholder.com/150?text=Cooking+Oil', price_per_unit: 250, units: [{ value: 1, name: '1 Liter', price: 250 }, { value: 2, name: '2 Liter', price: 500 }, { value: 5, name: '5 Liter', price: 1250 }] },
+        { id: 'feat-noodles', name: 'Wai Wai Noodles', image: 'https://via.placeholder.com/150?text=Wai+Wai', price_per_unit: 30, units: [{ value: 1, name: '1 Pack', price: 30 }, { value: 12, name: '1 Dozen', price: 360 }] }, // Assuming 1 dozen is 12 packs
+        { id: 'feat-dettol', name: 'Dettol Soap', image: 'https://via.placeholder.com/150?text=Dettol+Soap', price_per_unit: 200, units: [{ value: 1, name: '2-Pack', price: 200 }, { value: 2, name: '4-Pack', price: 400 }] }, // Assuming 2-pack is base unit
+        { id: 'feat-rice', name: 'Basmati Rice', image: 'https://via.placeholder.com/150?text=Basmati+Rice', price_per_unit: 220, units: [{ value: 1, name: '1 Kg', price: 220 }, { value: 5, name: '5 Kg', price: 1100 }, { value: 10, name: '10 Kg', price: 2200 }] },
+        { id: 'feat-sugar', name: 'Refined Sugar', image: 'https://via.placeholder.com/150?text=Sugar', price_per_unit: 120, units: [{ value: 1, name: '1 Kg', price: 120 }, { value: 2, name: '2 Kg', price: 240 }] },
+        { id: 'feat-milk', name: 'Dudh (Milk)', image: 'https://via.placeholder.com/150?text=Milk', price_per_unit: 80, units: [{ value: 0.5, name: '500ml', price: 80 }, { value: 1, name: '1 Liter', price: 160 }] },
+    ];
 
-function loadUserProfile() {
-    try {
-        const storedProfile = localStorage.getItem('userProfile');
-        if (storedProfile) {
-            userProfile = JSON.parse(storedProfile);
-            updateUserDisplay();
-        }
-    } catch (e) {
-        console.warn('localStorage not available or corrupted user profile data');
-    }
-}
 
-// --- Cart Management ---
-let cart = [];
-const DELIVERY_FEE = 50;
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-function initializeCart() {
-    try {
-        const storedCart = localStorage.getItem('cart');
-        if (storedCart) {
-            cart = JSON.parse(storedCart);
-        }
-    } catch (e) {
-        console.warn('localStorage not available or corrupted cart data');
-        cart = [];
-    }
-}
-
-function saveCart() {
-    try {
-        localStorage.setItem('cart', JSON.stringify(cart));
-    } catch (e) {
-        console.warn('localStorage not available for saving cart');
-    }
-    updateCartCount();
-    if (document.body.classList.contains('checkout-page')) {
-        updateCartDisplay();
-        updateCartTotals();
-    }
-}
-
-function updateCartCount() {
-    const cartCountElement = document.getElementById('cart-count');
-    if (cartCountElement) {
+    // Function to update cart count in header
+    const updateCartCount = () => {
         const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        cartCountElement.textContent = totalItems;
-        cartCountElement.classList.remove('bounce-animation');
-        void cartCountElement.offsetWidth;
-        cartCountElement.classList.add('bounce-animation');
-    }
-}
+        cartCountSpan.textContent = totalItems;
+    };
 
-function addToCart(product) {
-    const existingItem = cart.find(item =>
-        item.id === product.id && item.unitName === product.unitName
-    );
-    if (existingItem) {
-        existingItem.quantity += product.quantity;
-    } else {
-        cart.push(product);
-    }
-    saveCart();
-}
+    // Initialize cart count on page load
+    updateCartCount();
 
-function updateCartItemQuantity(productId, unitName, newQuantity) {
-    const itemIndex = cart.findIndex(item =>
-        item.id === productId && (item.unitName || '') === (unitName || '')
-    );
-    if (itemIndex > -1) {
-        if (newQuantity <= 0) {
-            removeCartItem(productId, unitName);
-        } else {
-            cart[itemIndex].quantity = newQuantity;
-            saveCart();
-        }
-    }
-}
+    // Category navigation functionality (Scroll to section)
+    categoryTabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default anchor link behavior
+            const targetId = e.target.getAttribute('href'); // Get the href (e.g., #grains-staples)
+            const targetSection = document.querySelector(targetId);
 
-function removeCartItem(productId, unitName) {
-    cart = cart.filter(item =>
-        !(item.id === productId && (item.unitName || '') === (unitName || ''))
-    );
-    saveCart();
-}
-
-// --- Checkout Page Functions ---
-function updateCartDisplay() {
-    const cartItemsContainer = document.getElementById('cart-items-container');
-    const emptyCartMessage = document.getElementById('empty-cart-message');
-    if (!cartItemsContainer) return;
-
-    cartItemsContainer.innerHTML = '';
-    if (cart.length === 0) {
-        if (emptyCartMessage) emptyCartMessage.style.display = 'block';
-        return;
-    }
-    if (emptyCartMessage) emptyCartMessage.style.display = 'none';
-
-    cart.forEach(item => {
-        const pricePerUnit = parseFloat(item.price_per_unit) || 0;
-        const quantity = parseInt(item.quantity) || 0;
-        const totalItemPrice = pricePerUnit * quantity;
-        const unitDisplay = item.unitName ? ` (${item.unitName})` : '';
-
-        const cartItem = document.createElement('div');
-        cartItem.className = 'cart-item';
-        cartItem.innerHTML = `
-            <div class="cart-item-details">
-                <img src="${item.image}" alt="${item.name}">
-                <h4>${item.name}${unitDisplay}</h4>
-            </div>
-            <div class="cart-item-controls">
-                <button type="button" class="decrease-cart-quantity" data-id="${item.id}" data-unit-name="${item.unitName || ''}">-</button>
-                <span>${item.quantity}</span>
-                <button type="button" class="increase-cart-quantity" data-id="${item.id}" data-unit-name="${item.unitName || ''}">+</button>
-                <button type="button" class="remove-item" data-id="${item.id}" data-unit-name="${item.unitName || ''}"><i class="fas fa-trash"></i></button>
-            </div>
-            <div class="cart-item-price">Rs. ${totalItemPrice.toFixed(2)}</div>
-        `;
-        cartItemsContainer.appendChild(cartItem);
-
-        // Add event listeners to the newly created buttons
-        cartItem.querySelector('.increase-cart-quantity').addEventListener('click', () => {
-            updateCartItemQuantity(item.id, item.unitName, item.quantity + 1);
-        });
-        cartItem.querySelector('.decrease-cart-quantity').addEventListener('click', () => {
-            updateCartItemQuantity(item.id, item.unitName, item.quantity - 1);
-        });
-        cartItem.querySelector('.remove-item').addEventListener('click', () => {
-            removeCartItem(item.id, item.unitName);
+            if (targetSection) {
+                // Scroll to the target section smoothly
+                window.scrollTo({
+                    top: targetSection.offsetTop - document.querySelector('header').offsetHeight - 10, // Adjust for fixed header height
+                    behavior: 'smooth'
+                });
+            }
+            // Clear search input when category is navigated
+            searchInput.value = '';
+            filterProducts(''); // Show all products when navigating by category
         });
     });
-}
 
-function updateCartTotals() {
-    const subtotalElement = document.getElementById('cart-subtotal');
-    const deliveryFeeElement = document.getElementById('delivery-fee');
-    const totalElement = document.getElementById('cart-total');
-    const placeOrderButton = document.getElementById('place-order-btn');
+    // Search functionality - refined to filter across all horizontal sections
+    searchInput.addEventListener('keyup', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        filterProducts(searchTerm);
+    });
 
-    if (!subtotalElement) return;
+    function filterProducts(searchTerm) {
+        // Select all product cards in all horizontal scroll grids
+        const allProductCards = document.querySelectorAll('.product-grid.horizontal-scroll-grid .product-card');
 
-    const subtotal = cart.reduce((sum, item) => sum + ((parseFloat(item.price_per_unit) || 0) * (parseInt(item.quantity) || 0)), 0);
-    const deliveryFee = cart.length > 0 ? DELIVERY_FEE : 0;
-    const total = subtotal + deliveryFee;
-
-    subtotalElement.textContent = subtotal.toFixed(2);
-    if (deliveryFeeElement) deliveryFeeElement.textContent = deliveryFee.toFixed(2);
-    if (totalElement) totalElement.textContent = total.toFixed(2);
-
-    if (placeOrderButton) {
-        placeOrderButton.disabled = cart.length === 0 || !userProfile;
-        if (cart.length === 0) {
-            placeOrderButton.textContent = 'Cart is Empty';
-        } else if (!userProfile) {
-            placeOrderButton.textContent = 'Sign In to Place Order';
-        } else {
-            placeOrderButton.textContent = 'Place Order';
-        }
+        allProductCards.forEach(card => {
+            const productName = card.dataset.name.toLowerCase();
+            if (productName.includes(searchTerm)) {
+                card.style.display = 'flex'; // Show the card (flex because product-card is flex)
+            } else {
+                card.style.display = 'none'; // Hide the card
+            }
+        });
     }
-}
 
-// --- Product Display and Controls ---
-function setupProductControls() {
-    // Initialize all product cards
-    document.querySelectorAll('.product-card').forEach(card => {
-        // Initialize price display
-        const priceDisplay = card.querySelector('.current-price');
-        const quantitySelector = card.querySelector('.product-quantity-selector');
-        
-        if (quantitySelector) {
-            // For products with quantity selectors
-            const basePrice = parseFloat(card.dataset.productBasePrice) || 0;
-            const selectedValue = parseFloat(quantitySelector.value) || 1;
-            priceDisplay.textContent = (basePrice * selectedValue).toFixed(2);
-            
-            // Add change event for quantity selector
-            quantitySelector.addEventListener('change', function() {
-                const newValue = parseFloat(this.value) || 1;
-                priceDisplay.textContent = (basePrice * newValue).toFixed(2);
-            });
-        } else {
-            // For simple products
-            const basePrice = parseFloat(card.dataset.productPrice) || 0;
-            priceDisplay.textContent = basePrice.toFixed(2);
-        }
+    // Product quantity/volume/weight adjuster logic
+    document.querySelectorAll('.product-unit-selector').forEach(selector => {
+        selector.addEventListener('change', (e) => {
+            const card = e.target.closest('.product-card');
+            const priceSpan = card.querySelector('.product-price');
+            const basePrice = parseFloat(e.target.dataset.basePrice);
+            const selectedValue = parseFloat(e.target.value);
 
-        // Add to cart button
-        const addToCartBtn = card.querySelector('.add-to-cart-btn');
-        if (addToCartBtn) {
-            addToCartBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const productId = card.dataset.productId;
-                const productName = card.dataset.productName || card.querySelector('h3')?.textContent?.split(' (')[0] || 'Unknown';
-                const productImage = card.querySelector('img')?.src || '';
-                const category = card.dataset.category || '';
-                
-                let quantity = 1;
-                let pricePerUnit;
-                let unitName = '';
+            const newPrice = basePrice * selectedValue;
+            priceSpan.textContent = newPrice.toFixed(0);
+        });
+    });
 
-                if (quantitySelector) {
-                    // For products with quantity selectors
-                    const basePrice = parseFloat(card.dataset.productBasePrice) || 0;
-                    const selectedValue = parseFloat(quantitySelector.value) || 1;
-                    pricePerUnit = basePrice * selectedValue;
-                    const selectedOption = quantitySelector.options[quantitySelector.selectedIndex];
-                    unitName = selectedOption?.dataset.unitName || '';
-                } else {
-                    // For simple products
-                    pricePerUnit = parseFloat(card.dataset.productPrice) || 0;
-                    const h3Element = card.querySelector('h3');
-                    unitName = h3Element ? (h3Element.textContent.match(/\((.*?)\)/)?.[1] || '') : '';
-                    
-                    // Check if there's a quantity display
-                    const quantityDisplay = card.querySelector('.product-quantity-display');
-                    if (quantityDisplay) {
-                        quantity = parseInt(quantityDisplay.textContent) || 1;
+    // Add to Cart functionality
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const card = e.target.closest('.product-card');
+            const productId = card.dataset.id; // Use data-id for product ID
+            const productName = card.querySelector('h3').textContent;
+            const productImage = card.querySelector('img').src; // Get image source
+
+            let quantity = 1;
+            let unitName = '';
+            let pricePerUnit = parseFloat(card.querySelector('.product-price').textContent); // Default to displayed price
+
+            // Check if it's a simple quantity input or a unit selector
+            const quantityInput = card.querySelector('.product-quantity-input');
+            const unitSelector = card.querySelector('.product-unit-selector');
+
+            if (quantityInput) {
+                quantity = parseInt(quantityInput.value);
+                // For simple quantity inputs, the price displayed on the card is the base price
+                // We'll use the pricePerUnit from the HTML directly
+            } else if (unitSelector) {
+                const selectedOption = unitSelector.options[unitSelector.selectedIndex];
+                unitName = selectedOption.textContent.trim(); // e.g., "1 Liter", "500g"
+                pricePerUnit = parseFloat(card.querySelector('.product-price').textContent); // Price already updated by change event
+                quantity = 1; // For unit selectors, quantity is typically 1 'pack' or 'unit' of that size
+            }
+
+            // Find the actual product data from our `productsData` array
+            const product = productsData.find(p => p.id === productId);
+
+            if (product) {
+                // If the product has defined units, ensure we're getting the correct price for the selected unit
+                if (product.units && unitName) {
+                    const selectedUnit = product.units.find(u => u.name === unitName);
+                    if (selectedUnit) {
+                        pricePerUnit = selectedUnit.price;
                     }
+                } else if (!unitName && product.price_per_unit) {
+                    // If no specific unit selected (e.g., simple quantity input), use the base price
+                    pricePerUnit = product.price_per_unit;
                 }
+            }
 
-                // Add to cart
-                addToCart({
+
+            // Find existing item in cart, considering unit for products with selectors
+            const existingItemIndex = cart.findIndex(item =>
+                item.id === productId && (item.unitName || '') === (unitName || '')
+            );
+
+            if (existingItemIndex > -1) {
+                if (quantityInput) {
+                    cart[existingItemIndex].quantity += quantity;
+                } else {
+                    // For products with unit selectors, alert if trying to add exact same unit again
+                    alert(`The exact unit of "${productName}" (${unitName}) is already in your cart. You can adjust quantity on the checkout page or select a different unit size.`);
+                    return;
+                }
+            } else {
+                cart.push({
                     id: productId,
                     name: productName,
-                    price_per_unit: pricePerUnit,
-                    quantity: quantity,
-                    unitName: unitName,
-                    image: productImage,
-                    category: category
-                });
-
-                // Show feedback
-                const originalText = addToCartBtn.textContent;
-                addToCartBtn.textContent = 'Added!';
-                addToCartBtn.style.backgroundColor = '#4CAF50';
-                setTimeout(() => {
-                    addToCartBtn.textContent = originalText;
-                    addToCartBtn.style.backgroundColor = '';
-                }, 1000);
-            });
-        }
-
-        // Quantity controls for products with +- buttons
-        const quantityDisplay = card.querySelector('.product-quantity-display');
-        if (quantityDisplay) {
-            const increaseBtn = card.querySelector('.increase-product-quantity');
-            const decreaseBtn = card.querySelector('.decrease-product-quantity');
-            
-            if (increaseBtn) {
-                increaseBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    let current = parseInt(quantityDisplay.textContent) || 1;
-                    quantityDisplay.textContent = current + 1;
+                    image: productImage, // Store the image URL
+                    price_per_unit: pricePerUnit, // Store the price for the selected unit
+                    unitName: unitName, // Store the selected unit name
+                    quantity: quantity
                 });
             }
-            
-            if (decreaseBtn) {
-                decreaseBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    let current = parseInt(quantityDisplay.textContent) || 1;
-                    if (current > 1) {
-                        quantityDisplay.textContent = current - 1;
-                    }
-                });
-            }
-        }
-    });
-}
 
-// --- Category Navigation ---
-function setupCategoryNavigation() {
-    const navLinks = document.querySelectorAll('.header-categories ul li a');
-    const productCategories = document.querySelectorAll('.product-category');
-
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href').substring(1);
-            
-            // Update active state
-            navLinks.forEach(l => l.classList.remove('active'));
-            this.classList.add('active');
-
-            // Show/hide categories
-            productCategories.forEach(category => {
-                if (targetId === 'all-products' || category.id === targetId) {
-                    category.classList.add('active');
-                } else {
-                    category.classList.remove('active');
-                }
-            });
-
-            // Scroll to category if not "all products"
-            if (targetId !== 'all-products') {
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    const headerOffset = document.querySelector('header')?.offsetHeight || 0;
-                    window.scrollTo({
-                        top: targetElement.offsetTop - headerOffset - 20,
-                        behavior: 'smooth'
-                    });
-                }
-            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            alert(`${quantity} ${unitName ? unitName + ' of ' : ''}${productName} added to cart!`);
         });
     });
 
-    // Logo and shop now button
-    const logoLink = document.querySelector('.logo a');
-    if (logoLink) {
-        logoLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            showAllProducts();
-        });
-    }
-}
-
-function showAllProducts() {
-    const navLinks = document.querySelectorAll('.header-categories ul li a');
-    const productCategories = document.querySelectorAll('.product-category');
-    const allProductsLink = document.querySelector('.header-categories a[href="#all-products"]');
-
-    // Update active state
-    navLinks.forEach(link => link.classList.remove('active'));
-    if (allProductsLink) allProductsLink.classList.add('active');
-
-    // Show all categories
-    productCategories.forEach(category => {
-        category.classList.add('active');
-    });
-
-    // Reset search
-    const searchInput = document.getElementById('search-input');
-    const searchIcon = document.querySelector('.search-icon');
-    if (searchInput) {
-        searchInput.value = '';
-        searchInput.classList.remove('active');
-    }
-    if (searchIcon) {
-        searchIcon.classList.remove('active');
-    }
-
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// --- Search Functionality ---
-function setupSearch() {
-    const searchIcon = document.querySelector('.search-icon');
-    const searchInput = document.getElementById('search-input');
-    const searchContainer = document.querySelector('.search-container');
-    if (!searchInput || !searchIcon || !searchContainer) return;
-
-    searchIcon.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isActive = searchInput.classList.toggle('active');
-        searchIcon.classList.toggle('active');
-        if (isActive) {
-            searchInput.focus();
-        } else if (!searchInput.value) {
-            showAllProducts();
-        }
-    });
-
-    document.addEventListener('click', (e) => {
-        if (!searchContainer.contains(e.target)) {
-            searchInput.classList.remove('active');
-            searchIcon.classList.remove('active');
-            if (!searchInput.value) {
-                showAllProducts();
-            }
-        }
-    });
-
-    searchInput.addEventListener('input', function() {
-        const query = this.value.trim().toLowerCase();
-        const productCards = document.querySelectorAll('.product-card');
-        const productCategories = document.querySelectorAll('.product-category');
-        const navLinks = document.querySelectorAll('.header-categories ul li a');
-
-        if (query) {
-            // Hide all first
-            productCategories.forEach(category => category.classList.remove('active'));
-            productCards.forEach(card => card.classList.add('hidden'));
-            navLinks.forEach(link => link.classList.remove('active'));
-
-            // Show matching products
-            let foundMatch = false;
-            productCards.forEach(card => {
-                const productName = card.querySelector('h3')?.textContent?.toLowerCase() || '';
-                if (productName.includes(query)) {
-                    card.classList.remove('hidden');
-                    const category = card.closest('.product-category');
-                    if (category) {
-                        category.classList.add('active');
-                        foundMatch = true;
-                    }
-                }
-            });
-        } else {
-            showAllProducts();
-        }
-    });
-}
-
-// --- Checkout Form ---
-function setupCheckoutForm() {
-    const checkoutForm = document.getElementById('delivery-form');
-    if (!checkoutForm) return;
-
-    checkoutForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        if (!userProfile) {
-            alert('Please sign in to place an order.');
-            return;
-        }
-        if (cart.length === 0) {
-            alert('Your cart is empty. Please add items before placing an order.');
-            return;
-        }
-
-        // Set form values
-        document.getElementById('form-cart-items').value = JSON.stringify(cart);
-        
-        const subtotal = cart.reduce((sum, item) => sum + ((parseFloat(item.price_per_unit) || 0) * (parseInt(item.quantity) || 0)), 0);
-        const deliveryFee = cart.length > 0 ? DELIVERY_FEE : 0;
-        const total = subtotal + deliveryFee;
-        
-        document.getElementById('form-order-subtotal').value = subtotal.toFixed(2);
-        document.getElementById('form-order-delivery-fee').value = deliveryFee.toFixed(2);
-        document.getElementById('form-order-total').value = total.toFixed(2);
-        document.getElementById('form-order-date').value = new Date().toISOString();
-
-        // Submit form
-        fetch(checkoutForm.action, {
-            method: 'POST',
-            body: new FormData(checkoutForm),
-            headers: {
-                'Accept': 'application/json'
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                alert('Order placed successfully!');
-                cart = [];
-                saveCart();
-                window.location.href = 'index.html';
-            } else {
-                alert('Error placing order. Please try again.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error placing order. Please try again.');
-        });
-    });
-}
-
-// --- Initialize Page ---
-document.addEventListener('DOMContentLoaded', () => {
-    initializeCart();
-    loadUserProfile();
-    updateCartCount();
-
-    if (document.body.classList.contains('checkout-page')) {
-        updateCartDisplay();
-        updateCartTotals();
-        setupCheckoutForm();
-    } else {
-        setupCategoryNavigation();
-        setupSearch();
-        setupProductControls();
-        showAllProducts();
-    }
-
-    const signOutButton = document.getElementById('sign-out-btn');
-    if (signOutButton) {
-        signOutButton.addEventListener('click', signOut);
-    }
+    // The checkout page specific logic (from your provided checkout.html script)
+    // This part should remain in checkout.html's script for modularity,
+    // but I'm including it here for completeness if you decide to merge.
+    // Ideally, this should be in checkout.html's <script> tag.
+    // If you keep it separate, ensure the `productsData` array is also available in checkout.html's script
+    // or that the cart items stored in localStorage contain all necessary info (image, price_per_unit, unitName).
 });

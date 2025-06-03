@@ -1,0 +1,538 @@
+/* Separate CSS for Checkout Page - checkout_styles.css */
+
+/* Animations for form elements */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.checkout-main-container {
+    padding: 30px 0;
+    background-color: #f8f8f8;
+}
+
+.checkout-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px; /* Increased gap */
+    padding: 40px; /* Increased padding */
+    background-color: #fff;
+    border-radius: 15px; /* More rounded corners */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* Deeper shadow */
+    perspective: 1000px; /* For 3D effects on container */
+}
+
+.checkout-form-section,
+.cart-summary-section {
+    flex: 1;
+    min-width: 320px; /* Minimum width for responsiveness */
+    padding: 30px; /* Consistent padding */
+    border-radius: 12px;
+    background-color: #fdfdfd; /* Very light background for internal sections */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Internal shadow */
+    transition: all 0.5s ease-out;
+    transform-style: preserve-3d; /* Enable 3D transforms */
+}
+
+.checkout-form-section:hover,
+.cart-summary-section:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.checkout-form-section h2,
+.cart-summary-section h2 {
+    color: #6A0DAD; /* Brand color */
+    margin-bottom: 30px;
+    border-bottom: 4px solid #FF4500; /* Thicker, contrasting border */
+    padding-bottom: 15px;
+    text-align: center;
+    font-size: 2.5em; /* Larger heading */
+    font-weight: 800;
+    position: relative;
+    letter-spacing: 1px;
+}
+.checkout-form-section h2::after,
+.cart-summary-section h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: #8A2BE2; /* A complementary accent color */
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+.checkout-form fieldset {
+    border: 1px solid #e5e5e5; /* Lighter, subtle border */
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Subtle internal shadow */
+    animation: slideInUp 0.8s ease-out forwards; /* Animation for fieldsets */
+    opacity: 0; /* Start hidden for animation */
+}
+/* Apply animation delay to each fieldset */
+.checkout-form fieldset:nth-child(1) { animation-delay: 0.1s; }
+.checkout-form fieldset:nth-child(2) { animation-delay: 0.3s; }
+.checkout-form fieldset:nth-child(3) { animation-delay: 0.5s; }
+
+
+.checkout-form legend {
+    font-size: 1.5em; /* Larger legend */
+    font-weight: bold;
+    color: white;
+    padding: 8px 20px;
+    background-color: #6A0DAD; /* Brand color for legend background */
+    border-radius: 8px;
+    margin-left: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transform: translateZ(20px); /* 3D effect on legend */
+    transition: transform 0.3s ease;
+}
+.checkout-form legend:hover {
+    transform: translateZ(25px) scale(1.02);
+}
+
+.checkout-form label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #444;
+    font-size: 1em;
+}
+
+.checkout-form input[type="text"],
+.checkout-form input[type="email"],
+.checkout-form input[type="tel"],
+.checkout-form textarea {
+    width: calc(100% - 24px); /* Account for padding */
+    padding: 14px; /* More padding */
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px; /* More rounded */
+    font-size: 1.05em;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    background-color: #fefefe;
+}
+.checkout-form input:focus,
+.checkout-form textarea:focus {
+    border-color: #6A0DAD;
+    box-shadow: 0 0 0 4px rgba(106, 13, 173, 0.25); /* Stronger focus glow */
+    transform: scale(1.01); /* Slight scale on focus */
+}
+
+.checkout-form textarea {
+    resize: vertical;
+    min-height: 120px; /* Taller textarea */
+}
+
+.payment-method-section {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border-top: 2px solid #f0f0f0;
+    padding-top: 30px;
+}
+
+.payment-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 18px; /* More space between options */
+    cursor: pointer;
+    font-size: 1.2em; /* Larger text */
+    color: #333;
+    transition: all 0.3s ease;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #fefefe;
+    border: 1px solid #eee;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.03);
+}
+.payment-option:hover {
+    background-color: #f0f0f5;
+    color: #6A0DAD;
+    transform: translateX(5px);
+}
+
+.payment-method-section input[type="radio"] {
+    margin-right: 15px; /* More space */
+    transform: scale(1.5); /* Much larger radio buttons */
+    accent-color: #6A0DAD; /* Brand color for selected radio button */
+    transition: transform 0.2s ease;
+}
+.payment-method-section input[type="radio"]:checked {
+    transform: scale(1.7); /* Even larger when checked */
+}
+
+.payment-method-section .esewa-qr {
+    text-align: center;
+    margin-top: 30px;
+    background-color: #e6ffe6; /* Light green for eSewa */
+    padding: 25px;
+    border-radius: 12px;
+    border: 3px dashed #a8e4a8; /* Stronger dashed border */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    animation: fadeIn 1s ease-out forwards; /* Fade in animation */
+}
+
+.payment-method-section .esewa-qr h3 {
+    color: #28a745;
+    margin-bottom: 20px;
+    font-size: 1.6em; /* Larger heading */
+    font-weight: bold;
+}
+
+.payment-method-section .esewa-qr img {
+    max-width: 250px; /* Even larger QR */
+    height: auto;
+    border: 3px solid #28a745; /* Stronger green border for QR */
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
+}
+.payment-method-section .esewa-qr img:hover {
+    transform: scale(1.05) rotateZ(2deg); /* Slight scale and rotate on hover */
+}
+
+.payment-method-section .esewa-qr p {
+    margin-top: 18px;
+    font-size: 1em;
+    color: #555;
+    line-height: 1.5;
+}
+
+.place-order-btn {
+    background-color: #6A0DAD; /* Brand color */
+    color: white;
+    border: none;
+    padding: 18px 35px; /* Larger button */
+    border-radius: 10px; /* More rounded */
+    cursor: pointer;
+    font-size: 1.4em; /* Larger text */
+    font-weight: bold;
+    width: 100%;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 35px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    transform: translateZ(10px); /* 3D effect */
+}
+
+.place-order-btn:hover {
+    background-color: #8A2BE2;
+    transform: translateY(-3px) translateZ(15px); /* Lift and push forward */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.cart-summary-section {
+    background-color: #fdfdfd;
+    border-left: 2px solid #f0f0f0; /* Visual separator from form */
+    padding-left: 40px; /* More space */
+}
+
+.checkout-cart-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #f5f5f5; /* Lighter separator */
+    animation: fadeIn 0.8s ease-out forwards; /* Fade in animation */
+    opacity: 0;
+}
+/* Apply animation delay to each cart item */
+.checkout-cart-item:nth-child(1) { animation-delay: 0.1s; }
+.checkout-cart-item:nth-child(2) { animation-delay: 0.2s; }
+.checkout-cart-item:nth-child(3) { animation-delay: 0.3s; }
+/* ... continue for more items if needed, or dynamically add delays with JS */
+
+
+.checkout-cart-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.checkout-cart-item img {
+    width: 90px; /* Larger image */
+    height: 90px;
+    object-fit: cover;
+    border-radius: 10px; /* More rounded */
+    margin-right: 25px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+.checkout-cart-item .item-details {
+    flex-grow: 1;
+}
+
+.checkout-cart-item h4 {
+    margin: 0 0 10px 0;
+    font-size: 1.3em; /* Larger item name */
+    color: #333;
+    font-weight: 600;
+}
+
+.checkout-cart-item p {
+    margin: 0;
+    font-size: 0.95em;
+    color: #666;
+}
+
+.item-quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.item-quantity-controls button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    width: 35px; /* Larger buttons */
+    height: 35px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.2em; /* Larger icon */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.item-quantity-controls button:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+.remove-item-btn {
+    background-color: #dc3545 !important;
+    margin-left: 15px;
+}
+.remove-item-btn:hover {
+    background-color: #c82333 !important;
+}
+
+
+.checkout-cart-item .item-total {
+    font-weight: bold;
+    color: #FF4500; /* Orange-red for item total */
+    font-size: 1.3em; /* Larger item total */
+    margin-left: 20px;
+    white-space: nowrap;
+}
+
+.checkout-total {
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 4px solid #6A0DAD; /* Thicker brand color border */
+    text-align: right;
+    font-size: 1.8em; /* Much larger total */
+    font-weight: bold;
+    color: #333;
+    letter-spacing: 0.5px;
+}
+
+.back-to-shop-btn {
+    display: block;
+    width: fit-content;
+    margin: 25px auto 0;
+    background-color: #6c757d;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 1.1em;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.back-to-shop-btn:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+}
+
+/* Responsive Design for checkout_styles.css */
+@media (max-width: 768px) {
+    .checkout-container {
+        flex-direction: column;
+        gap: 25px;
+        padding: 25px;
+    }
+
+    .checkout-form-section,
+    .cart-summary-section {
+        padding: 20px;
+        box-shadow: none;
+    }
+
+    .checkout-form-section h2,
+    .cart-summary-section h2 {
+        font-size: 2em;
+        margin-bottom: 20px;
+    }
+    .checkout-form-section h2::after,
+    .cart-summary-section h2::after {
+        width: 40px;
+        height: 3px;
+    }
+
+    .checkout-form legend {
+        font-size: 1.3em;
+        margin-left: 15px;
+        padding: 6px 15px;
+    }
+
+    .checkout-form input[type="text"],
+    .checkout-form input[type="email"],
+    .checkout-form input[type="tel"],
+    .checkout-form textarea {
+        padding: 12px;
+        margin-bottom: 18px;
+        width: calc(100% - 16px); /* Adjust for padding */
+    }
+
+    .place-order-btn {
+        padding: 15px 25px;
+        font-size: 1.2em;
+    }
+
+    .cart-summary-section {
+        border-left: none;
+        border-top: 2px solid #f0f0f0;
+        padding-left: 20px; /* Reset padding-left for column layout */
+        padding-top: 20px; /* Add padding-top for separator */
+    }
+
+    .checkout-cart-item img {
+        width: 70px;
+        height: 70px;
+        margin-right: 15px;
+    }
+
+    .checkout-cart-item h4 {
+        font-size: 1.2em;
+    }
+
+    .checkout-cart-item .item-total {
+        font-size: 1.2em;
+    }
+
+    .checkout-total {
+        font-size: 1.5em;
+    }
+
+    .payment-option {
+        font-size: 1.1em;
+        padding: 8px;
+    }
+    .payment-method-section input[type="radio"] {
+        transform: scale(1.2);
+    }
+    .payment-method-section input[type="radio"]:checked {
+        transform: scale(1.4);
+    }
+    .payment-method-section .esewa-qr img {
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .checkout-container {
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .checkout-form-section,
+    .cart-summary-section {
+        padding: 15px;
+    }
+
+    .checkout-form-section h2,
+    .cart-summary-section h2 {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+    }
+
+    .checkout-form legend {
+        font-size: 1.1em;
+        margin-left: 10px;
+        padding: 5px 12px;
+    }
+
+    .checkout-form input[type="text"],
+    .checkout-form input[type="email"],
+    .checkout-form input[type="tel"],
+    .checkout-form textarea {
+        padding: 10px;
+        margin-bottom: 15px;
+        width: 100%;
+    }
+
+    .place-order-btn {
+        padding: 12px 20px;
+        font-size: 1.1em;
+    }
+
+    .checkout-cart-item img {
+        width: 60px;
+        height: 60px;
+        margin-right: 10px;
+    }
+
+    .checkout-cart-item h4 {
+        font-size: 1em;
+    }
+
+    .checkout-cart-item p {
+        font-size: 0.85em;
+    }
+
+    .item-quantity-controls button {
+        width: 28px;
+        height: 28px;
+        font-size: 1em;
+    }
+
+    .remove-item-btn {
+        margin-left: 8px;
+    }
+
+    .checkout-cart-item .item-total {
+        font-size: 1em;
+    }
+
+    .checkout-total {
+        font-size: 1.3em;
+    }
+
+    .back-to-shop-btn {
+        padding: 10px 18px;
+        font-size: 0.9em;
+    }
+    .payment-option {
+        font-size: 1em;
+    }
+    .payment-method-section input[type="radio"] {
+        transform: scale(1.1);
+    }
+    .payment-method-section input[type="radio"]:checked {
+        transform: scale(1.3);
+    }
+}

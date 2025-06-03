@@ -1,75 +1,683 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout - SK Enterprises</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style1.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - SK Enterprises</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2c5f2d;
+            --secondary-color: #4a7c59;
+            --accent-color: #f4f4f4;
+            --text-color: #333;
+            --border-color: #ddd;
+            --success-color: #4CAF50;
+            --error-color: #f44336;
+            --warning-color: #ff9800;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--accent-color);
+        }
+
+        .checkout-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            min-height: 100vh;
+        }
+
+        .checkout-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option:hover {
+            border-color: var(--primary-color);
+            background-color: #f9f9f9;
+        }
+
+        .payment-option input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        .payment-option.selected {
+            border-color: var(--primary-color);
+            background-color: #e8f5e8;
+        }
+
+        .esewa-qr-code {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f0f8f0;
+            border-radius: 8px;
+            border: 2px solid var(--success-color);
+        }
+
+        .esewa-qr-code img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .esewa-qr-code p {
+            margin-top: 10px;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-details {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .cart-item-details img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 15px;
+        }
+
+        .cart-item-info h4 {
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+
+        .cart-item-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-item-controls button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .cart-item-controls button:hover {
+            background: var(--secondary-color);
+        }
+
+        .remove-item {
+            background: var(--error-color) !important;
+        }
+
+        .cart-item-price {
+            font-weight: bold;
+            color: var(--primary-color);
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .cart-summary {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 5px 0;
+        }
+
+        .summary-row.total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .place-order-btn {
+            width: 100%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .place-order-btn:hover:not(:disabled) {
+            background: var(--secondary-color);
+        }
+
+        .place-order-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .empty-cart-message {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .empty-cart-message i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--border-color);
+        }
+
+        .back-to-shop {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-to-shop:hover {
+            background: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 10px;
+            }
+
+            .checkout-section {
+                padding: 20px;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .cart-item-controls {
+                align-self: flex-end;
+            }
+        }
+    </style>
 </head>
-<body>
-  <header>
-    <div class="container">
-      <h1><a href="index1.html">SK Enterprises</a></h1>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="index.html#about-contact">About Us</a>
-        <a href="index.html#about-contact">Contact</a>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <section class="checkout-container">
-      <h2>Checkout</h2>
-      <div id="cart-summary"></div>
-      <form id="checkout-form" action="https://formspree.io/f/your_endpoint_id" method="POST">
-        <fieldset>
-          <legend>Personal Information</legend>
-          <div class="form-group">
-            <label for="name">Full Name</label>
-            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" required>
-          </div>
-          <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
-          </div>
-        </fieldset>
-        <fieldset>
-          <legend>Delivery Address</legend>
-          <div class="form-group">
-            <label for="address">Address</label>
-            <input type="text" id="address" name="address" placeholder="Enter your address" required>
-          </div>
-         
-        </fieldset>
-        <fieldset>
-          <legend>Payment Method</legend>
-          <div class="form-group">
-            <label>
-              <input type="radio" name="payment" value="eSewa" checked> eSewa
-            </label>
-            <label>
-              <input type="radio" name="payment" value="COD"> Cash on Delivery
-            </label>
-            <div id="esewa-qr" class="qr-container">
-              <img src="images/Esewa Qr.png" alt="eSewa QR Code">
-              <p>Scan the QR code to complete payment via eSewa.</p>
+<body class="checkout-page">
+    <div class="checkout-container">
+        <!-- Order Summary Section -->
+        <div class="checkout-section">
+          <a href="index.html">Back to Home</a>
+            <h2 class="section-title"><i class="fas fa-shopping-cart"></i> Order Summary</h2>
+            
+            <div id="cart-items-container">
+                <!-- Cart items will be populated by JavaScript -->
             </div>
-          </div>
-          
-        </fieldset>
-        <input type="hidden" name="cart" id="cart-data">
-        <input type="hidden" name="payment_method" id="payment-method">
-        <button type="submit">Place Order</button>
-      </form>
-    </section>
-  </main>
 
-  <script src="checkout.js"></script>
+            <div id="empty-cart-message" class="empty-cart-message" style="display: none;">
+                <i class="fas fa-shopping-cart"></i>
+                <h3>Your cart is empty</h3>
+                <p>Add some items to your cart to proceed with checkout</p>
+                <a href="index.html" class="back-to-shop">Continue Shopping</a>
+            </div>
+
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span>Rs. <span id="cart-subtotal">0.00</span></span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery Fee:</span>
+                    <span>Rs. <span id="delivery-fee">0.00</span></span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span>Rs. <span id="cart-total">0.00</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delivery Details Section -->
+        <div class="checkout-section">
+            <h2 class="section-title"><i class="fas fa-truck"></i> Delivery Details</h2>
+            
+            <form id="delivery-form" action="https://formspree.io/f/xpwdvnde" method="POST">
+                <!-- Hidden fields for order data -->
+                <input type="hidden" id="form-cart-items" name="Cart Items" value="">
+                <input type="hidden" id="form-order-subtotal" name="Order Subtotal" value="">
+                <input type="hidden" id="form-order-delivery-fee" name="Delivery Fee" value="">
+                <input type="hidden" id="form-order-total" name="Order Total" value="">
+                <input type="hidden" id="form-order-date" name="Order Date" value="">
+                
+                <div class="form-group">
+                    <label for="customer-name">Full Name *</label>
+                    <input type="text" id="customer-name" name="Customer Name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="customer-email">Email Address *</label>
+                    <input type="email" id="customer-email" name="Customer Email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="customer-phone">Phone Number *</label>
+                    <input type="tel" id="customer-phone" name="Customer Phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="delivery-address">Delivery Address *</label>
+                    <textarea id="delivery-address" name="Delivery Address" required placeholder="Enter your complete address including landmarks"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="delivery-notes">Delivery Notes (Optional)</label>
+                    <textarea id="delivery-notes" name="Delivery Notes" placeholder="Any special instructions for delivery"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Payment Method *</label>
+                    <div class="payment-methods">
+                        <label class="payment-option">
+                            <input type="radio" name="Payment Method" value="Cash on Delivery" checked>
+                            <span><i class="fas fa-money-bill-wave"></i> Cash on Delivery (COD)</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="Payment Method" value="eSewa">
+                            <span><i class="fas fa-mobile-alt"></i> eSewa Digital Payment</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="esewa-qr-code">
+                    <img src="Esewa Qr.png" alt="eSewa QR Code" id="esewa-qr-image">
+                    <p>Scan this QR code with your eSewa app to make payment</p>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 10px;">After payment, please proceed to place your order</p>
+                </div>
+
+                <button type="submit" id="place-order-btn" class="place-order-btn">
+                    Place Order
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Simplified cart management for checkout page
+        let cart = [];
+        const DELIVERY_FEE = 50;
+
+        // Initialize cart from localStorage
+        function initializeCart() {
+            try {
+                const storedCart = localStorage.getItem('cart');
+                if (storedCart) {
+                    cart = JSON.parse(storedCart);
+                }
+            } catch (e) {
+                console.warn('localStorage not available or corrupted cart data');
+                cart = [];
+            }
+        }
+
+        // Save cart to localStorage
+        function saveCart() {
+            try {
+                localStorage.setItem('cart', JSON.stringify(cart));
+            } catch (e) {
+                console.warn('localStorage not available for saving cart');
+            }
+            updateCartDisplay();
+            updateCartTotals();
+        }
+
+        // Update cart item quantity
+        function updateCartItemQuantity(productId, unitName, newQuantity) {
+            const itemIndex = cart.findIndex(item =>
+                item.id === productId && (item.unitName || '') === (unitName || '')
+            );
+
+            if (itemIndex > -1) {
+                if (newQuantity <= 0) {
+                    removeCartItem(productId, unitName);
+                } else {
+                    cart[itemIndex].quantity = newQuantity;
+                    saveCart();
+                }
+            }
+        }
+
+        // Remove item from cart
+        function removeCartItem(productId, unitName) {
+            cart = cart.filter(item =>
+                !(item.id === productId && (item.unitName || '') === (unitName || ''))
+            );
+            saveCart();
+        }
+
+        // Display cart items
+        function updateCartDisplay() {
+            const cartItemsContainer = document.getElementById('cart-items-container');
+            const emptyCartMessage = document.getElementById('empty-cart-message');
+            
+            if (!cartItemsContainer) return;
+
+            cartItemsContainer.innerHTML = '';
+
+            if (cart.length === 0) {
+                if (emptyCartMessage) emptyCartMessage.style.display = 'block';
+                return;
+            }
+
+            if (emptyCartMessage) emptyCartMessage.style.display = 'none';
+
+            cart.forEach(item => {
+                const pricePerUnit = parseFloat(item.price_per_unit) || 0;
+                const quantity = parseInt(item.quantity) || 0;
+                const totalItemPrice = pricePerUnit * quantity;
+                const unitDisplay = item.unitName ? ` (${item.unitName})` : '';
+
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+
+                cartItem.innerHTML = `
+                    <div class="cart-item-details">
+                        <img src="${item.image || 'https://via.placeholder.com/50x50/2c5f2d/white?text=Product'}" alt="${item.name}">
+                        <div class="cart-item-info">
+                            <h4>${item.name}${unitDisplay}</h4>
+                            <p>Rs. ${pricePerUnit.toFixed(2)} × ${quantity}</p>
+                        </div>
+                    </div>
+                    <div class="cart-item-controls">
+                        <button class="decrease-cart-quantity" data-id="${item.id}" data-unit-name="${item.unitName || ''}">-</button>
+                        <span>${quantity}</span>
+                        <button class="increase-cart-quantity" data-id="${item.id}" data-unit-name="${item.unitName || ''}">+</button>
+                        <button class="remove-item" data-id="${item.id}" data-unit-name="${item.unitName || ''}"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div class="cart-item-price">Rs. ${totalItemPrice.toFixed(2)}</div>
+                `;
+
+                cartItemsContainer.appendChild(cartItem);
+
+                // Add event listeners
+                const increaseBtn = cartItem.querySelector('.increase-cart-quantity');
+                const decreaseBtn = cartItem.querySelector('.decrease-cart-quantity');
+                const removeBtn = cartItem.querySelector('.remove-item');
+
+                if (increaseBtn) {
+                    increaseBtn.addEventListener('click', (e) => {
+                        const id = e.target.dataset.id;
+                        const unit = e.target.dataset.unitName;
+                        const currentItem = cart.find(cartItem => cartItem.id === id && (cartItem.unitName || '') === (unit || ''));
+                        if (currentItem) {
+                            updateCartItemQuantity(id, unit, currentItem.quantity + 1);
+                        }
+                    });
+                }
+
+                if (decreaseBtn) {
+                    decreaseBtn.addEventListener('click', (e) => {
+                        const id = e.target.dataset.id;
+                        const unit = e.target.dataset.unitName;
+                        const currentItem = cart.find(cartItem => cartItem.id === id && (cartItem.unitName || '') === (unit || ''));
+                        if (currentItem) {
+                            updateCartItemQuantity(id, unit, currentItem.quantity - 1);
+                        }
+                    });
+                }
+
+                if (removeBtn) {
+                    removeBtn.addEventListener('click', (e) => {
+                        const id = e.target.dataset.id || e.target.closest('button').dataset.id;
+                        const unit = e.target.dataset.unitName || e.target.closest('button').dataset.unitName;
+                        removeCartItem(id, unit);
+                    });
+                }
+            });
+        }
+
+        // Update cart totals
+        function updateCartTotals() {
+            const subtotalElement = document.getElementById('cart-subtotal');
+            const deliveryFeeElement = document.getElementById('delivery-fee');
+            const totalElement = document.getElementById('cart-total');
+            const placeOrderButton = document.getElementById('place-order-btn');
+
+            if (!subtotalElement) return;
+
+            const subtotal = cart.reduce((sum, item) => sum + ((parseFloat(item.price_per_unit) || 0) * (parseInt(item.quantity) || 0)), 0);
+            const deliveryFee = cart.length > 0 ? DELIVERY_FEE : 0;
+            const total = subtotal + deliveryFee;
+
+            subtotalElement.textContent = subtotal.toFixed(2);
+            if (deliveryFeeElement) deliveryFeeElement.textContent = deliveryFee.toFixed(2);
+            if (totalElement) totalElement.textContent = total.toFixed(2);
+
+            if (placeOrderButton) {
+                placeOrderButton.disabled = cart.length === 0;
+                if (cart.length === 0) {
+                    placeOrderButton.textContent = 'Cart is Empty';
+                } else {
+                    placeOrderButton.textContent = 'Place Order';
+                }
+            }
+        }
+
+        // Setup form submission
+        function setupCheckoutForm() {
+            const checkoutForm = document.getElementById('delivery-form');
+            const placeOrderButton = document.getElementById('place-order-btn');
+            
+            if (!checkoutForm || !placeOrderButton) return;
+
+            checkoutForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (cart.length === 0) {
+                    alert('Your cart is empty. Please add items before placing an order.');
+                    return;
+                }
+
+                const cartItemsInput = document.getElementById('form-cart-items');
+                const subtotalInput = document.getElementById('form-order-subtotal');
+                const deliveryFeeInput = document.getElementById('form-order-delivery-fee');
+                const totalInput = document.getElementById('form-order-total');
+                const orderDateInput = document.getElementById('form-order-date');
+
+                const subtotal = cart.reduce((sum, item) => sum + ((parseFloat(item.price_per_unit) || 0) * (parseInt(item.quantity) || 0)), 0);
+                const deliveryFee = cart.length > 0 ? DELIVERY_FEE : 0;
+                const total = subtotal + deliveryFee;
+
+                // Populate hidden form fields
+                if (cartItemsInput) {
+                    cartItemsInput.value = JSON.stringify(cart.map(item => ({
+                        name: item.name,
+                        unit: item.unitName,
+                        quantity: item.quantity,
+                        price_per_unit: (parseFloat(item.price_per_unit) || 0).toFixed(2),
+                        total_item_price: ((parseFloat(item.price_per_unit) || 0) * (parseInt(item.quantity) || 0)).toFixed(2)
+                    })));
+                }
+                if (subtotalInput) subtotalInput.value = subtotal.toFixed(2);
+                if (deliveryFeeInput) deliveryFeeInput.value = deliveryFee.toFixed(2);
+                if (totalInput) totalInput.value = total.toFixed(2);
+                if (orderDateInput) orderDateInput.value = new Date().toISOString();
+
+                // Show loading state
+                placeOrderButton.textContent = 'Placing Order...';
+                placeOrderButton.disabled = true;
+
+                const formData = new FormData(checkoutForm);
+                
+                fetch(checkoutForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Order placed successfully! Thank you for shopping with SK Enterprises.');
+                        cart = [];
+                        saveCart();
+                        window.location.href = 'index.html';
+                    } else {
+                        throw new Error('Network response was not ok');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error submitting form:', error);
+                    alert('There was an error placing your order. Please try again.');
+                })
+                .finally(() => {
+                    placeOrderButton.textContent = 'Place Order';
+                    placeOrderButton.disabled = cart.length === 0;
+                });
+            });
+
+            // Setup payment method toggle
+            const paymentOptions = document.querySelectorAll('input[name="Payment Method"]');
+            const esewaQrCode = document.querySelector('.esewa-qr-code');
+            
+            paymentOptions.forEach(option => {
+                option.addEventListener('change', () => {
+                    // Update visual selection
+                    document.querySelectorAll('.payment-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    option.closest('.payment-option').classList.add('selected');
+                    
+                    // Show/hide eSewa QR code
+                    if (esewaQrCode) {
+                        esewaQrCode.style.display = option.value === 'eSewa' ? 'block' : 'none';
+                    }
+                });
+            });
+
+            // Set initial state
+            const initialSelectedPayment = document.querySelector('input[name="Payment Method"]:checked');
+            if (initialSelectedPayment) {
+                initialSelectedPayment.closest('.payment-option').classList.add('selected');
+                if (esewaQrCode) {
+                    esewaQrCode.style.display = initialSelectedPayment.value === 'eSewa' ? 'block' : 'none';
+                }
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeCart();
+            updateCartDisplay();
+            updateCartTotals();
+            setupCheckoutForm();
+        });
+    </script>
 </body>
 </html>
