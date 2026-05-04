@@ -33,12 +33,12 @@ a:hover {
 header {
     background-color: #fff;
     color: #3A3A3A;
-    padding: 0px 0; /* Extremely small header padding */
+    padding: 0px 0; /* Minimal header padding */
     border-bottom: 1.5px solid #6DB65B; /* Soft Green border */
     box-shadow: 0 2px 6px rgba(0,0,0,0.06); /* Subtle shadow */
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+    position: sticky; /* THIS MAKES IT STICKY */
+    top: 0;          /* IT STICKS TO THE TOP OF THE VIEWPORT */
+    z-index: 1000;   /* ENSURES IT'S ON TOP OF OTHER CONTENT */
 }
 
 header .header-content {
@@ -46,8 +46,8 @@ header .header-content {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    padding: 0 20px;
-    min-height: 40px; /* Ensure a minimum height for the header content */
+    padding: 0 15px; /* Reduced horizontal padding */
+    min-height: 35px; /* Fixed minimum height for content */
 }
 
 .site-title {
@@ -57,32 +57,32 @@ header .header-content {
 
 .site-title a {
     color: #6DB65B; /* Soft Green for the site title */
-    font-size: 1.1em; /* Even smaller shop name font size */
+    font-size: 1em; /* Even smaller shop name font size for desktop */
     font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: 0.8px; /* Slightly tighter letter spacing */
+    letter-spacing: 0.7px; /* Slightly tighter letter spacing */
     text-shadow: 0.5px 0.5px 1px rgba(0,0,0,0.03);
 }
 
 .main-nav {
     flex-grow: 1;
-    margin: 0 20px;
+    margin: 0 10px; /* Reduced side margins */
 }
 
 .main-nav ul {
     list-style: none;
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 10px; /* Reduced gap */
     flex-wrap: wrap;
 }
 
 .main-nav ul li a {
     color: #555;
     font-weight: bold;
-    padding: 4px 0;
+    padding: 3px 0; /* Slightly smaller padding */
     transition: color 0.3s ease, transform 0.3s ease;
-    font-size: 0.9em; /* Slightly smaller navigation links */
+    font-size: 0.85em; /* Smaller navigation links */
     white-space: nowrap;
 }
 
@@ -94,23 +94,23 @@ header .header-content {
 .header-right {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px; /* Reduced gap */
     flex-shrink: 0;
 }
 
 .search-bar {
     display: flex;
     flex-grow: 1;
-    max-width: 250px; /* Slightly reduced max-width for search bar */
+    max-width: 150px; /* Further reduced max-width for search bar */
 }
 
 .search-bar input[type="text"] {
     flex-grow: 1;
-    padding: 6px 10px; /* Smaller padding for search input */
+    padding: 5px 8px; /* Smaller padding for search input */
     border: 1px solid #ccc;
-    border-radius: 5px 0 0 5px;
+    border-radius: 4px 0 0 4px; /* Slightly smaller border-radius */
     outline: none;
-    font-size: 0.9em;
+    font-size: 0.65em; /* Smaller font size */
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -124,10 +124,11 @@ header .header-content {
     background-color: #6DB65B; /* Soft Green button */
     color: white;
     border: 1px solid #6DB65B;
-    padding: 6px 12px; /* Smaller padding for search button */
-    border-radius: 0 5px 5px 0;
+    padding: 5px 10px; /* Smaller padding for search button */
+    border-radius: 0 4px 4px 0;
     cursor: pointer;
-    font-size: 0.9em;
+    font-size: 0.8em; /* Smaller font size */
+
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
@@ -137,12 +138,14 @@ header .header-content {
 }
 
 .cart-icon {
-    position: relative;
-    flex-shrink: 0;
+    position:relative;
+left: 40px; 
+flex-shrink: 0;
 }
 
 .cart-icon .fa-shopping-cart {
-    font-size: 1.4em; /* Smaller cart icon */
+
+    font-size: 2em; /* Smaller cart icon */
     color: #6DB65B; /* Soft Green cart icon */
     transition: transform 0.3s ease; /* For animation */
 }
@@ -156,11 +159,11 @@ header .header-content {
     background-color: #FFD166; /* Warm Yellow-Orange for emphasis */
     color: #3A3A3A; /* Charcoal text on badge */
     border-radius: 50%;
-    padding: 1px 5px; /* Smaller badge padding */
-    font-size: 0.65em; /* Smaller badge font size */
+    padding: 0px 4px; /* Minimal badge padding */
+    font-size: 0.6em; /* Smaller badge font size */
     position: absolute;
-    top: -3px; /* Adjusted position */
-    right: -6px; /* Adjusted position */
+    top: -2px; /* Adjusted position */
+    right: -5px; /* Adjusted position */
     border: 1px solid #fff;
     font-weight: bold;
 }
@@ -180,7 +183,7 @@ section {
 
 /* New Hero Ad Banner Section */
 .hero-ad-banner {
-    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('IMG_3543.jpeg') no-repeat center center/cover;
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),  url('IMG_3543.jpeg') no-repeat center center/cover;
     color: white;
     text-align: center;
     padding: 80px 20px; /* Large padding */
@@ -591,101 +594,67 @@ footer {
 
 /* Responsive Design */
 @media (max-width: 992px) {
-    header {
-        padding: 0px 0; /* Keep consistent extremely small padding */
-    }
     header .header-content {
-        min-height: 35px; /* Slightly reduced min-height for header content */
+        padding: 0 10px; /* Reduced horizontal padding */
+        min-height: 30px; /* Even smaller min-height for medium screens */
     }
     .site-title a {
-        font-size: 1em; /* Smaller for medium screens */
+        font-size: 0.9em; /* Smaller for medium screens */
+    }
+    .main-nav {
+        margin: 0 5px; /* Reduced side margins */
     }
     .main-nav ul {
-        justify-content: flex-start;
-        gap: 10px;
-        margin-top: 10px;
+        gap: 8px; /* Reduced gap */
+        margin-top: 8px; /* Slightly reduced margin */
     }
     .main-nav ul li a {
-        font-size: 0.85em; /* Slightly smaller navigation links */
+        font-size: 0.8em; /* Smaller navigation links */
     }
     .header-right {
-        margin-top: 10px;
-        width: 100%;
-        justify-content: flex-end;
+        margin-top: 8px;
+        gap: 8px;
     }
     .search-bar {
-        max-width: none;
-        flex-grow: 1;
+        max-width: none; /* Allow full width for search bar */
     }
     .search-bar input[type="text"],
     .search-bar button {
-        padding: 5px 9px; /* Smaller padding for search elements */
-        font-size: 0.85em;
+        padding: 4px 8px; /* Smaller padding for search elements */
+        font-size: 0.75em; /* Smaller font size */
     }
     .cart-icon {
-        margin-left: 15px;
+        margin-left: 10px;
     }
     .cart-icon .fa-shopping-cart {
-        font-size: 1.3em; /* Slightly smaller cart icon */
+        font-size: 1.2em; /* Slightly smaller cart icon */
     }
     #cart-count {
-        padding: 0 4px; /* Smaller badge */
-        font-size: 0.6em;
-        top: -2px;
-        right: -5px;
+        padding: 0 3px; /* Smaller badge */
+        font-size: 0.55em;
+        top: -1px;
+        right: -4px;
     }
 
     .hero-ad-banner {
-        padding: 60px 15px;
-        min-height: 300px;
+        padding: 50px 15px;
+        min-height: 250px; /* Reduced min-height */
     }
     .hero-ad-banner h2 {
-        font-size: 2.8em;
+        font-size: 2.5em;
     }
     .hero-ad-banner p {
-        font-size: 1.2em;
+        font-size: 1.1em;
     }
 
     .product-grid.horizontal-scroll-grid {
         gap: 15px;
     }
     .product-card {
-        width: 180px;
+        width: 170px; /* Slightly smaller card width */
     }
     .product-card img {
-        max-height: 120px; /* Adjusted max height for smaller screens */
-    }
-    .product-card h3 {
-        font-size: 1.15em;
-    }
-    .product-card .price {
-        font-size: 1.2em;
-    }
-    .quantity-adjuster select,
-    .quantity-adjuster input[type="number"] {
-        width: 95%;
-    }
-    .add-to-cart-btn {
-        padding: 7px 12px;
-        font-size: 0.9em;
-    }
-    .category-heading {
-        font-size: 2em;
-    }
-    .featured-products-highlight .category-heading {
-        font-size: 2.2em;
-    }
-    .product-category-section {
-        padding: 20px;
-    }
-    .about-us-section h2 {
-        font-size: 2em;
-    }
-    .social-media a {
-        width: 38px;
-        height: 38px;
-        line-height: 38px;
-        font-size: 1.1em;
+        max-height: 110px; /* Adjusted max height */
     }
 }
 
@@ -693,167 +662,68 @@ footer {
     header .header-content {
         flex-direction: column;
         align-items: flex-start;
-        padding: 0 15px;
-        min-height: auto; /* Allow height to adjust based on content */
+        padding: 0 10px; /* Consistent smaller padding */
+        min-height: auto; /* Let height adjust dynamically */
+        padding-bottom: 5px; /* Add some space at the bottom */
     }
     .site-title {
         width: 100%;
         text-align: center;
-        margin-bottom: 5px; /* Add a small margin below title */
+        margin-bottom: 5px;
     }
     .site-title a {
-        font-size: 1em; /* Smaller for tablet screens */
-    }
-    header {
-        padding: 0px 0; /* Keep consistent extremely small padding */
+        font-size: 0.85em; /* Smaller for tablet screens */
     }
     .main-nav {
-        margin: 10px 0; /* Reduced margin */
+        margin: 5px 0; /* Reduced margin */
         width: 100%;
     }
     .main-nav ul {
         justify-content: center;
-        gap: 8px; /* Reduced gap */
+        gap: 6px; /* Even smaller gap */
         flex-wrap: wrap;
     }
     .main-nav ul li a {
-        padding: 6px 8px; /* Smaller padding */
-        font-size: 0.8em; /* Even smaller nav links */
-        border: 1px solid #E0E0E0; /* Light Gray border */
-        border-radius: 5px;
+        padding: 5px 8px; /* Smaller padding */
+        font-size: 0.75em; /* Even smaller nav links */
+        border: 1px solid #E0E0E0;
+        border-radius: 4px;
     }
     .header-right {
         width: 100%;
         justify-content: center;
         margin-top: 0;
-        padding-bottom: 5px; /* Add padding at the bottom of the header content */
     }
     .search-bar {
-        max-width: 280px; /* Max-width for search bar */
-    }
-    .search-bar input[type="text"],
-    .search-bar button {
-        padding: 6px 9px; /* Smaller padding */
-        font-size: 0.85em;
-    }
-    .cart-icon {
-        margin-left: 10px;
-    }
-    .cart-icon .fa-shopping-cart {
-        font-size: 1.2em;
-    }
-
-    .hero-ad-banner {
-        padding: 50px 15px;
-        min-height: 280px;
-    }
-    .hero-ad-banner h2 {
-        font-size: 2.2em;
-    }
-    .hero-ad-banner p {
-        font-size: 1.1em;
-    }
-    .shop-now-btn {
-        padding: 12px 25px;
-        font-size: 1.1em;
-    }
-
-    .category-heading {
-        font-size: 1.8em;
-    }
-    .featured-products-highlight .category-heading {
-        font-size: 2em;
-    }
-    .product-category-section {
-        padding: 20px;
-    }
-    .product-card {
-        width: 160px;
-        padding: 12px;
-    }
-    .product-card img {
-        max-height: 100px; /* Adjusted max height for smaller screens */
-    }
-    .product-card h3 {
-        font-size: 1.1em;
-        min-height: 2.2em;
-    }
-    .product-card .price {
-        font-size: 1.15em;
-    }
-    .add-to-cart-btn {
-        padding: 7px 12px;
-        font-size: 0.9em;
-    }
-    .about-us-section h2 {
-        font-size: 1.8em;
-    }
-    .social-media a {
-        width: 38px;
-        height: 38px;
-        line-height: 38px;
-        font-size: 1.1em;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        width: 95%;
-    }
-    .site-title a {
-        font-size: 0.9em; /* Even smaller for small mobile screens */
-        letter-spacing: 0.6px;
-    }
-    header {
-        padding: 0px 0; /* Minimal padding */
-    }
-    header .header-content {
-        min-height: 30px; /* Further reduced min-height for tiny screens */
-    }
-    .main-nav ul {
-        flex-direction: column;
-        align-items: center;
-        gap: 6px; /* Even smaller gap */
-    }
-    .main-nav ul li a {
-        font-size: 0.75em; /* Smallest navigation links */
-        padding: 5px 10px;
-        width: 100%;
-        text-align: center;
-    }
-    .header-right {
-        flex-direction: column;
-        align-items: center;
-        gap: 8px; /* Reduced gap */
-    }
-    .search-bar {
-        width: 100%;
         max-width: 250px; /* Max-width for search bar */
     }
     .search-bar input[type="text"],
     .search-bar button {
-        padding: 7px 9px;
+        padding: 5px 8px; /* Smaller padding */
         font-size: 0.8em;
+    }
+    .cart-icon {
+        margin-left: 8px; /* Reduced margin */
     }
     .cart-icon .fa-shopping-cart {
         font-size: 1.1em;
     }
     #cart-count {
         padding: 0 3px;
-        font-size: 0.55em;
+        font-size: 0.5em;
         top: -1px;
-        right: -4px;
+        right: -3px;
     }
 
     .hero-ad-banner {
         padding: 40px 10px;
-        min-height: 200px;
+        min-height: 220px;
     }
     .hero-ad-banner h2 {
-        font-size: 1.8em;
+        font-size: 2em;
     }
     .hero-ad-banner p {
-        font-size: 0.95em;
+        font-size: 1em;
     }
     .shop-now-btn {
         padding: 10px 20px;
@@ -861,38 +731,115 @@ footer {
     }
 
     .category-heading {
-        font-size: 1.5em;
+        font-size: 1.6em;
     }
     .featured-products-highlight .category-heading {
-        font-size: 1.7em;
+        font-size: 1.8em;
     }
     .product-card {
-        width: 140px;
+        width: 150px; /* Smaller card width */
         padding: 10px;
     }
     .product-card img {
-        max-height: 80px; /* Adjusted max height for smaller screens */
+        max-height: 90px; /* Adjusted max height */
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 98%; /* Slightly wider container for tiny screens */
+    }
+    header .header-content {
+        padding: 0 8px; /* Minimal horizontal padding */
+        min-height: auto; /* Let height adjust */
+        padding-bottom: 4px; /* Smallest bottom padding */
+    }
+    .site-title a {
+        font-size: 0.8em; /* Smallest shop name for mobile */
+        letter-spacing: 0.5px;
+    }
+    .main-nav {
+        margin: 4px 0; /* Minimal margin */
+    }
+    .main-nav ul {
+        gap: 4px; /* Minimal gap */
+    }
+    .main-nav ul li a {
+        font-size: 0.7em; /* Smallest navigation links */
+        padding: 4px 7px;
+        border-radius: 3px;
+    }
+    .header-right {
+        gap: 6px; /* Minimal gap */
+    }
+    .search-bar {
+        max-width: 200px; /* Constrained max-width */
+    }
+    .search-bar input[type="text"],
+    .search-bar button {
+        padding: 4px 7px; /* Smallest padding */
+        font-size: 0.75em;
+    }
+    .cart-icon .fa-shopping-cart {
+        font-size: 1em; /* Smallest cart icon */
+    }
+    #cart-count {
+        padding: 0 2px;
+        font-size: 0.45em;
+        top: 0px;
+        right: -2px;
+    }
+
+    .hero-ad-banner {
+        padding: 30px 5px;
+        min-height: 180px;
+    }
+    .hero-ad-banner h2 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }
+    .hero-ad-banner p {
+        font-size: 0.85em;
+        margin-bottom: 15px;
+    }
+    .shop-now-btn {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+
+    .category-heading {
+        font-size: 1.3em;
+    }
+    .featured-products-highlight .category-heading {
+        font-size: 1.5em;
+    }
+    .product-card {
+        width: 130px; /* Smallest card width */
+        padding: 8px;
+    }
+    .product-card img {
+        max-height: 70px; /* Smallest image max height */
     }
     .product-card h3 {
-        font-size: 1em;
-        min-height: 2em;
+        font-size: 0.9em;
+        min-height: 1.8em;
     }
     .product-card .price {
-        font-size: 1.05em;
+        font-size: 1em;
     }
     .add-to-cart-btn {
-        padding: 6px 10px;
-        font-size: 0.85em;
+        padding: 5px 8px;
+        font-size: 0.8em;
     }
 
     .about-us-section h2 {
-        font-size: 1.5em;
+        font-size: 1.4em;
     }
     .social-media a {
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
-        font-size: 1em;
-        margin: 0 5px;
+        width: 28px;
+        height: 28px;
+        line-height: 28px;
+        font-size: 0.9em;
+        margin: 0 4px;
     }
 }
