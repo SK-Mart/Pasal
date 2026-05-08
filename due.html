@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Ledger - SK Enterprises</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c5f2d;
+            --secondary-color: #4a7c59;
+            --accent-color: #f4f4f4;
+            --text-color: #333;
+            --border-color: #ddd;
+            --danger: #d9534f;
+        }
+
+        body { font-family: 'Arial', sans-serif; background-color: var(--accent-color); margin: 0; display: flex; height: 100vh; color: var(--text-color); }
+
+        /* Sidebar */
+        .sidebar { width: 320px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
+        .sidebar-header { padding: 20px; background: var(--primary-color); color: white; text-align: center; }
+        .customer-list { flex: 1; overflow-y: auto; padding: 10px; }
+        
+        .customer-item { 
+            padding: 15px; margin-bottom: 10px; border-radius: 8px; border: 1px solid var(--border-color);
+            background: white; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 12px;
+        }
+        .customer-item:hover { background: #f0f7f0; }
+        .customer-item.active { border-color: var(--primary-color); background: #e8f5e8; box-shadow: inset 4px 0 0 var(--primary-color); }
+        
+        .avatar { width: 40px; height: 40px; background: var(--primary-color); color: white; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .cust-name { font-weight: bold; color: var(--primary-color); display: block; text-transform: capitalize; }
+        .cust-due { font-size: 0.85rem; color: var(--danger); font-weight: bold; }
+
+        /* Main Content */
+        .main-content { flex: 1; overflow-y: auto; padding: 30px; }
+        .bill-container { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 2px 15px rgba(0,0,0,0.1); max-width: 850px; margin: 0 auto; }
+        
+        /* Shop Name & Header */
+        .shop-banner { border-bottom: 2px solid var(--primary-color); padding-bottom: 10px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .shop-name { color: var(--primary-color); margin: 0; font-size: 1.5rem; font-weight: bold; }
+        
+        /* Customer Name Display */
+        .customer-hero { margin-bottom: 30px; }
+        .customer-hero label { font-size: 0.8rem; font-weight: bold; color: var(--secondary-color); text-transform: uppercase; }
+        .customer-hero h1 { font-size: 2.8rem; margin: 5px 0; color: var(--primary-color); text-transform: uppercase; font-weight: 900; }
+
+        .items-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        .items-table th { text-align: left; padding: 12px; background: #f9f9f9; border-bottom: 2px solid var(--primary-color); color: var(--primary-color); }
+        .items-table td { padding: 15px 12px; border-bottom: 1px solid #eee; }
+
+        .item-line { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .qty-badge { background: #eee; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-left: 10px; }
+
+        /* Summary Section */
+        .summary-box { float: right; width: 300px; padding: 20px; background: #fdfdfd; border: 1px solid var(--border-color); border-radius: 8px; }
+        .summary-row { display: flex; justify-content: space-between; padding: 8px 0; }
+        .summary-row.total-due { color: var(--danger); font-weight: bold; font-size: 1.4rem; border-top: 1px solid var(--border-color); margin-top: 10px; padding-top: 10px; }
+
+        .pay-area { clear: both; padding-top: 40px; margin-top: 40px; border-top: 1px dashed var(--border-color); }
+        .pay-input-group { display: flex; gap: 10px; margin-top: 10px; }
+        .pay-input-group input { flex: 1; padding: 12px; border: 2px solid var(--border-color); border-radius: 5px; font-size: 1rem; }
+        .btn-save { background: var(--primary-color); color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+
+        @media print { .sidebar, .pay-area, .no-print { display: none; } .bill-container { box-shadow: none; } }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2 style="margin:0;">SK ENTERPRISES</h2>
+            <p style="font-size: 0.7rem; margin:0; opacity: 0.8;">Admin Ledger</p>
+        </div>
+        <div class="customer-list" id="customerList"></div>
+        <div style="padding: 15px;"><a href="index.html" style="text-decoration:none; color: var(--primary-color); font-weight:bold;">+ Add New Purchase</a></div>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        <div style="text-align:center; margin-top:150px; color:#ccc;">
+            <i class="fas fa-file-invoice fa-5x"></i>
+            <h2>Select a customer record</h2>
+        </div>
+    </div>
+
+<script>
+    let ledger = JSON.parse(localStorage.getItem('myLedger')) || [];
+
+    function init() {
+        const list = document.getElementById('customerList');
+        list.innerHTML = '';
+        ledger.forEach((record, index) => {
+            list.innerHTML += `
+                <div class="customer-item" onclick="showHisab(${index})">
+                    <div class="avatar">${record.name.charAt(0).toUpperCase()}</div>
+                    <div style="flex:1">
+                        <span class="cust-name">${record.name}</span>
+                        <span class="cust-due">Rs. ${parseFloat(record.due).toFixed(0)}</span>
+                    </div>
+                </div>`;
+        });
+    }
+
+    function showHisab(index) {
+        document.querySelectorAll('.customer-item').forEach((el, i) => el.classList.toggle('active', i === index));
+        const data = ledger[index];
+        if (!data.purchases) data.purchases = [{ date: data.date, items: data.products, amount: data.total }];
+
+        const content = document.getElementById('mainContent');
+        content.innerHTML = `
+            <div class="bill-container">
+                <div class="shop-banner">
+                    <h2 class="shop-name">SK ENTERPRISES</h2>
+                    <span style="font-size:0.8rem; font-weight:bold;">${new Date().toLocaleDateString()}</span>
+                </div>
+
+                <div class="customer-hero">
+                    <label>Account Statement For</label>
+                    <h1>${data.name}</h1>
+                    <p style="color:var(--secondary-color); font-weight:bold;"><i class="fas fa-phone"></i> ${data.phone}</p>
+                </div>
+
+                <table class="items-table">
+                    <thead>
+                        <tr><th>Date</th><th>Item Description</th><th style="text-align:right">Total</th></tr>
+                    </thead>
+                    <tbody>
+                        ${data.purchases.map(p => {
+                            const items = p.items.split(',').filter(i => i.trim() !== "");
+                            return `
+                                <tr>
+                                    <td style="font-weight:bold; color:#666;">${p.date}</td>
+                                    <td>
+                                        ${items.map(item => {
+                                            const price = (item.match(/\((\d+\.?\d*)\)/) || [])[1] || "0";
+                                            const qty = (item.match(/x\s*(\d+)/i) || [])[1] || "1";
+                                            let name = item.replace(/\(\d+\.?\d*\)/, "").replace(/x\s*\d+/i, "").trim();
+                                            return `
+                                                <div class="item-line">
+                                                    <span>• ${name} <span class="qty-badge">x${qty}</span></span>
+                                                    <span style="font-weight:bold;">Rs. ${price}</span>
+                                                </div>`;
+                                        }).join('')}
+                                    </td>
+                                    <td style="text-align:right; font-weight:bold; color:var(--primary-color);">Rs. ${parseFloat(p.amount).toFixed(2)}</td>
+                                </tr>`;
+                        }).join('')}
+                    </tbody>
+                </table>
+
+                <div class="summary-box">
+                    <div class="summary-row"><span>Grand Total:</span><span>Rs. ${parseFloat(data.total).toFixed(2)}</span></div>
+                    <div class="summary-row" style="color:var(--primary-color); font-weight:bold;"><span>Total Paid:</span><span>Rs. ${parseFloat(data.paid || 0).toFixed(2)}</span></div>
+                    <div class="summary-row total-due"><span>BALANCE:</span><span>Rs. ${parseFloat(data.due).toFixed(2)}</span></div>
+                </div>
+
+                <div class="pay-area no-print">
+                    <h4 style="margin:0; color:var(--primary-color);">Record New Payment:</h4>
+                    <div class="pay-input-group">
+                        <input type="number" id="payVal" placeholder="Enter Amount Received">
+                        <button class="btn-save" onclick="addMoney(${index})">SAVE PAYMENT</button>
+                    </div>
+                </div>
+
+                <div style="margin-top:40px; display:flex; justify-content:space-between;" class="no-print">
+                    <button onclick="window.print()" style="padding:10px 20px; border:1px solid var(--border-color); background:white; cursor:pointer; border-radius:5px; font-weight:bold;">Print Bill</button>
+                    <button onclick="deleteCust(${index})" style="color:var(--danger); border:none; background:none; cursor:pointer; font-weight:bold;">Delete Records</button>
+                </div>
+            </div>
+        `;
+    }
+
+    window.addMoney = (index) => {
+        const amt = parseFloat(document.getElementById('payVal').value);
+        if (!amt || amt <= 0 || amt > ledger[index].due) { alert("Invalid Amount"); return; }
+        if(!ledger[index].history) ledger[index].history = [];
+        ledger[index].history.push({ amount: amt, time: new Date().toLocaleString() });
+        ledger[index].paid = (parseFloat(ledger[index].paid) || 0) + amt;
+        ledger[index].due = (ledger[index].due - amt).toFixed(2);
+        localStorage.setItem('myLedger', JSON.stringify(ledger));
+        init(); showHisab(index);
+    };
+
+    window.deleteCust = (index) => {
+        if(confirm("Permanently delete this customer?")) {
+            ledger.splice(index, 1);
+            localStorage.setItem('myLedger', JSON.stringify(ledger));
+            window.location.reload();
+        }
+    }
+
+    init();
+</script>
+</body>
+</html>
