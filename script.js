@@ -59,151 +59,395 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Featured Products (ensure their IDs match the data-id in HTML)
         { id: 'feat-oil', name: 'Cooking Oil', image: 'https://via.placeholder.com/150?text=Cooking+Oil', price_per_unit: 250, units: [{ value: 1, name: '1 Liter', price: 250 }, { value: 2, name: '2 Liter', price: 500 }, { value: 5, name: '5 Liter', price: 1250 }] },
-        { id: 'feat-noodles', name: 'Wai Wai Noodles', image: 'https://via.placeholder.com/150?text=Wai+Wai', price_per_unit: 30, units: [{ value: 1, name: '1 Pack', price: 30 }, { value: 12, name: '1 Dozen', price: 360 }] }, // Assuming 1 dozen is 12 packs
+        { id: 'feat-noodles', name: 'Wai Wai Noodles', image: 'https://via.placeholder.com/150?text=Wai+Wai', price_per_unit: 20, units: [{ value: 1, name: '1 Pack', price: 20 }, { value: 12, name: '1 Dozen', price: 360 }] }, // Assuming 1 dozen is 12 packs
         { id: 'feat-dettol', name: 'Dettol Soap', image: 'https://via.placeholder.com/150?text=Dettol+Soap', price_per_unit: 200, units: [{ value: 1, name: '2-Pack', price: 200 }, { value: 2, name: '4-Pack', price: 400 }] }, // Assuming 2-pack is base unit
         { id: 'feat-rice', name: 'Basmati Rice', image: 'https://via.placeholder.com/150?text=Basmati+Rice', price_per_unit: 220, units: [{ value: 1, name: '1 Kg', price: 220 }, { value: 5, name: '5 Kg', price: 1100 }, { value: 10, name: '10 Kg', price: 2200 }] },
         { id: 'feat-sugar', name: 'Refined Sugar', image: 'https://via.placeholder.com/150?text=Sugar', price_per_unit: 120, units: [{ value: 1, name: '1 Kg', price: 120 }, { value: 2, name: '2 Kg', price: 240 }] },
-        { id: 'feat-milk', name: 'Dudh (Milk)', image: 'https://via.placeholder.com/150?text=Milk', price_per_unit: 80, units: [{ value: 0.5, name: '500ml', price: 80 }, { value: 1, name: '1 Liter', price: 160 }] },
+       
+     { id: 'feat-milk', name: 'Dudh (Milk)', image: 'https://via.placeholder.com/150?text=Milk', price_per_unit: 80, units: [{ value: 0.5, name: '500ml', price: 80 }, { value: 1, name: '1 Liter', price: 160 }] },
+
+      // =====================
+        // COLD DRINKS
+        // =====================
+
+        {
+            id: 'coke',
+            name: 'Coke',
+            image: 'coke.jpg'
+        },
+
+        {
+            id: 'fanta',
+            name: 'Fanta',
+            image: 'fanta.jpg'
+        },
+
+        {
+            id: 'sprite',
+            name: 'Sprite',
+            image: 'sprite.jpg'
+        },
+
+        // =====================
+        // BEERS
+        // =====================
+
+        {
+            id: 'tuborg',
+            name: 'Tuborg Beer',
+            image: 'tuborg.jpg'
+        },
+
+        {
+            id: 'dragon',
+            name: 'Dragon Beer',
+            image: 'dragon.jpg'
+        },
+
+        {
+            id: 'gorkha',
+            name: 'Gorkha Beer',
+            image: 'gorkha.jpg'
+        },
+
+        {
+            id: 'barahsinghe',
+            name: 'Barahsinghe Beer',
+            image: 'barahsinghe.jpg'
+        },
+{
+    id: 'Carlsberg',
+     name: 'Carlsberg Beer',
+            image: 'Carlsberg.jpg'
+},
+        // =====================
+        // VODKA / RUM
+        // =====================
+
+        {
+            id: '8848-vodka',
+            name: '8848 Vodka',
+            image: '8848vodka.jpg'
+        },
+
+        {
+            id: 'highlander-vodka',
+            name: 'Highlander Vodka',
+            image: 'highlander.jpg'
+        },
+
+        {
+            id: 'golden-oak',
+            name: 'Golden Oak',
+            image: 'goldenoak.jpg'
+        },
+
+        {
+            id: 'khukri-rum',
+            name: 'Khukri Rum',
+            image: 'khukri.jpg'
+        },
+
+        // =====================
+        // WINE
+        // =====================
+
+        {
+            id: 'big-master-wine',
+            name: 'Big Master Wine',
+            image: 'bigmaster.jpg'
+        },
+
+        {
+            id: 'akira-wine',
+            name: 'Akira Wine',
+            image: 'akira.jpg'
+        },
+
+        {
+            id: 'manag-wine',
+            name: 'Manag Wine',
+            image: 'manag.jpg'
+        },
+
+        // =====================
+        // WHISKY
+        // =====================
+
+        {
+            id: 'signature-whisky',
+            name: 'Signature Whisky',
+            image: 'signature.jpg'
+        },
+
+        {
+            id: 'old-durbar-red',
+            name: 'Old Durbar Red',
+            image: 'olddurbarred.jpg'
+        },
+
+        {
+            id: 'old-durbar-black',
+            name: 'Old Durbar Black',
+            image: 'olddurbarblack.jpg'
+        },
+
+        // =====================
+        // ENERGY / JUICES
+        // =====================
+
+        {
+            id: 'redbull',
+            name: 'Redbull',
+            image: 'redbull.jpg'
+        },
+
+        {
+            id: 'nimbu-pani',
+            name: 'Nimbu Pani',
+            image: 'nimbupani.jpg'
+        },
+
+        {
+            id: 'real-juice',
+            name: 'Real Juice',
+            image: 'realjuice.jpg'
+        },
+
+        {
+            id: 'badam-drink',
+            name: 'Badam Drink',
+            image: 'badamdrink.jpg'
+        },
+
+        {
+            id: 'xtreme-energy',
+            name: 'Xtreme Energy Drink',
+            image: 'xtreme.jpg'
+        }
     ];
+
+    // =========================================
+    // UPDATE CART COUNT
+    // =========================================
+
+
 
 
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-    // Function to update cart count in header
-    const updateCartCount = () => {
+    // =========================
+    // SEARCH SUGGESTION BOX
+    // =========================
+
+    const suggestionBox = document.createElement('div');
+    suggestionBox.classList.add('search-suggestions');
+
+    searchInput.parentElement.appendChild(suggestionBox);
+
+    // =========================
+    // UPDATE CART COUNT
+    // =========================
+
+    function updateCartCount() {
         const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
         cartCountSpan.textContent = totalItems;
-    };
-
-    // Initialize cart count on page load
-    updateCartCount();
-
-    // Category navigation functionality (Scroll to section)
-    categoryTabs.forEach(tab => {
-        tab.addEventListener('click', (e) => {
-            e.preventDefault(); // Prevent default anchor link behavior
-            const targetId = e.target.getAttribute('href'); // Get the href (e.g., #grains-staples)
-            const targetSection = document.querySelector(targetId);
-
-            if (targetSection) {
-                // Scroll to the target section smoothly
-                window.scrollTo({
-                    top: targetSection.offsetTop - document.querySelector('header').offsetHeight - 10, // Adjust for fixed header height
-                    behavior: 'smooth'
-                });
-            }
-            // Clear search input when category is navigated
-            searchInput.value = '';
-            filterProducts(''); // Show all products when navigating by category
-        });
-    });
-
-    // Search functionality - refined to filter across all horizontal sections
-    searchInput.addEventListener('keyup', (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        filterProducts(searchTerm);
-    });
-
-    function filterProducts(searchTerm) {
-        // Select all product cards in all horizontal scroll grids
-        const allProductCards = document.querySelectorAll('.product-grid.horizontal-scroll-grid .product-card');
-
-        allProductCards.forEach(card => {
-            const productName = card.dataset.name.toLowerCase();
-            if (productName.includes(searchTerm)) {
-                card.style.display = 'flex'; // Show the card (flex because product-card is flex)
-            } else {
-                card.style.display = 'none'; // Hide the card
-            }
-        });
     }
 
-    // Product quantity/volume/weight adjuster logic
+    updateCartCount();
+
+    // =========================
+    // SEARCH FUNCTION
+    // =========================
+
+    searchInput.addEventListener('input', () => {
+
+        const searchTerm = searchInput.value.toLowerCase().trim();
+
+        const allCards = document.querySelectorAll('.product-card');
+
+        suggestionBox.innerHTML = '';
+
+        if (searchTerm === '') {
+            allCards.forEach(card => {
+                card.style.display = 'flex';
+            });
+
+            suggestionBox.style.display = 'none';
+            return;
+        }
+
+        let found = false;
+
+        allCards.forEach(card => {
+
+            const productName = card.dataset.name.toLowerCase();
+            const title = card.querySelector('h3').textContent.toLowerCase();
+
+            if (
+                productName.includes(searchTerm) ||
+                title.includes(searchTerm)
+            ) {
+
+                card.style.display = 'flex';
+                found = true;
+
+                // CREATE SUGGESTION ITEM
+                const suggestionItem = document.createElement('div');
+
+                suggestionItem.classList.add('suggestion-item');
+
+                suggestionItem.innerHTML = `
+                    <img src="${card.querySelector('img').src}" width="40">
+                    <span>${card.querySelector('h3').textContent}</span>
+                `;
+
+                suggestionItem.addEventListener('click', () => {
+
+                    searchInput.value = card.querySelector('h3').textContent;
+
+                    suggestionBox.style.display = 'none';
+
+                    // Scroll to product
+                    card.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+
+                    // Highlight effect
+                    card.style.border = '3px solid green';
+
+                    setTimeout(() => {
+                        card.style.border = '';
+                    }, 2000);
+                });
+
+                suggestionBox.appendChild(suggestionItem);
+
+            } else {
+
+                card.style.display = 'none';
+            }
+        });
+
+        if (found) {
+            suggestionBox.style.display = 'block';
+        } else {
+
+            suggestionBox.innerHTML = `
+                <div class="suggestion-item">
+                    No products found
+                </div>
+            `;
+
+            suggestionBox.style.display = 'block';
+        }
+    });
+
+    // HIDE SUGGESTION WHEN CLICK OUTSIDE
+    document.addEventListener('click', (e) => {
+
+        if (!searchInput.contains(e.target) &&
+            !suggestionBox.contains(e.target)) {
+
+            suggestionBox.style.display = 'none';
+        }
+    });
+
+    // =========================
+    // PRODUCT PRICE CHANGE
+    // =========================
+
     document.querySelectorAll('.product-unit-selector').forEach(selector => {
+
         selector.addEventListener('change', (e) => {
+
             const card = e.target.closest('.product-card');
+
             const priceSpan = card.querySelector('.product-price');
+
             const basePrice = parseFloat(e.target.dataset.basePrice);
+
             const selectedValue = parseFloat(e.target.value);
 
             const newPrice = basePrice * selectedValue;
+
             priceSpan.textContent = newPrice.toFixed(0);
         });
     });
 
-    // Add to Cart functionality
+    // =========================
+    // ADD TO CART
+    // =========================
+
     addToCartButtons.forEach(button => {
+
         button.addEventListener('click', (e) => {
+
             const card = e.target.closest('.product-card');
-            const productId = card.dataset.id; // Use data-id for product ID
+
+            const productId = card.dataset.id;
+
             const productName = card.querySelector('h3').textContent;
-            const productImage = card.querySelector('img').src; // Get image source
+
+            const productImage = card.querySelector('img').src;
 
             let quantity = 1;
-            let unitName = '';
-            let pricePerUnit = parseFloat(card.querySelector('.product-price').textContent); // Default to displayed price
 
-            // Check if it's a simple quantity input or a unit selector
-            const quantityInput = card.querySelector('.product-quantity-input');
-            const unitSelector = card.querySelector('.product-unit-selector');
+            let unitName = '';
+
+            let pricePerUnit = parseFloat(
+                card.querySelector('.product-price').textContent
+            );
+
+            const quantityInput =
+                card.querySelector('.product-quantity-input');
+
+            const unitSelector =
+                card.querySelector('.product-unit-selector');
 
             if (quantityInput) {
+
                 quantity = parseInt(quantityInput.value);
-                // For simple quantity inputs, the price displayed on the card is the base price
-                // We'll use the pricePerUnit from the HTML directly
+
             } else if (unitSelector) {
-                const selectedOption = unitSelector.options[unitSelector.selectedIndex];
-                unitName = selectedOption.textContent.trim(); // e.g., "1 Liter", "500g"
-                pricePerUnit = parseFloat(card.querySelector('.product-price').textContent); // Price already updated by change event
-                quantity = 1; // For unit selectors, quantity is typically 1 'pack' or 'unit' of that size
+
+                const selectedOption =
+                    unitSelector.options[unitSelector.selectedIndex];
+
+                unitName = selectedOption.textContent.trim();
             }
 
-            // Find the actual product data from our `productsData` array
-            const product = productsData.find(p => p.id === productId);
-
-            if (product) {
-                // If the product has defined units, ensure we're getting the correct price for the selected unit
-                if (product.units && unitName) {
-                    const selectedUnit = product.units.find(u => u.name === unitName);
-                    if (selectedUnit) {
-                        pricePerUnit = selectedUnit.price;
-                    }
-                } else if (!unitName && product.price_per_unit) {
-                    // If no specific unit selected (e.g., simple quantity input), use the base price
-                    pricePerUnit = product.price_per_unit;
-                }
-            }
-
-
-            // Find existing item in cart, considering unit for products with selectors
             const existingItemIndex = cart.findIndex(item =>
-                item.id === productId && (item.unitName || '') === (unitName || '')
+                item.id === productId &&
+                item.unitName === unitName
             );
 
             if (existingItemIndex > -1) {
-                if (quantityInput) {
-                    cart[existingItemIndex].quantity += quantity;
-                } else {
-                    // For products with unit selectors, alert if trying to add exact same unit again
-                    alert(`The exact unit of "${productName}" (${unitName}) is already in your cart. You can adjust quantity on the checkout page or select a different unit size.`);
-                    return;
-                }
+
+                cart[existingItemIndex].quantity += quantity;
+
             } else {
+
                 cart.push({
                     id: productId,
                     name: productName,
-                    image: productImage, // Store the image URL
-                    price_per_unit: pricePerUnit, // Store the price for the selected unit
-                    unitName: unitName, // Store the selected unit name
+                    image: productImage,
+                    price_per_unit: pricePerUnit,
+                    unitName: unitName,
                     quantity: quantity
                 });
             }
 
             localStorage.setItem('cart', JSON.stringify(cart));
+
             updateCartCount();
-            alert(`${quantity} ${unitName ? unitName + ' of ' : ''}${productName} added to cart!`);
+
+            alert(`${productName} added to cart!`);
         });
     });
+
+});
 
     // The checkout page specific logic (from your provided checkout.html script)
     // This part should remain in checkout.html's script for modularity,
@@ -211,4 +455,3 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ideally, this should be in checkout.html's <script> tag.
     // If you keep it separate, ensure the `productsData` array is also available in checkout.html's script
     // or that the cart items stored in localStorage contain all necessary info (image, price_per_unit, unitName).
-});

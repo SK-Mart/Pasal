@@ -90,6 +90,28 @@
                 </div>
 
                 <button type="submit" id="place-order-btn" class="place-order-btn">Confirm & Place Order</button>
+                <!-- Discount & Extra Charges Calculator -->
+<div style="margin-top:25px; padding:20px; border:2px solid #ddd; border-radius:10px; background:#fafafa;">
+    
+    <h3 style="margin-bottom:15px; color: var(--primary-color);">
+        Bill Calculator
+    </h3>
+
+    <div class="form-group">
+        <label>Discount Amount (Rs.)</label>
+        <input type="number" id="discount-amount" placeholder="Enter discount amount" value="0">
+    </div>
+
+    <div class="form-group">
+        <label>Extra Charges (Delivery etc.)</label>
+        <input type="number" id="extra-charge" placeholder="Enter extra charge" value="0">
+    </div>
+
+    <div style="margin-top:15px; font-size:1.1rem; font-weight:bold;">
+        Final Total: Rs. <span id="final-total">0.00</span>
+    </div>
+
+</div>
             </form>
             <p style="text-align: center; margin-top: 15px;"><a href="due.html" style="font-size: 0.8rem; color: #999; text-decoration: none;">Admin Ledger</a></p>
         </div>
@@ -97,6 +119,36 @@
 
     <script>
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let finalTotal = 0;
+
+function updateFinalTotal() {
+
+    const originalTotal = cart.reduce(
+        (sum, item) => sum + (item.price_per_unit * item.quantity),
+        0
+    );
+
+    const discount =
+        parseFloat(document.getElementById('discount-amount')?.value) || 0;
+
+    const extraCharge =
+        parseFloat(document.getElementById('extra-charge')?.value) || 0;
+
+    finalTotal = originalTotal - discount + extraCharge;
+
+    if (finalTotal < 0) {
+        finalTotal = 0;
+    }
+
+    document.getElementById('final-total').textContent =
+        finalTotal.toFixed(2);
+
+    document.getElementById('cart-total').textContent =
+        finalTotal.toFixed(2);
+
+    document.getElementById('form-order-total').value =
+        finalTotal.toFixed(2);
+}
 
         function renderCart() {
             const container = document.getElementById('cart-items-container');
@@ -117,9 +169,15 @@
                             <button type="button" onclick="changeQty(${index}, 1)">+</button>
                         </div>
                         <div>Rs. ${itemTotal.toFixed(2)}</div>
+                        
                     </div>`;
+                  document.getElementById('discount-amount')
+.addEventListener('input', updateFinalTotal);
+
+document.getElementById('extra-charge')
+.addEventListener('input', updateFinalTotal);  
             });
-            document.getElementById('cart-total').textContent = total.toFixed(2);
+        updateFinalTotal();
             document.getElementById('form-order-total').value = total.toFixed(2);
         }
 
@@ -146,7 +204,7 @@
             }
 
             const paymentMethod = document.querySelector('input[name="Payment Method"]:checked').value;
-            const currentTotal = cart.reduce((sum, i) => sum + (i.price_per_unit * i.quantity), 0);
+           const currentTotal = finalTotal;
             const dateStr = new Date().toLocaleDateString();
             
             // Format products as: Name (Price) x Quantity
