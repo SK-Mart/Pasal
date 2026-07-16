@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'poha', name: 'Poha (Flattened Rice)', image: 'https://via.placeholder.com/150?text=Poha', price_per_unit: 80, units: [{ value: 0.5, name: '500g', price: 80 }, { value: 1, name: '1 Kg', price: 160 }] },
 
         // Snacks & Beverages
+      {id: 'Dairy Milk', name: 'Dairy Milk', image: 'https://via.placeholder.com/150?text=Lays+Chips', price_per_unit: 25, units: [{ value: 1, name: '1 Pack', price: 2 }] },
+
         { id: 'lays', name: 'Lays Chips', image: 'https://via.placeholder.com/150?text=Lays+Chips', price_per_unit: 50, units: [{ value: 1, name: '1 Pack', price: 50 }] },
         { id: 'noodles', name: 'Noodles', image: 'https://via.placeholder.com/150?text=Noodles', price_per_unit: 30, units: [{ value: 1, name: '1 Pack', price: 30 }] },
         { id: 'nuts', name: 'Nuts', image: 'https://via.placeholder.com/150?text=Nuts', price_per_unit: 300, units: [{ value: 0.25, name: '250g', price: 300 }, { value: 0.5, name: '500g', price: 600 }, { value: 1, name: '1 Kg', price: 1200 }] },
@@ -43,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'piyaz', name: 'Piyaz (Onions)', image: 'https://via.placeholder.com/150?text=Onions', price_per_unit: 100, units: [{ value: 0.5, name: '500g', price: 100 }, { value: 1, name: '1 Kg', price: 200 }] },
         { id: 'kerau', name: 'Kerau (Green Peas)', image: 'https://via.placeholder.com/150?text=Peas', price_per_unit: 130, units: [{ value: 0.25, name: '250g', price: 130 }, { value: 0.5, name: '500g', price: 260 }] },
         { id: 'dudh', name: 'Dudh (Milk)', image: 'https://via.placeholder.com/150?text=Milk', price_per_unit: 80, units: [{ value: 0.5, name: '500ml', price: 80 }, { value: 1, name: '1 Liter', price: 160 }] },
-        { id: 'dahi', name: 'Dahi (Curd/Yogurt)', image: 'https://via.placeholder.com/150?text=Curd', price_per_unit: 120, units: [{ value: 0.5, name: '500g', price: 120 }, { value: 1, name: '1 Kg', price: 240 }] },
+        { id: 'dahi', name: 'Dahi (Curd/Yogurt)', image: 'https://via.placeholder.com/150?text=Curd', price_per_unit: 70, units: [{ value: 1, name: '500g', price: 70 }, { value: 2, name: '1 Kg', price: 140 }] },
         { id: 'paneer', name: 'Paneer (Cottage Cheese)', image: 'https://via.placeholder.com/150?text=Paneer', price_per_unit: 250, units: [{ value: 0.25, name: '250g', price: 250 }, { value: 0.5, name: '500g', price: 500 }] },
 
         // Spices & Condiments
@@ -192,6 +194,12 @@ document.addEventListener('DOMContentLoaded', () => {
             image: 'olddurbarblack.jpg'
         },
 
+        {
+            id: 'Mustang',
+            name: 'Mustang',
+            image: 'Mustang.jpg'
+        },
+
         // =====================
         // ENERGY / JUICES
         // =====================
@@ -224,6 +232,11 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 'xtreme-energy',
             name: 'Xtreme Energy Drink',
             image: 'xtreme.jpg'
+        },
+        {
+            id: 'Fish',
+            name: 'Fish',
+            image: 'Fish.jpg'
         }
     ];
 
