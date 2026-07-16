@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Professional Order Summary</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f5f5f5;
+    padding:20px;
+}
+
+/* CONTAINER */
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+.heading{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.heading h1{
+    font-size:28px;
+    color:#2c5f2d;
+}
+
+.cart-count{
+    background:#2c5f2d;
+    color:white;
+    padding:8px 14px;
+    border-radius:30px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+/* CART ITEM */
+
+.cart-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    padding:18px 0;
+    border-bottom:1px solid #eee;
+}
+
+/* LEFT */
+
+.left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    flex:1;
+    min-width:0;
+}
+
+.product-img{
+    width:80px;
+    height:80px;
+    border-radius:14px;
+    overflow:hidden;
+    flex-shrink:0;
+    background:#fafafa;
+    border:1px solid #eee;
+}
+
+.product-img img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* DETAILS */
+
+.details{
+    flex:1;
+    min-width:0;
+}
+
+.product-name{
+    font-size:17px;
+    font-weight:700;
+    color:#222;
+    margin-bottom:8px;
+}
+
+.price{
+    color:#666;
+    font-size:14px;
+    margin-bottom:12px;
+}
+
+/* QUANTITY */
+
+.qty-wrapper{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.qty-btn{
+    width:32px;
+    height:32px;
+    border:none;
+    border-radius:10px;
+    background:#f0f0f0;
+    color:#222;
+    cursor:pointer;
+    font-size:18px;
+    transition:0.2s;
+}
+
+.qty-btn:hover{
+    background:#2c5f2d;
+    color:white;
+}
+
+.qty-number{
+    min-width:30px;
+    text-align:center;
+    font-size:16px;
+    font-weight:bold;
+}
+
+/* RIGHT */
+
+.right{
+    text-align:right;
+    min-width:90px;
+}
+
+.total-price{
+    font-size:18px;
+    font-weight:bold;
+    color:#2c5f2d;
+}
+
+/* FOOTER */
+
+.summary-footer{
+    margin-top:25px;
+    padding-top:20px;
+    border-top:2px solid #eee;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.summary-footer h2{
+    font-size:24px;
+    color:#222;
+}
+
+.summary-footer .grand-total{
+    font-size:28px;
+    font-weight:bold;
+    color:#2c5f2d;
+}
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    padding:60px 20px;
+    color:#888;
+}
+
+.empty i{
+    font-size:60px;
+    margin-bottom:15px;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+    body{
+        padding:10px;
+    }
+
+    .container{
+        padding:15px;
+        border-radius:14px;
+    }
+
+    .heading h1{
+        font-size:22px;
+    }
+
+    .product-img{
+        width:65px;
+        height:65px;
+    }
+
+    .product-name{
+        font-size:15px;
+    }
+
+    .price{
+        font-size:12px;
+    }
+
+    .qty-btn{
+        width:28px;
+        height:28px;
+        font-size:15px;
+    }
+
+    .qty-number{
+        font-size:14px;
+    }
+
+    .total-price{
+        font-size:15px;
+    }
+
+    .summary-footer h2{
+        font-size:18px;
+    }
+
+    .summary-footer .grand-total{
+        font-size:22px;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="heading">
+        <h1>Order Summary</h1>
+
+        <div class="cart-count">
+            <span id="item-count">0</span> Items
+        </div>
+    </div>
+
+    <div id="cart-container"></div>
+
+    <div class="summary-footer">
+        <h2>Total</h2>
+
+        <div class="grand-total">
+            Rs. <span id="total">0</span>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+function renderCart(){
+
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    const container = document.getElementById('cart-container');
+    const totalEl = document.getElementById('total');
+    const itemCountEl = document.getElementById('item-count');
+
+    container.innerHTML = '';
+
+    let total = 0;
+    let totalItems = 0;
+
+    if(cart.length === 0){
+
+        container.innerHTML = `
+            <div class="empty">
+                <i class="fas fa-shopping-cart"></i>
+                <h2>Your cart is empty</h2>
+            </div>
+        `;
+
+        totalEl.textContent = '0';
+        itemCountEl.textContent = '0';
+
+        return;
+    }
+
+    cart.forEach((item,index)=>{
+
+        const itemTotal =
+        item.price_per_unit * item.quantity;
+
+        total += itemTotal;
+        totalItems += item.quantity;
+
+        container.innerHTML += `
+
+        <div class="cart-item">
+
+            <div class="left">
+
+                <div class="product-img">
+                    <img src="${item.image}" alt="">
+                </div>
+
+                <div class="details">
+
+                    <div class="product-name">
+                        ${item.name}
+                    </div>
+
+                    <div class="price">
+                        Rs. ${item.price_per_unit} each
+                    </div>
+
+                    <div class="qty-wrapper">
+
+                        <button class="qty-btn"
+                        onclick="changeQty(${index}, -1)">
+                        -
+                        </button>
+
+                        <div class="qty-number">
+                            ${item.quantity}
+                        </div>
+
+                        <button class="qty-btn"
+                        onclick="changeQty(${index}, 1)">
+                        +
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="right">
+
+                <div class="total-price">
+                    Rs. ${itemTotal.toFixed(2)}
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
+    });
+
+    totalEl.textContent = total.toFixed(2);
+    itemCountEl.textContent = totalItems;
+}
+
+/* CHANGE QUANTITY */
+
+function changeQty(index, amount){
+
+    let cart =
+    JSON.parse(localStorage.getItem('cart')) || [];
+
+    cart[index].quantity += amount;
+
+    if(cart[index].quantity <= 0){
+        cart.splice(index,1);
+    }
+
+    localStorage.setItem('cart',
+    JSON.stringify(cart));
+
+    renderCart();
+}
+
+renderCart();
+
+/* LIVE UPDATE */
+setInterval(renderCart,1000);
+
+</script>
+
+</body>
+</html>

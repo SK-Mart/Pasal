@@ -34,7 +34,14 @@
                         <i class="fas fa-shopping-cart"></i>
                         <span id="cart-count">0</span>
                     </a>
+
                 </div>
+           <div class="cart-icon">
+                    <a href="checkout1.html">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cart-count">0</span>
+                    </a>
+                    </div>
             </div>
         </div>
     </header>
@@ -124,20 +131,6 @@
                             <button class="add-to-cart-btn" data-product-id="feat-sugar">Add to Cart</button>
                         </div>
 
-                        <div class="product-card featured-card" data-id="feat-milk" data-name="Milk (Dudh)" data-category="fresh-produce-dairy">
-                            <img src="milkpouch.jpg" alt="Milk">
-                            <h3>Dudh (Milk) (1L)</h3>
-                            <p class="price">Rs. <span class="product-price">80</span></p>
-                            <div class="quantity-adjuster">
-                                <label for="feat-milk-quantity">Volume:</label>
-                                <select id="feat-milk-quantity" class="product-unit-selector" data-base-price="80">
-                                    <option value="0.5">500ml</option>
-                                    <option value="1">1 Liter</option>
-                                </select>
-                            </div>
-                            <button class="add-to-cart-btn" data-product-id="feat-milk">Add to Cart</button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -296,12 +289,13 @@
                         <div class="product-card" data-id="poha" data-name="Poha" data-category="grains-staples">
                             <img src="Nepali-Bhuja.webp" alt="Poha">
                             <h3>Bhuja (Puffed Rice)</h3>
-                            <p class="price">Rs. <span class="product-price">55</span></p>
+                            <p class="price">Rs. <span class="product-price">30</span></p>
                             <div class="quantity-adjuster">
                                 <label for="poha-quantity">Weight:</label>
-                                <select id="poha-quantity" class="product-unit-selector" data-base-price="80">
-                                    <option value="0.5">500g</option>
-                                    <option value="1">1 Kg</option>
+                                <select id="poha-quantity" class="product-unit-selector" data-base-price="30">
+                                    <option value="1">Small</option>
+                                    <option value="1.83333333333">Nahulo</option>
+                                     <option value="3">Large</option>
                                 </select>
                             </div>
                             <button class="add-to-cart-btn" data-product-id="poha">Add to Cart</button>
@@ -322,10 +316,44 @@
                             <p class="price">Rs. <span class="product-price">50</span></p>
                             <div class="quantity-adjuster">
                                 <label for="lays-quantity">Quantity:</label>
-                                <input type="number" id="lays-quantity" value="1" min="1" class="product-quantity-input">
+                                <select id="Lays" class="product-unit-selector" data-base-price="50">
+                                    <option value="1">Small</option>
+                                    <option value="1.6">Big</option>
+                                </select>
                             </div>
                             <button class="add-to-cart-btn" data-product-id="lays">Add to Cart</button>
                         </div>
+                        <div class="product-card" data-id="Dairy Milk" data-name="Dairy Milk" data-category="snacks-beverages">
+                            <img src="dairy milk.jfif" alt="Lays Chips">
+                            <h3>Dairy Milk</h3>
+                            <p class="price">Rs. <span class="product-price">25</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="lays-quantity">Quantity:</label>
+                                <select id="Lays" class="product-unit-selector" data-base-price="25">
+                                    <option value="1">Small</option>
+                                    <option value="2">Big</option>
+                                    <option value="4">Bigger</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="DairyMilk">Add to Cart</button>
+                        </div>
+                        <div class="product-card" data-id="KitKat" data-name="KitKat" data-category="snacks-beverages">
+                            <img src="kitkat.jfif" alt="Lays Chips">
+                            <h3>KitKat</h3>
+                            <p class="price">Rs. <span class="product-price">20</span></p>
+                            <div class="quantity-adjuster">
+                                <label for="lays-quantity">Quantity:</label>
+                                <select id="Lays" class="product-unit-selector" data-base-price="20">
+                                    <option value="1">2 Finger</option>
+                                    <option value="2.5">4 finger</option>
+                                    <option value="4">Kitkat anime</option>
+                                </select>
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="KitKat">Add to Cart</button>
+                        </div>
+                        
+                        
+                        
 
                         <div class="product-card" data-id="noodles" data-name="Noodles" data-category="snacks-beverages">
                             <img src="current.png" alt="Noodles">
@@ -384,9 +412,11 @@
                             <p class="price">Rs. <span class="product-price">300</span></p>
                             <div class="quantity-adjuster">
                                 <label for="jams-quantity">Weight:</label>
-                                <select id="jams-quantity" class="product-unit-selector" data-base-price="200">
-                                    <option value="0.25">250g</option>
-                                    <option value="0.5">500g</option>
+                                <select id="jams-quantity" class="product-unit-selector" data-base-price="290">
+                                    
+                                    
+
+                                    <option value="1">Real (Big)</option>
                                 </select>
                             </div>
                             <button class="add-to-cart-btn" data-product-id="jams">Add to Cart</button>
@@ -423,7 +453,7 @@
                         <div class="product-card" data-id="biscuits" data-name="Biscuits" data-category="snacks-beverages">
                             <img src="oreo.jpg" alt="Biscuits">
                             <h3>Biscuits (oreo)</h3>
-                            <p class="price">Rs. <span class="product-price">100</span></p>
+                            <p class="price">Rs. <span class="product-price">25</span></p>
                             <div class="quantity-adjuster">
                                 <label for="biscuits-quantity">Packs:</label>
                                 <input type="number" id="biscuits-quantity" value="1" min="1" class="product-quantity-input">
@@ -455,7 +485,7 @@
                     <div class="product-grid horizontal-scroll-grid">
                         <div class="product-card" data-id="detergent" data-name="Detergent" data-category="household-personal-care">
                             <img src="detergent.png" alt="Washing Powder">
-                            <h3>Detergent (patanjali)</h3>
+                            <h3>Patanjali Surf</h3>
                             <p class="price">Rs. <span class="product-price">100</span></p>
                             <div class="quantity-adjuster">
                                 <label for="detergent-quantity">Weight:</label>
@@ -470,7 +500,7 @@
   <div class="product-grid horizontal-scroll-grid">
                         <div class="product-card" data-id="detergent" data-name="Detergent" data-category="household-personal-care">
                             <img src="tide.jfif" alt="Washing Powder">
-                            <h3>Detergent (Tide)</h3>
+                            <h3>Tide Surf</h3>
                             <p class="price">Rs. <span class="product-price">140</span></p>
                             <div class="quantity-adjuster">
                                 <label for="detergent-quantity">Weight:</label>
@@ -485,7 +515,7 @@
   <div class="product-grid horizontal-scroll-grid">
                         <div class="product-card" data-id="detergent" data-name="Detergent" data-category="household-personal-care">
                             <img src="arial.jpg" alt="Washing Powder">
-                            <h3>Detergent (Ariel)</h3>
+                            <h3>Ariel Surf</h3>
                             <p class="price">Rs. <span class="product-price">500</span></p>
                             <div class="quantity-adjuster">
                                 <label for="detergent-quantity">Weight:</label>
@@ -550,10 +580,13 @@
                         <div class="product-card" data-id="goodnight" data-name="Goodnight" data-category="household-personal-care">
                             <img src="goodnight.png" alt="Goodnight Liquid">
                             <h3>Goodnight (Mosquito Repellent)</h3>
-                            <p class="price">Rs. <span class="product-price">160</span></p>
+                            <p class="price">Rs. <span class="product-price">120</span></p>
                             <div class="quantity-adjuster">
-                                <label for="goodnight-quantity">Quantity:</label>
-                                <input type="number" id="goodnight-quantity" value="1" min="1" class="product-quantity-input">
+                                 <select id="goodnight" class="product-unit-selector" data-base-price="120">
+                                    <option value="1">200ml</option>
+                                    <option value="">Whole Set</option>
+                                   
+                                </select>
                             </div>
                             <button class="add-to-cart-btn" data-product-id="goodnight">Add to Cart</button>
                         </div>
@@ -607,13 +640,14 @@
                         <div class="product-card" data-id="allu" data-name="Allu" data-category="fresh-produce-dairy">
                             <img src="IMG_3540.jpg" alt="Potatoes">
                             <h3>Allu (Potatoes)</h3>
-                            <p class="price">Rs. <span class="product-price">80</span></p>
+                            <p class="price">Rs. <span class="product-price">35</span></p>
                             <div class="quantity-adjuster">
                                 <label for="allu-quantity">Weight:</label>
-                                <select id="allu-quantity" class="product-unit-selector" data-base-price="80">
+                                <select id="allu-quantity" class="product-unit-selector" data-base-price="35">
+                                    <option value="0.5">500g</option>
                                     <option value="1">1 Kg</option>
-                                    <option value="2">2 Kg</option>
-                                    <option value="5">5 Kg</option>
+                                    <option value="2.57142857143">2.5 Kg</option>
+                                    
                                 </select>
                             </div>
                             <button class="add-to-cart-btn" data-product-id="allu">Add to Cart</button>
@@ -622,10 +656,10 @@
                         <div class="product-card" data-id="piyaz" data-name="Piyaz" data-category="fresh-produce-dairy">
                             <img src="IMG_3546.jpg" alt="Onions">
                             <h3>Piyaz (Onions)</h3>
-                            <p class="price">Rs. <span class="product-price">100</span></p>
+                            <p class="price">Rs. <span class="product-price">50</span></p>
                             <div class="quantity-adjuster">
                                 <label for="piyaz-quantity">Weight:</label>
-                                <select id="piyaz-quantity" class="product-unit-selector" data-base-price="100">
+                                <select id="piyaz-quantity" class="product-unit-selector" data-base-price="50s">
                                     <option value="0.5">500g</option>
                                     <option value="1">1 Kg</option>
                                 </select>
@@ -650,12 +684,12 @@
                         <div class="product-card" data-id="dudh" data-name="Dudh" data-category="fresh-produce-dairy">
                             <img src="milkpouch.jpg" alt="Milk">
                             <h3>Dudh (Milk)</h3>
-                            <p class="price">Rs. <span class="product-price">80</span></p>
+                            <p class="price">Rs. <span class="product-price">50</span></p>
                             <div class="quantity-adjuster">
                                 <label for="dudh-quantity">Volume:</label>
-                                <select id="dudh-quantity" class="product-unit-selector" data-base-price="80">
-                                    <option value="0.5">500ml</option>
-                                    <option value="1">1 Liter</option>
+                                <select id="dudh-quantity" class="product-unit-selector" data-base-price="50">
+                                    <option value="1">500ml</option>
+                                    <option value="2">1 Liter</option>
                                 </select>
                             </div>
                             <button class="add-to-cart-btn" data-product-id="dudh">Add to Cart</button>
@@ -663,12 +697,12 @@
                         <div class="product-card" data-id="dahi" data-name="Dahi" data-category="fresh-produce-dairy">
                             <img src="curd.jpg" alt="Curd">
                             <h3>Dahi (Curd/Yogurt)</h3>
-                            <p class="price">Rs. <span class="product-price">120</span></p>
+                            <p class="price">Rs. <span class="product-price">70</span></p>
                             <div class="quantity-adjuster">
                                 <label for="dahi-quantity">Weight:</label>
-                                <select id="dahi-quantity" class="product-unit-selector" data-base-price="120">
-                                    <option value="0.5">500g</option>
-                                    <option value="1">1 Kg</option>
+                                <select id="dahi-quantity" class="product-unit-selector" data-base-price="70">
+                                    <option value="1">500g</option>
+                                    <option value="2">1 Kg</option>
                                 </select>
                             </div>
                             <button class="add-to-cart-btn" data-product-id="dahi">Add to Cart</button>
@@ -820,7 +854,8 @@
                     <div class="quantity-adjuster">
                         <label for="coke-quantity">Volume:</label>
                         <select id="coke-quantity" class="product-unit-selector" data-base-price="50">
-                            <option value="1">500ml</option>
+                             <option value="1">250ml</option>
+                            <option value="1.8">500ml</option>
                             <option value="2.8">1 Liter</option>
                             <option value="3.8">1.5 Liter</option>
                             <option value="5.2">2.25 Liter</option>
@@ -837,7 +872,8 @@
                     <div class="quantity-adjuster">
                         <label for="fanta-quantity">Volume:</label>
                         <select id="fanta-quantity" class="product-unit-selector" data-base-price="50">
-                            <option value="1">500ml</option>
+                            <option value="1">250ml</option>
+                             <option value="1.8">500ml</option>
                             <option value="2.8">1 Liter</option>
                             <option value="3.8">1.5 Liter</option>
                             <option value="5.2">2.25 Liter</option>
@@ -854,13 +890,40 @@
                     <div class="quantity-adjuster">
                         <label for="sprite-quantity">Volume:</label>
                         <select id="sprite-quantity" class="product-unit-selector" data-base-price="50">
-                            <option value="1">500ml</option>
+                            <option value="1">250ml</option>
+                             <option value="1.8">500ml</option>
                             <option value="2.8">1 Liter</option>
                             <option value="3.8">1.5 Liter</option>
                             <option value="5.2">2.25 Liter</option>
                         </select>
                     </div>
                     <button class="add-to-cart-btn" data-product-id="sprite">Add to Cart</button>
+                </div>
+                <div class="product-card" data-id="Mineral Water" data-name="Mineral Water" data-category="liquor-beverages">
+                    <img src="water.jpg" alt="Water">
+                    <h3>Mineral Water</h3>
+                    <p class="price">Rs. <span class="product-price">25</span></p>
+                    <button class="add-to-cart-btn" data-product-id="Mineral Water">Add to Cart</button>
+                </div>
+                
+                 <div class="product-card" data-id="Diet Coke" data-name="Diet Coke" data-category="liquor-beverages">
+                    <img src="zero sugar.jfif" alt="Diet Coke">
+                    <h3>Diet Coke (Zero Sugar)</h3>
+                    <p class="price">Rs. <span class="product-price">30</span></p>
+                    <button class="add-to-cart-btn" data-product-id="Diet Coke">Add to Cart</button>
+                </div>
+
+                 <div class="product-card" data-id="Litchi Juice" data-name="Litchi Juice" data-category="liquor-beverages">
+                    <img src="litchi juice.jfif" alt="Litchi Juice">
+                    <h3>Litchi Juice</h3>
+                    <p class="price">Rs. <span class="product-price">20</span></p>
+                    <button class="add-to-cart-btn" data-product-id="Litchi Juice">Add to Cart</button>
+                </div>
+                 <div class="product-card" data-id="Fruit cocktail" data-name="Fruit cocktail" data-category="liquor-beverages">
+                    <img src="cocktail.jfif" alt="Fruit cocktail">
+                    <h3>Fruit cocktail</h3>
+                    <p class="price">Rs. <span class="product-price">100</span></p>
+                    <button class="add-to-cart-btn" data-product-id="Fruit cocktail">Add to Cart</button>
                 </div>
 
                 <!-- Tuborg Beer -->
@@ -899,13 +962,13 @@
                 <div class="product-card" data-id="gorkha" data-name="Gorkha Beer" data-category="liquor-beverages">
                     <img src="gorkha.jfif" alt="Gorkha Beer">
                     <h3>Gorkha Beer</h3>
-                    <p class="price">Rs. <span class="product-price">180</span></p>
+                    <p class="price">Rs. <span class="product-price">185</span></p>
                     <div class="quantity-adjuster">
                         <label for="gorkha-quantity">Type:</label>
-                        <select id="gorkha-quantity" class="product-unit-selector" data-base-price="180">
+                        <select id="gorkha-quantity" class="product-unit-selector" data-base-price="185">
                             <option value="1">Small</option>
-                            <option value="1.91666666667">Big</option>
-                            <option value="1.5">Cane</option>
+                            <option value="1.89189189189">Big</option>
+                            <option value="1.45945945946">Cane</option>
                         </select>
                     </div>
                     <button class="add-to-cart-btn" data-product-id="gorkha">Add to Cart</button>
@@ -920,7 +983,7 @@
                         <label for="barahsinghe-quantity">Type:</label>
                         <select id="barahsinghe-quantity" class="product-unit-selector" data-base-price="220">
                             <option value="1">Small</option>
-                            <option value="1.93181818182">Big</option>
+                            <option value="1.95454545455"> Big</option>
                             <option value="3">Cane</option>
                         </select>
                     </div>
@@ -944,13 +1007,13 @@
                 <div class="product-card" data-id="8848-vodka" data-name="8848 Vodka" data-category="liquor-beverages">
                     <img src="8848.jfif" alt="8848 Vodka">
                     <h3>8848 Vodka</h3>
-                    <p class="price">Rs. <span class="product-price">900</span></p>
+                    <p class="price">Rs. <span class="product-price">570</span></p>
                     <div class="quantity-adjuster">
                         <label for="8848-vodka-quantity">Volume:</label>
-                        <select id="8848-vodka-quantity" class="product-unit-selector" data-base-price="900">
-                            <option value="0.25">250ml</option>
-                            <option value="0.5">500ml</option>
-                            <option value="1">1 Liter</option>
+                        <select id="8848-vodka-quantity" class="product-unit-selector" data-base-price="570">
+                            <option value="1">250ml</option>
+                            <option value="2">500ml</option>
+                            <option value="3.98245614035">1 Liter</option>
                         </select>
                     </div>
                     <button class="add-to-cart-btn" data-product-id="8848-vodka">Add to Cart</button>
@@ -960,13 +1023,13 @@
                 <div class="product-card" data-id="highlander-vodka" data-name="Highlander Vodka" data-category="liquor-beverages">
                     <img src="highlander.png" alt="Highlander Vodka">
                     <h3>Highlander Vodka</h3>
-                    <p class="price">Rs. <span class="product-price">850</span></p>
+                    <p class="price">Rs. <span class="product-price">290</span></p>
                     <div class="quantity-adjuster">
                         <label for="highlander-vodka-quantity">Volume:</label>
-                        <select id="highlander-vodka-quantity" class="product-unit-selector" data-base-price="850">
-                            <option value="0.25">250ml</option>
-                            <option value="0.5">500ml</option>
-                            <option value="1">1 Liter</option>
+                        <select id="highlander-vodka-quantity" class="product-unit-selector" data-base-price="290">
+                            <option value="1">250ml</option>
+                            <option value="2">500ml</option>
+                            <option value="3.98245614035">1 Liter</option>
                         </select>
                     </div>
                     <button class="add-to-cart-btn" data-product-id="highlander-vodka">Add to Cart</button>
@@ -976,13 +1039,13 @@
                 <div class="product-card" data-id="golden-oak" data-name="Golden Oak" data-category="liquor-beverages">
                     <img src="golden oak.jfif" alt="Golden Oak">
                     <h3>Golden Oak</h3>
-                    <p class="price">Rs. <span class="product-price">1000</span></p>
+                    <p class="price">Rs. <span class="product-price">300</span></p>
                     <div class="quantity-adjuster">
                         <label for="golden-oak-quantity">Volume:</label>
-                        <select id="golden-oak-quantity" class="product-unit-selector" data-base-price="1000">
-                            <option value="0.25">250ml</option>
-                            <option value="0.5">500ml</option>
-                            <option value="1">1 Liter</option>
+                        <select id="golden-oak-quantity" class="product-unit-selector" data-base-price="300">
+                            <option value="1">250ml</option>
+                            <option value="2">500ml</option>
+                            <option value="3.98245614035">1 Liter</option>
                         </select>
                     </div>
                     <button class="add-to-cart-btn" data-product-id="golden-oak">Add to Cart</button>
@@ -992,23 +1055,37 @@
                 <div class="product-card" data-id="khukri-rum" data-name="Khukri Rum" data-category="liquor-beverages">
                     <img src="khukuri.jpg" alt="Khukri Rum">
                     <h3>Khukri Rum</h3>
-                    <p class="price">Rs. <span class="product-price">950</span></p>
+                    <p class="price">Rs. <span class="product-price">550</span></p>
                     <div class="quantity-adjuster">
                         <label for="khukri-rum-quantity">Volume:</label>
-                        <select id="khukri-rum-quantity" class="product-unit-selector" data-base-price="950">
-                            <option value="0.25">250ml</option>
-                            <option value="0.5">500ml</option>
-                            <option value="1">1 Liter</option>
+                        <select id="khukri-rum-quantity" class="product-unit-selector" data-base-price="550">
+                            <option value="1">250ml</option>
+                            <option value="2">500ml</option>
+                            <option value="3.98245614035">1 Liter</option>
                         </select>
                     </div>
                     <button class="add-to-cart-btn" data-product-id="khukri-rum">Add to Cart</button>
+                </div>
+                  <div class="product-card" data-id="khukri-rum Spicy" data-name="Khukri Rum Spicy" data-category="liquor-beverages">
+                    <img src="khukurispicy.jfif" alt="Khukri Rum Spicy">
+                    <h3>Khukri Rum Spicy</h3>
+                    <p class="price">Rs. <span class="product-price">600</span></p>
+                    <div class="quantity-adjuster">
+                        <label for="khukri-rum Spicy -quantity">Volume:</label>
+                        <select id="khukri-rum Spicy -quantity" class="product-unit-selector" data-base-price="600">
+                            <option value="1">250ml</option>
+                            <option value="2">500ml</option>
+                            <option value="3.95833333333">1 Liter</option>
+                        </select>
+                    </div>
+                    <button class="add-to-cart-btn" data-product-id="khukri-rum Spicy">Add to Cart</button>
                 </div>
 
                 <!-- Wines -->
                 <div class="product-card" data-id="big-master-wine" data-name="Big Master Wine" data-category="liquor-beverages">
                     <img src="bigmaster.jfif" alt="Big Master Wine">
                     <h3>Big Master Wine</h3>
-                    <p class="price">Rs. <span class="product-price">1200</span></p>
+                    <p class="price">Rs. <span class="product-price">840</span></p>
                     <button class="add-to-cart-btn" data-product-id="big-master-wine">Add to Cart</button>
                 </div>
 
@@ -1022,7 +1099,7 @@
                 <div class="product-card" data-id="manag-wine" data-name="Manag Wine" data-category="liquor-beverages">
                     <img src="manag white.jfif" alt="Manag Wine">
                     <h3>Manag Wine</h3>
-                    <p class="price">Rs. <span class="product-price">1150</span></p>
+                    <p class="price">Rs. <span class="product-price">1000</span></p>
                     <button class="add-to-cart-btn" data-product-id="manag-wine">Add to Cart</button>
                 </div>
 
@@ -1030,13 +1107,13 @@
                 <div class="product-card" data-id="signature-whisky" data-name="Signature Whisky" data-category="liquor-beverages">
                     <img src="signature.jpg" alt="Signature Whisky">
                     <h3>Signature Whisky</h3>
-                    <p class="price">Rs. <span class="product-price">1300</span></p>
+                    <p class="price">Rs. <span class="product-price">680</span></p>
                     <div class="quantity-adjuster">
                         <label for="signature-whisky-quantity">Volume:</label>
-                        <select id="signature-whisky-quantity" class="product-unit-selector" data-base-price="1300">
-                            <option value="0.25">250ml</option>
-                            <option value="0.5">500ml</option>
-                            <option value="1">1 Liter</option>
+                        <select id="signature-whisky-quantity" class="product-unit-selector" data-base-price="680">
+                            <option value="1">250ml</option>
+                            <option value="2">500ml</option>
+                            <option value="4">1 Liter</option>
                         </select>
                     </div>
                     <button class="add-to-cart-btn" data-product-id="signature-whisky">Add to Cart</button>
@@ -1046,13 +1123,13 @@
                 <div class="product-card" data-id="old-durbar-red" data-name="Old Durbar Red" data-category="liquor-beverages">
                     <img src="old durbar(white).png" alt="Old Durbar Red">
                     <h3>Old Durbar white</h3>
-                    <p class="price">Rs. <span class="product-price">1500</span></p>
+                    <p class="price">Rs. <span class="product-price">750</span></p>
                     <div class="quantity-adjuster">
                         <label for="old-durbar-red-quantity">Volume:</label>
-                        <select id="old-durbar-red-quantity" class="product-unit-selector" data-base-price="1500">
-                            <option value="0.25">250ml</option>
-                            <option value="0.5">500ml</option>
-                            <option value="1">1 Liter</option>
+                        <select id="old-durbar-red-quantity" class="product-unit-selector" data-base-price="750">
+                            <option value="1">250ml</option>
+                            <option value="2">500ml</option>
+                            <option value="3.97333333333">1 Liter</option>
                         </select>
                     </div>
                     <button class="add-to-cart-btn" data-product-id="old-durbar-red">Add to Cart</button>
@@ -1061,23 +1138,57 @@
                 <div class="product-card" data-id="old-durbar-black" data-name="Old Durbar Black" data-category="liquor-beverages">
                     <img src="old durbar(black).jfif" alt="Old Durbar Black">
                     <h3>Old Durbar Black</h3>
-                    <p class="price">Rs. <span class="product-price">1600</span></p>
+                    <p class="price">Rs. <span class="product-price">965</span></p>
                     <div class="quantity-adjuster">
                         <label for="old-durbar-black-quantity">Volume:</label>
-                        <select id="old-durbar-black-quantity" class="product-unit-selector" data-base-price="1600">
-                            <option value="0.25">250ml</option>
-                            <option value="0.5">500ml</option>
-                            <option value="1">1 Liter</option>
+                        <select id="old-durbar-black-quantity" class="product-unit-selector" data-base-price="965">
+                            <option value="1">250ml</option>
+                            <option value="2">500ml</option>
+                            <option value="3.97333333333">1 Liter</option>
                         </select>
                     </div>
                     <button class="add-to-cart-btn" data-product-id="old-durbar-black">Add to Cart</button>
+                </div>
+                 <div class="product-card" data-id="Black oak" data-name="Black oak" data-category="liquor-beverages">
+                    <img src="black oak.jfif" alt="Black oak">
+                    <h3>Black oak</h3>
+                    <p class="price">Rs. <span class="product-price">345</span></p>
+                    <div class="quantity-adjuster">
+                        <label for="Black oak-quantity">Volume:</label>
+                        <select id="Black oak-quantity" class="product-unit-selector" data-base-price="345">
+                            <option value="1">250ml</option>
+                            <option value="2">500ml</option>
+                            <option value="3.97101449275">1 Liter</option>
+                        </select>
+                    </div>
+                    <button class="add-to-cart-btn" data-product-id="Black oak">Add to Cart</button>
+                </div>
+                <div class="product-card" data-id="Msutang" data-name="Mustang" data-category="liquor-beverages">
+                    <img src="mustang.jfif" alt="Mustang">
+                    <h3>Mustang</h3>
+                    <p class="price">Rs. <span class="product-price">290</span></p>
+                    <button class="add-to-cart-btn" data-product-id="Msutang">Add to Cart</button>
+                </div>
+
+                <div class="product-card" data-id="Blue diamond" data-name="Blue diamond" data-category="liquor-beverages">
+                    <img src="blue diamond.jfif" alt="Blue diamond">
+                    <h3>Blue diamond</h3>
+                    <p class="price">Rs. <span class="product-price">300</span></p>
+                    <button class="add-to-cart-btn" data-product-id="Blue diamond">Add to Cart</button>
+                </div>
+
+                <div class="product-card" data-id="Kasturi" data-name="Kasturi" data-category="liquor-beverages">
+                    <img src="kastrui.jfif" alt="Kasturi">
+                    <h3>Kasturi</h3>
+                    <p class="price">Rs. <span class="product-price">50</span></p>
+                    <button class="add-to-cart-btn" data-product-id="Kasturi">Add to Cart</button>
                 </div>
 
                 <!-- Redbull -->
                 <div class="product-card" data-id="redbull" data-name="Redbull" data-category="liquor-beverages">
                     <img src="redbull.jfif" alt="Redbull">
                     <h3>Redbull</h3>
-                    <p class="price">Rs. <span class="product-price">250</span></p>
+                    <p class="price">Rs. <span class="product-price">110</span></p>
                     <button class="add-to-cart-btn" data-product-id="redbull">Add to Cart</button>
                 </div>
 
@@ -1089,8 +1200,8 @@
                     <div class="quantity-adjuster">
                         <label for="nimbu-pani-quantity">Volume:</label>
                         <select id="nimbu-pani-quantity" class="product-unit-selector" data-base-price="50">
-                            <option value="0.5">500ml</option>
-                            <option value="2.25">2.25 Liter</option>
+                            <option value="1">500ml</option>
+                            <option value="5.2">2.25 Liter</option>
                         </select>
                     </div>
                     <button class="add-to-cart-btn" data-product-id="nimbu-pani">Add to Cart</button>
@@ -1100,12 +1211,12 @@
                 <div class="product-card" data-id="real-juice" data-name="Real Juice" data-category="liquor-beverages">
                     <img src="real juice.jfif" alt="Real Juice">
                     <h3>Real Juice</h3>
-                    <p class="price">Rs. <span class="product-price">140</span></p>
+                    <p class="price">Rs. <span class="product-price">30</span></p>
                     <div class="quantity-adjuster">
                         <label for="real-juice-quantity">Size:</label>
-                        <select id="real-juice-quantity" class="product-unit-selector" data-base-price="140">
+                        <select id="real-juice-quantity" class="product-unit-selector" data-base-price="30">
                             <option value="1">Small</option>
-                            <option value="2">Large</option>
+                            <option value="0.83333333333">Brust</option>
                         </select>
                     </div>
                     <button class="add-to-cart-btn" data-product-id="real-juice">Add to Cart</button>
@@ -1115,7 +1226,7 @@
                 <div class="product-card" data-id="badam-drink" data-name="Badam Drink" data-category="liquor-beverages">
                     <img src="badam juice.jpg" alt="Badam Drink">
                     <h3>Badam Drink</h3>
-                    <p class="price">Rs. <span class="product-price">80</span></p>
+                    <p class="price">Rs. <span class="product-price">100</span></p>
                     <button class="add-to-cart-btn" data-product-id="badam-drink">Add to Cart</button>
                 </div>
 
@@ -1123,10 +1234,15 @@
                 <div class="product-card" data-id="xtreme-energy" data-name="Xtreme Energy Drink" data-category="liquor-beverages">
                     <img src="xtreme.jfif" alt="Xtreme Energy Drink">
                     <h3>Xtreme Energy Drink</h3>
-                    <p class="price">Rs. <span class="product-price">180</span></p>
+                    <p class="price">Rs. <span class="product-price">130</span></p>
                     <button class="add-to-cart-btn" data-product-id="xtreme-energy">Add to Cart</button>
                 </div>
-
+<div class="product-card" data-id="Fish" data-name="Fish" data-category="liquor-beverages">
+                    <img src="fish.jfif" alt="Fish(Macha)">
+                    <h3>Macha (Fish)</h3>
+                    <p class="price">Rs. <span class="product-price">65</span></p>
+                    <button class="add-to-cart-btn" data-product-id="Macha (Fish)">Add to Cart</button>
+                </div>
             </div>
         </div>
     </div>
