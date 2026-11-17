@@ -137,8 +137,148 @@
     </div>
 
     <script>
+
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         let finalTotal = 0;
+
+        // Only products from the Liquor & Drinks section are synchronized.
+        const MANAGER_KEY = 'grocerify_manager_v2';
+        const LIQUOR_PRODUCT_IDS = new Set([
+            'coke','fanta','sprite','Mineral Water','Diet Coke','Litchi Juice',
+            'Fruit cocktail','tuborg','dragon','gorkha','barahsinghe',
+            '8848-vodka','highlander-vodka','golden-oak','khukri-rum',
+            'khukri-rum Spicy','big-master-wine','akira-wine','manag-wine',
+            'signature-whisky','Gurkhas & Guns','old-durbar-red',
+            'old-durbar-black','Black oak','Msutang','Blue diamond','Kasturi',
+            'redbull','nimbu-pani','real-juice','badam-drink',
+            'xtreme-energy','Fish'
+        ]);
+
+        function stockKey(value) {
+            return String(value || '').toLowerCase()
+                .replace(/1\s*liter/g, '1l')
+                .replace(/1\.5\s*liter/g, '1.5l')
+                .replace(/2\.25\s*liter/g, '2.25l')
+                .replace(/\s+/g, '')
+                .replace(/[^a-z0-9]/g, '');
+        }
+
+        function isLiquorCartItem(item) {
+            return item.category === 'liquor-beverages' ||
+                LIQUOR_PRODUCT_IDS.has(String(item.id));
+        }
+
+        function findManagerProduct(db, item) {
+    const requested = item.stockName ||
+        (item.unitName ? `${item.name} ${item.unitName}` : item.name);
+
+    const key = stockKey(requested);
+
+    const products = db.products.filter(p => {
+        const category = String(p.cat || p.category || '')
+            .trim()
+            .toLowerCase()
+            .replace(/\s+/g, ' ');
+
+        return category === 'liquor & drinks';
+    });
+
+    const aliases = {
+        '8848vodka1l': '8848vodka1l750ml',
+        'highlandervodka1l': 'highlandervodka1l750ml',
+        'goldenoak1l': 'goldenoak1l750ml',
+        'dietcoke': 'dietcokezerosugar',
+        'dietcokezerosugar': 'dietcokezerosugar250ml',
+        'carlsbergbeercane': 'carlsbergcane'
+    };
+
+    const wanted = aliases[key] || key;
+
+    return products.find(p => stockKey(p.name) === wanted) || null;
+}
+
+        function commitLiquorSale(customerName, customerPhone, paymentMethod, orderTotal) {
+            const liquorItems = cart.filter(isLiquorCartItem);
+            if (!liquorItems.length) return { ok: true, liquorTotal: 0 };
+
+            let db;
+            try {
+                db = JSON.parse(localStorage.getItem(MANAGER_KEY) || 'null');
+            } catch (_) {
+                return { ok: false, message: 'The inventory data could not be read. No order was submitted.' };
+            }
+            if (!db || !Array.isArray(db.products) || !Array.isArray(db.sales)) {
+                return { ok: false, message: 'Your inventory page has not been initialized in this browser. Open index1.html once, then try checkout again.' };
+            }
+            if (!Array.isArray(db.customers)) db.customers = [];
+
+            const prepared = [];
+            for (const item of liquorItems) {
+                const product = findManagerProduct(db, item);
+                if (!product) {
+                    const requested = item.stockName ||
+                        (item.unitName ? `${item.name} ${item.unitName}` : item.name);
+                    return {
+                        ok: false,
+                        message: `No exact inventory item was found for "${requested}". Add that exact size as a separate product in index1.html before selling it. No stock has been deducted.`
+                    };
+                }
+                const qty = Number(item.quantity) || 0;
+                if (qty <= 0 || Number(product.qty) < qty) {
+                    return {
+                        ok: false,
+                        message: `Not enough stock for ${product.name}. Available: ${Number(product.qty) || 0} pcs; requested: ${qty} pcs. No stock has been deducted.`
+                    };
+                }
+                prepared.push({ item, product, qty });
+            }
+
+            const orderId = 'WEB-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+            const date = new Date().toISOString();
+            let liquorTotal = 0;
+
+            for (const row of prepared) {
+                const { item, product, qty } = row;
+                const sell = Number(item.price_per_unit) || Number(product.sell) || 0;
+                product.qty = Number(product.qty) - qty;
+                liquorTotal += sell * qty;
+                db.sales.push({
+                    id: orderId + '-' + product.id,
+                    orderId,
+                    date,
+                    pid: product.id,
+                    name: product.name,
+                    qty,
+                    buy: Number(product.buy) || 0,
+                    sell,
+                    method: paymentMethod === 'eSewa'
+                        ? 'eSewa (Pending verification)'
+                        : paymentMethod === 'Add to Dues' ? 'Credit / Udhaar' : 'Cash',
+                    paymentStatus: paymentMethod === 'eSewa' ? 'Pending verification' : 'Recorded'
+                });
+            }
+
+            // The manager page tracks only the liquor/beverage portion of a due.
+            if (paymentMethod === 'Add to Dues' && liquorTotal > 0) {
+                let customer = db.customers.find(c =>
+                    String(c.name || '').trim().toLowerCase() === customerName.toLowerCase()
+                );
+                if (customer) {
+                    customer.due = (Number(customer.due) || 0) + liquorTotal;
+                    if (!customer.phone && customerPhone) customer.phone = customerPhone;
+                } else {
+                    db.customers.push({
+                        id: (crypto.randomUUID ? crypto.randomUUID() : orderId + '-customer'),
+                        name: customerName,
+                        phone: customerPhone,
+                        due: liquorTotal
+                    });
+                }
+            }
+
+            localStorage.setItem(MANAGER_KEY, JSON.stringify(db));
+            return { ok: true, liquorTotal };
+        }
 
 function updateFinalTotal() {
 
@@ -223,42 +363,43 @@ document.getElementById('extra-charge')
             }
 
             const paymentMethod = document.querySelector('input[name="Payment Method"]:checked').value;
-           const currentTotal = finalTotal;
-            const dateStr = new Date().toLocaleDateString();
-            
-            // Format products as: Name (Price) x Quantity
-            const productsFormatted = cart.map(i => `${i.name} (${i.price_per_unit}) x ${i.quantity}`).join(', ');
+            updateFinalTotal();
+            const currentTotal = finalTotal;
+            const productsFormatted = cart.map(i =>
+                `${i.name}${i.unitName ? ' (' + i.unitName + ')' : ''} (${i.price_per_unit}) x ${i.quantity}`
+            ).join(', ');
 
-            // --- SMART MERGE LOGIC FOR LEDGER ---
+            // Validate and record liquor/beverage stock before sending the order.
+            const result = commitLiquorSale(name, phone, paymentMethod, currentTotal);
+            if (!result.ok) {
+                alert(result.message);
+                return;
+            }
+
+            // Keep the existing separate ledger behavior for the full website checkout.
             if (paymentMethod === 'Add to Dues') {
                 let ledger = JSON.parse(localStorage.getItem('myLedger')) || [];
-                
-                // Find existing customer by name (case insensitive)
-                let customerIndex = ledger.findIndex(c => c.name.toLowerCase() === name.toLowerCase());
-
+                let customerIndex = ledger.findIndex(c =>
+                    String(c.name || '').toLowerCase() === name.toLowerCase()
+                );
                 if (customerIndex !== -1) {
-                    // Update Existing Customer
                     if (!ledger[customerIndex].purchases) ledger[customerIndex].purchases = [];
-                    
                     ledger[customerIndex].purchases.push({
-                        date: dateStr,
+                        date: new Date().toLocaleDateString(),
                         items: productsFormatted,
                         amount: currentTotal
                     });
-                    
-                    ledger[customerIndex].total = (parseFloat(ledger[customerIndex].total) + currentTotal).toFixed(2);
-                    ledger[customerIndex].due = (parseFloat(ledger[customerIndex].due) + currentTotal).toFixed(2);
+                    ledger[customerIndex].total = (parseFloat(ledger[customerIndex].total) || 0) + currentTotal;
+                    ledger[customerIndex].due = (parseFloat(ledger[customerIndex].due) || 0) + currentTotal;
                 } else {
-                    // Create New Customer
                     ledger.push({
-                        name: name,
-                        phone: phone,
-                        total: currentTotal.toFixed(2),
+                        name, phone,
+                        total: currentTotal,
                         paid: 0,
-                        due: currentTotal.toFixed(2),
+                        due: currentTotal,
                         history: [],
                         purchases: [{
-                            date: dateStr,
+                            date: new Date().toLocaleDateString(),
                             items: productsFormatted,
                             amount: currentTotal
                         }]
@@ -274,18 +415,22 @@ document.getElementById('extra-charge')
             btn.textContent = 'Recording Order...';
             btn.disabled = true;
 
+            // The local inventory/sales record is already saved. A Formspree
+            // connection failure must not cause the customer to deduct stock twice.
+            localStorage.removeItem('cart');
             fetch(this.action, {
                 method: 'POST',
                 body: new FormData(this),
                 headers: { 'Accept': 'application/json' }
-            }).then(() => {
-                alert('Order Recorded Successfully!');
-                localStorage.removeItem('cart');
+            }).then(response => {
+                if (!response.ok) throw new Error('Order email service failed');
+                alert(paymentMethod === 'eSewa'
+                    ? 'Order recorded. eSewa payment is pending verification.'
+                    : 'Order recorded successfully. Liquor & Drinks stock and sales have been updated.');
                 window.location.href = 'index.html';
             }).catch(() => {
-                alert("Connection error. Order locally saved to Dues if selected.");
-                btn.disabled = false;
-                btn.textContent = 'Confirm & Place Order';
+                alert('Your order and local inventory records were saved, but the online order notification could not be sent.');
+                window.location.href = 'index.html';
             });
         };
 
