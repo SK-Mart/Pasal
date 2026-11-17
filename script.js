@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'poha', name: 'Poha (Flattened Rice)', image: 'https://via.placeholder.com/150?text=Poha', price_per_unit: 80, units: [{ value: 0.5, name: '500g', price: 80 }, { value: 1, name: '1 Kg', price: 160 }] },
 
         // Snacks & Beverages
-      {id: 'Dairy Milk', name: 'Dairy Milk', image: 'https://via.placeholder.com/150?text=Lays+Chips', price_per_unit: 25, units: [{ value: 1, name: '1 Pack', price: 2 }] },
+      {id: 'Dairy Milk', name: 'Dairy Milk', image: 'https://via.placeholder.com/150?text=Lays+Chips', price_per_unit: 25, units: [{ value: 1, name: '1 Pack', price: 25 }] },
 
         { id: 'lays', name: 'Lays Chips', image: 'https://via.placeholder.com/150?text=Lays+Chips', price_per_unit: 50, units: [{ value: 1, name: '1 Pack', price: 50 }] },
         { id: 'noodles', name: 'Noodles', image: 'https://via.placeholder.com/150?text=Noodles', price_per_unit: 30, units: [{ value: 1, name: '1 Pack', price: 30 }] },
@@ -448,6 +448,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     image: productImage,
                     price_per_unit: pricePerUnit,
                     unitName: unitName,
+                    category: card.dataset.category || '',
+                    stockName: (card.closest('#liquor-beverages') && unitName)
+                        ? `${productName} ${unitName}`
+                        : productName,
                     quantity: quantity
                 });
             }
